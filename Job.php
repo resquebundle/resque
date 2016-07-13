@@ -1,6 +1,6 @@
 <?php
 
-namespace BCC\ResqueBundle;
+namespace Mpclarkson\ResqueBundle;
 
 abstract class Job
 {

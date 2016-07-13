@@ -1,6 +1,6 @@
 <?php
 
-namespace BCC\ResqueBundle\Controller;
+namespace ResqueBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -11,7 +11,7 @@ class DefaultController extends Controller
         $this->getResque()->pruneDeadWorkers();
         
         return $this->render(
-            'BCCResqueBundle:Default:index.html.twig',
+            'ResqueBundle:Default:index.html.twig',
             array(
                 'resque' => $this->getResque(),
             )
@@ -30,7 +30,7 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'BCCResqueBundle:Default:queue_show.html.twig',
+            'ResqueBundle:Default:queue_show.html.twig',
             array(
                 'queue' => $queue,
                 'jobs' => $jobs,
@@ -50,7 +50,7 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'BCCResqueBundle:Default:failed_list.html.twig',
+            'ResqueBundle:Default:failed_list.html.twig',
             array(
                 'jobs' => $jobs,
                 'showingAll' => $showingAll,
@@ -61,7 +61,7 @@ class DefaultController extends Controller
     public function listScheduledAction()
     {
         return $this->render(
-            'BCCResqueBundle:Default:scheduled_list.html.twig',
+            'ResqueBundle:Default:scheduled_list.html.twig',
             array(
                 'timestamps' => $this->getResque()->getDelayedJobTimestamps()
             )
@@ -78,7 +78,7 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'BCCResqueBundle:Default:scheduled_timestamp.html.twig',
+            'ResqueBundle:Default:scheduled_timestamp.html.twig',
             array(
                 'timestamp' => $timestamp,
                 'jobs' => $jobs
@@ -87,7 +87,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @return \BCC\ResqueBundle\Resque
+     * @return \Mpclarkson\ResqueBundle\Resque
      */
     protected function getResque()
     {

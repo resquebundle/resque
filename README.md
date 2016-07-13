@@ -1,6 +1,8 @@
-# Intro to BCCResqueBundle
+# Intro to ResqueBundle
 
-The BCC resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony2. It is inspired from resque, a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later.
+This is a fork of the BCCResqueBundle as it is no longer being maintained, and I need it compatible with Symfony releases (and bugs fixed).
+
+The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony2-3. It is inspired from resque, a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later.
 
 ## Features:
 
@@ -12,15 +14,20 @@ The BCC resque bundle provides integration of [php-resque](https://github.com/ch
 - ability to auto re-queue failed jobs, with back-off strategies
 
 TODOs:
-- Log management
-- Job status tracking
-- Redis configuration
-- Localisation
-- Tests
+- [x] PSR4
+- [x] Update admin to Bootstrap 3
+- [ ] Travis CI
+- [ ] Symfony 3 compatibility
+- [ ] Community contributions / Ignored PRs
+- [ ] Fix bugs
+- [ ] Tests
 
-## Screenshots
-### Dashboard
-![](https://github.com/michelsalib/BCCResqueBundle/raw/master/Resources/screens/home.png)
+ORIGINAL TODOs:
+- [ ] Log management
+- [ ] Job status tracking
+- [ ] Redis configuration
+- [ ] Localisation
+- [ ] Tests
 
 ## Installation and configuration:
 
@@ -30,13 +37,13 @@ Make sure you have redis installed on your machine: http://redis.io/
 
 ### Get the bundle
 
-Add to your `bcc-resque-bundle` to your dependencies:
+Add `mpclarkson/resque-bundle` to your dependencies:
 
 ``` json
 {
     "require": {
         ...
-        "bcc/resque-bundle": "dev-master"
+        "mpclarkson/resque-bundle": "dev-master"
     }
     ...
 }
@@ -44,7 +51,7 @@ Add to your `bcc-resque-bundle` to your dependencies:
 
 To install, run `php composer.phar [update|install]`.
 
-### Add BCCResqueBundle to your application kernel
+### Add ResqueBundle to your application kernel
 
 ``` php
 <?php
@@ -54,7 +61,7 @@ To install, run `php composer.phar [update|install]`.
     {
         return array(
             // ...
-            new BCC\ResqueBundle\BCCResqueBundle(),
+            new Mpclarkson\ResqueBundle\ResqueBundle(),
             // ...
         );
     }
@@ -62,12 +69,12 @@ To install, run `php composer.phar [update|install]`.
 
 ### Import the routing configuration
 
-Add to your `routing.yml`:
+Add to the following to `routing.yml`:
 
 ``` yml
 # app/config/routing.yml
-BCCResqueBundle:
-    resource: "@BCCResqueBundle/Resources/config/routing.xml"
+ResqueBundle:
+    resource: "@ResqueBundle/Resources/config/routing.xml"
     prefix:   /resque
 ```
 
@@ -83,7 +90,6 @@ To secure the dashboard, you can add the following to your `security.yml` - prov
 ```
 
 ### Optional, secure the dashboard behind a role
-
 
 Add to your `security.yml`:
 
@@ -101,8 +107,8 @@ You may want to add some configuration to your `config.yml`
 
 ``` yml
 # app/config/config.yml
-bcc_resque:
-    class: BCC\ResqueBundle\Resque           # the resque class if different from default
+resque:
+    class: Mpclarkson\ResqueBundle\Resque           # the resque class if different from default
     vendor_dir: %kernel.root_dir%/../vendor  # the vendor dir if different from default
     prefix: my-resque-prefix                 # optional prefix to separate Resque data per site/app
     redis:
@@ -125,7 +131,7 @@ This bundle is prepared for lazy loading in order to make a connection to redis 
 
 ## Creating a Job
 
-A job is a subclass of the `BCC\ResqueBundle\Job` class. You also can use the `BCC\Resque\ContainerAwareJob` if you need to leverage the container during job execution.
+A job is a subclass of the `Mpclarkson\ResqueBundle\Job` class. You also can use the `Mpclarkson\Resque\ContainerAwareJob` if you need to leverage the container during job execution.
 You will be forced to implement the run method that will contain your job logic:
 
 ``` php
@@ -133,7 +139,7 @@ You will be forced to implement the run method that will contain your job logic:
 
 namespace My;
 
-use BCC\ResqueBundle\Job;
+use Mpclarkson\ResqueBundle\Job;
 
 class MyJob extends Job
 {
@@ -154,7 +160,7 @@ You can get the resque service simply by using the container. From your controll
 <?php
 
 // get resque
-$resque = $this->get('bcc_resque.resque');
+$resque = $this->get('resque');
 
 // create your job
 $job = new MyJob();
@@ -170,9 +176,9 @@ $resque->enqueue($job);
 ## Running a worker on a queue
 
 Executing the following commands will create a work on :
-- the `default` queue : `app/console bcc:resque:worker-start default`
-- the `q1` and `q2` queue : `app/console bcc:resque:worker-start q1,q2` (separate name with `,`)
-- all existing queues : `app/console bcc:resque:worker-start "*"`
+- the `default` queue : `app/console resque:worker-start default`
+- the `q1` and `q2` queue : `app/console resque:worker-start q1,q2` (separate name with `,`)
+- all existing queues : `app/console resque:worker-start "*"`
 
 You can also run a worker foreground by adding the `--foreground` option;
 
@@ -192,7 +198,7 @@ From your controller you can do:
 <?php
 
 // get resque
-$resque = $this->get('bcc_resque.resque');
+$resque = $this->get('resque');
 
 // create your job
 $job = new MyJob();
@@ -214,11 +220,11 @@ $resque->enqueueIn($seconds, $job);
 You must also run a `scheduledworker`, which is responsible for taking items out of the special delayed queue and putting
 them into the originally specified queue.
 
-`app/console bcc:resque:scheduledworker-start`
+`app/console resque:scheduledworker-start`
 
-Stop it later with `app/console bcc:resque:scheduledworker-stop`.
+Stop it later with `app/console resque:scheduledworker-stop`.
 
-Note that when run in background mode it creates a PID file in 'cache/<environment>/bcc_resque_scheduledworker.pid'. If you
+Note that when run in background mode it creates a PID file in 'cache/<environment>/resque_scheduledworker.pid'. If you
 clear your cache while the scheduledworker is running you won't be able to stop it with the `scheduledworker-stop` command.
 
 Alternatively, you can run the scheduledworker in the foreground with the `--foreground` option.
@@ -235,13 +241,13 @@ Here's a sample conf file
 
 ```ini
 [program:myapp_phpresque_default]
-command = /usr/bin/php /home/sites/myapp/prod/current/vendor/bcc/resque-bundle/BCC/ResqueBundle/bin/resque
+command = /usr/bin/php /home/sites/myapp/prod/current/vendor/mpclarkson/resque-bundle/ResqueBundle/bin/resque
 user = myusername
 environment = APP_INCLUDE='/home/sites/myapp/prod/current/vendor/autoload.php',VERBOSE='1',QUEUE='default'
 stopsignal=QUIT
 
 [program:myapp_phpresque_scheduledworker]
-command = /usr/bin/php /home/sites/myapp/prod/current/vendor/bcc/resque-bundle/BCC/ResqueBundle/bin/resque-scheduler
+command = /usr/bin/php /home/sites/myapp/prod/current/vendor/resque-bundle/resque-bundle/ResqueBundle/bin/resque-scheduler
 user = myusername
 environment = APP_INCLUDE='/home/sites/myapp/prod/current/vendor/autoload.php',VERBOSE='1',RESQUE_PHP='/home/sites/myapp/prod/current/vendor/chrisboulton/php-resque/lib/Resque.php'
 stopsignal=QUIT
@@ -269,7 +275,7 @@ From within the job:
 
 namespace My;
 
-use BCC\ResqueBundle\Job;
+use Mpclarkson\ResqueBundle\Job;
 
 class MyJob extends Job
 {
@@ -304,7 +310,7 @@ Just extend the `ContainerAwareJob`:
 
 namespace My;
 
-use BCC\ResqueBundle\ContainerAwareJob;
+use Mpclarkson\ResqueBundle\ContainerAwareJob;
 
 class MyJob extends ContainerAwareJob
 {
@@ -318,10 +324,10 @@ class MyJob extends ContainerAwareJob
 
 ### Stop a worker
 
-Use the `app/console bcc:resque:worker-stop` command.
+Use the `app/console resque:worker-stop` command.
 
 - No argument will display running workers that you can stop.
-- Add a worker id to stop it: `app/console bcc:resque:worker-stop ubuntu:3949:default`
+- Add a worker id to stop it: `app/console resque:worker-stop ubuntu:3949:default`
 - Add the `--all` option to stop all the workers.
 
 
@@ -336,7 +342,7 @@ The following will allow `Some\Job` to retry 3 times.
 * after a 60 second delay
 
 ```yml
-bcc_resque:
+resque:
     redis:
         ....
     auto_retry:
@@ -346,14 +352,14 @@ bcc_resque:
 Setting strategy for all jobs:
 
 ```yml
-bcc_resque:
+resque:
     auto_retry: [0, 10, 60]
 ```
 
 With default strategy for all but specific jobs:
 
 ```yml
-bcc_resque:
+resque:
     auto_retry:
     	default:        [0, 10, 60]
         Some\Job:       [0, 10, 120, 240]
@@ -365,7 +371,7 @@ The `default` strategy (if provided) will be applied to all jobs that does not h
 You can disable `auto_retry` for selected jobs by using an empty array:
 
 ```yml
-bcc_resque:
+resque:
     auto_retry:
     	default:        [0, 10, 60]
         Some\Job:       []
@@ -378,4 +384,4 @@ Here `Some\Job` will not have any `auto_retry` attached.
 
 To use the `auto_retry` feature, you must also run the scheduler job:
 
-`app/console bcc:resque:scheduledworker-start`
+`app/console resque:scheduledworker-start`

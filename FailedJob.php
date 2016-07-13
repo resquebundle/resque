@@ -1,6 +1,6 @@
 <?php
 
-namespace BCC\ResqueBundle;
+namespace Mpclarkson\ResqueBundle;
 
 class FailedJob
 {
