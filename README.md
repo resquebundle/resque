@@ -16,6 +16,7 @@ The resque bundle provides integration of [php-resque](https://github.com/chrisb
 TODOs:
 - [x] PSR4
 - [x] Update admin to Bootstrap 3
+- [ ] Migration from BCC notes
 - [ ] Travis CI
 - [ ] Symfony 3 compatibility
 - [ ] Community contributions / Ignored PRs
