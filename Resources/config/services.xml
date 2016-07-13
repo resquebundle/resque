@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
         <parameter key="resque.kernel.root_dir">%kernel.root_dir%</parameter>
         <parameter key="resque.vendor_dir" />
-        <parameter key="resque.class" />
+        <parameter key="resque.class"/>
         <parameter key="resque.prefix" />
         <parameter key="resque.redis.host" />
         <parameter key="resque.redis.port" />
@@ -22,9 +22,9 @@
                 <argument key="kernel.environment">%kernel.environment%</argument>
             </argument>
             <call method="setRedisConfiguration">
-                <argument>%bresque.resque.redis.host%</argument>
-                <argument>%resque.resque.redis.port%</argument>
-                <argument>%resque.resque.redis.database%</argument>
+                <argument>%resque.redis.host%</argument>
+                <argument>%resque.redis.port%</argument>
+                <argument>%resque.redis.database%</argument>
             </call>
         </service>
     </services>

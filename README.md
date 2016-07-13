@@ -9,11 +9,12 @@ The resque bundle provides integration of [php-resque](https://github.com/chrisb
 - Creating a Job, with container access in order to leverage your Symfony services
 - Enqueue a Job with parameters on a given queue
 - Creating background worker on a given queue
-- A UX to monitor your queues, workers and job statuses
-- ability to schedule jobs to run at a specific time or after a number of seconds delay
-- ability to auto re-queue failed jobs, with back-off strategies
+- An interface to monitor your queues, workers and job statuses
+- Schedule jobs to run at a specific time or after a number of seconds delay
+- Auto re-queue failed jobs, with back-off strategies
 
-TODOs:
+## Todos:
+
 - [x] PSR4
 - [x] Update admin to Bootstrap 3
 - [ ] Migration from BCC notes
