@@ -2,7 +2,7 @@
     "name": "mpclarkson/resque-bundle",
     "type": "symfony-bundle",
     "description": "ResqueBundle",
-    "keywords": ["resque job queue management symfony symfony2 symfony3"],
+    "keywords": ["resque, job queue, queue, symfony, symfony2, symfony3"],
     "homepage": "http://github.com/mpclarkson/ResqueBundle",
     "license": "MIT",
     "authors": [
