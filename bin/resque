@@ -6,7 +6,7 @@ if (empty($QUEUE)) {
     die("Set QUEUE env var containing the list of queues to work.\n");
 }
 
-require_once __DIR__."/../../../../../autoload.php";
+require_once __DIR__."/../../../autoload.php";
 
 $REDIS_BACKEND    = getenv('REDIS_BACKEND');
 $REDIS_BACKEND_DB = getenv('REDIS_BACKEND_DB');
