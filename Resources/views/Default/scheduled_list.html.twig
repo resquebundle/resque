@@ -1,8 +1,7 @@
-{% extends 'BCCResqueBundle::layout.html.twig' %}
+{% extends 'ResqueBundle::layout.html.twig' %}
 {% block body %}
-{% include "BCCResqueBundle:Default:_menu.html.twig" with {activeNav: 'scheduled_list'} %}
-<div class="container">
-    <div class="row span3">
+{% include "ResqueBundle:Default:_menu.html.twig" with {activeNav: 'scheduled_list'} %}
+    <div class="col-md-12">
         <h2>Scheduled Jobs</h2>
         <table class="table table-striped table-bordered">
             <thead>
@@ -15,7 +14,7 @@
             {% for timestamp in timestamps %}
                 <tr>
                     <th class="span2">
-                        <a href="{{ path('BCCResqueBundle_scheduled_timestamp', {timestamp: timestamp[0]}) }}">
+                        <a href="{{ path('ResqueBundle_scheduled_timestamp', {timestamp: timestamp[0]}) }}">
                             {{ timestamp[0]|date('Y-m-d H:i:s') }}</a>
                     </th>
                     <td class="span1">{{ timestamp[1] }}</td>
@@ -24,5 +23,4 @@
             </tbody>
         </table>
     </div>
-</div>
 {% endblock %}

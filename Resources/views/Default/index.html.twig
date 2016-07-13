@@ -1,56 +1,44 @@
-{% extends 'BCCResqueBundle::layout.html.twig' %}
+{% extends 'ResqueBundle::layout.html.twig' %}
 {% block body %}
-{% include "BCCResqueBundle:Default:_menu.html.twig" with {activeNav: 'homepage'} %}
-<div class="container">
-    <div class="row span5">
+{% include "ResqueBundle:Default:_menu.html.twig" with {activeNav: 'homepage'} %}
+    <div class="col-md-12">
         <h2>Queues</h2>
-        <table class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th class="span3">Name</th>
-                <th class="span2">Jobs</th>
-            </tr>
-            </thead>
-            {% for queue in resque.queues %}
+        <p>This list shows all registered queues with the number of jobs currently in each queue.</p>
+            <table class="table table-bordered">
+               <thead>
+               <tr>
+                  <th class="span3">Name</th>
+                  <th class="span2">Jobs</th>
+              </tr>
+              </thead>
+              {% for queue in resque.queues %}
+                 <tr>
+                     <td>{{ queue.name }}</td>
+                     <td><a href="{{ path('ResqueBundle_queue_show', { queue: queue.name }) }}">{{ queue.size }}</a></td>
+                  </tr>
+                {% endfor %}
                 <tr>
-                    <td>{{ queue.name }}</td>
-                    <td><a href="{{ path('BCCResqueBundle_queue_show', { queue: queue.name }) }}">{{ queue.size }}</a></td>
+                    <td>scheduled</td>
+                    <td><a href="{{ path('ResqueBundle_scheduled_list') }}">{{ resque.numberOfDelayedJobs }}</a></td>
                 </tr>
-            {% endfor %}
-        </table>
+                <tr>
+                    <td>failed</td>
+                    <td><a href="{{ path('ResqueBundle_failed_list') }}">{{ resque.failedJobs|length }}</a></td>
+                </tr>
 
-        <h2>Failed Jobs</h2>
-        <table class="table table-striped table-bordered">
-            <tr>
-                <th class="span3">Number of Failed Jobs</th>
-                <td class="span2"><a href="{{ path('BCCResqueBundle_failed_list') }}">{{ resque.failedJobs|length }}</a></td>
-            </tr>
-        </table>
+            </table>
 
-        <h2>Scheduled Jobs</h2>
-        <table class="table table-striped table-bordered">
-            <tr>
-                <th class="span3">First Scheduled Job Timestamp</th>
-                <td class="span2">{{ resque.firstDelayedJobTimestamp[0]|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Number of Scheduled Jobs</th>
-                <td><a href="{{ path('BCCResqueBundle_scheduled_list') }}">{{ resque.numberOfDelayedJobs }}</a></td>
-            </tr>
-        </table>
-    </div>
-    <div class="row span12">
         <h2>Workers</h2>
-        <table class="table table-striped table-bordered">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th class="span3">
                     Where
                 </th>
-                <th class="span3">
+                <th class="span2">
                     Queues
                 </th>
-                <th class="span4">
+                <th class="span5">
                     Processing
                 </th>
                 <th class="span1">
@@ -106,8 +94,7 @@
                 </tr>
             {% endfor %}
         </table>
-    </div>
-    <div class="row span5">
+
         <h2>Redis</h2>
         <table class="table table-bordered table-striped">
             <tr>
@@ -123,6 +110,7 @@
                 <td>{{ resque.redisConfiguration.database }}</td>
             </tr>
         </table>
+
     </div>
-</div>
+
 {% endblock %}
