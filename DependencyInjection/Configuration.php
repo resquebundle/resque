@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('auto_retry')
                     ->beforeNormalization()
                         ->ifArray()
-                        ->then(function ($var) {
+                        ->then(function($var) {
                             if (array_key_exists(0, $var)) {
                                 return array($var);
                             }

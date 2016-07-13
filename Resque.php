@@ -130,7 +130,7 @@ class Resque implements EnqueueInterface
         
         $this->attachRetryStrategy($job);
 
-        return \ResqueScheduler::removeDelayed($job->queue, \get_class($job),$job->args);
+        return \ResqueScheduler::removeDelayed($job->queue, \get_class($job), $job->args);
     }
 
     public function removeFromTimestamp($at, Job $job)
@@ -146,7 +146,7 @@ class Resque implements EnqueueInterface
 
     public function getQueues()
     {
-        return \array_map(function ($queue) {
+        return \array_map(function($queue) {
             return new Queue($queue);
         }, \Resque::queues());
     }
@@ -162,7 +162,7 @@ class Resque implements EnqueueInterface
 
     public function getWorkers()
     {
-        return \array_map(function ($worker) {
+        return \array_map(function($worker) {
             return new Worker($worker);
         }, \Resque_Worker::all());
     }
@@ -188,12 +188,12 @@ class Resque implements EnqueueInterface
 
     public function getDelayedJobTimestamps()
     {
-        $timestamps= \Resque::redis()->zrange('delayed_queue_schedule', 0, -1);
+        $timestamps = \Resque::redis()->zrange('delayed_queue_schedule', 0, -1);
 
         //TODO: find a more efficient way to do this
-        $out=array();
+        $out = array();
         foreach ($timestamps as $timestamp) {
-            $out[]=array($timestamp,\Resque::redis()->llen('delayed:'.$timestamp));
+            $out[] = array($timestamp, \Resque::redis()->llen('delayed:'.$timestamp));
         }
 
         return $out;
@@ -201,12 +201,12 @@ class Resque implements EnqueueInterface
 
     public function getFirstDelayedJobTimestamp()
     {
-        $timestamps=$this->getDelayedJobTimestamps();
-        if (count($timestamps)>0) {
+        $timestamps = $this->getDelayedJobTimestamps();
+        if (count($timestamps) > 0) {
             return $timestamps[0];
         }
 
-        return array(null,0);
+        return array(null, 0);
     }
 
     public function getNumberOfDelayedJobs()
@@ -216,10 +216,10 @@ class Resque implements EnqueueInterface
 
     public function getJobsForTimestamp($timestamp)
     {
-        $jobs= \Resque::redis()->lrange('delayed:'.$timestamp,0, -1);
-        $out=array();
+        $jobs = \Resque::redis()->lrange('delayed:'.$timestamp, 0, -1);
+        $out = array();
         foreach ($jobs as $job) {
-            $out[]=json_decode($job, true);
+            $out[] = json_decode($job, true);
         }
 
         return $out;
@@ -231,7 +231,7 @@ class Resque implements EnqueueInterface
      */
     public function clearQueue($queue)
     {
-        $length=\Resque::redis()->llen('queue:'.$queue);
+        $length = \Resque::redis()->llen('queue:'.$queue);
         \Resque::redis()->del('queue:'.$queue);
 
         return $length;

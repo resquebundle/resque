@@ -23,7 +23,7 @@ class ClearQueueCommand extends ContainerAwareCommand
         $resque = $this->getContainer()->get('resque');
 
         $queue = $input->getArgument('queue');
-        $count=$resque->clearQueue($queue);
+        $count = $resque->clearQueue($queue);
 
         $output->writeln('Cleared queue '.$queue.' - removed '.$count.' entries');
 
