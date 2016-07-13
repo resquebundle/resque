@@ -4,7 +4,7 @@ namespace Mpclarkson\ResqueBundle;
 
 use Psr\Log\NullLogger;
 
-class Resque
+class Resque implements EnqueueInterface
 {
     /**
      * @var array
@@ -96,7 +96,7 @@ class Resque
         return $this->enqueue($job, $trackStatus);
     }
 
-    public function enqueueAt($at,Job $job)
+    public function enqueueAt($at, Job $job)
     {
         if ($job instanceof ContainerAwareJob) {
             $job->setKernelOptions($this->kernelOptions);
@@ -109,7 +109,7 @@ class Resque
         return null;
     }
 
-    public function enqueueIn($in,Job $job)
+    public function enqueueIn($in, Job $job)
     {
         if ($job instanceof ContainerAwareJob) {
             $job->setKernelOptions($this->kernelOptions);
