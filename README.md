@@ -1,6 +1,7 @@
 # ResqueBundle
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpclarkson/resque-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpclarkson/resque-bundle/?branch=master)
+[![Build Status](https://travis-ci.org/mpclarkson/resque-bundle.svg?branch=master)](https://travis-ci.org/mpclarkson/resque-bundle)
 
 This is a fork of the BCCResqueBundle, as it is no longer being maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed. 
 **Contributions are welcome - I don't have the bandwidth to maintain this alone.**
