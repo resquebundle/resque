@@ -26,6 +26,7 @@ It is inspired from resque, a Redis-backed Ruby library for creating background 
 - [x] Travis CI
 - [ ] Symfony 3 compatibility
 - [ ] Code quality - Scrutinizer 9.5+
+- [ ] Replicate functionality of resque-web (ie retry and delete failed jobs etc)
 - [ ] Community contributions / Ignored PRs
 - [ ] Fix bugs
 - [ ] Tests
