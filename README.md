@@ -104,21 +104,11 @@ You can customize the prefix as you wish.
 
 You can now access the dashboard at this url: `/resque`
 
-To secure the dashboard, you can add the following to your `security.yml` - provided your administrator role is `ROLE_ADMIN`
+To secure the dashboard, you can add the following to your `security.yml`, assuming your administrator role is `ROLE_ADMIN`
 
 ```yml
-    access_control:
-        - { path: ^/resque, roles: ROLE_ADMIN }
-```
-
-### Optional, secure the dashboard behind a role
-
-Add to your `security.yml`:
-
-``` yml
-# app/config/security.yml
 access_control:
-    - { path: ^/resque, roles: ROLE_ADMIN }
+  - { path: ^/resque, roles: ROLE_ADMIN }
 ```
 
 Now only users with the role ROLE_ADMIN will be able to access the dashboard at this url: `/resque`
@@ -130,7 +120,7 @@ You may want to add some configuration to your `config.yml`
 ``` yml
 # app/config/config.yml
 resque:
-    class: Mpclarkson\ResqueBundle\Resque           # the resque class if different from default
+    class: Mpclarkson\ResqueBundle\Resque    # the resque class if different from default
     vendor_dir: %kernel.root_dir%/../vendor  # the vendor dir if different from default
     prefix: my-resque-prefix                 # optional prefix to separate Resque data per site/app
     redis:
@@ -167,7 +157,7 @@ class MyJob extends Job
 {
     public function run($args)
     {
-        \file_put_contents($args['file'], $args['content']);
+        file_put_contents($args['file'], $args['content']);
     }
 }
 ```
@@ -269,7 +259,7 @@ environment = APP_INCLUDE='/home/sites/myapp/prod/current/vendor/autoload.php',V
 stopsignal=QUIT
 
 [program:myapp_phpresque_scheduledworker]
-command = /usr/bin/php /home/sites/myapp/prod/current/vendor/resque-bundle/resque-bundle/ResqueBundle/bin/resque-scheduler
+command = /usr/bin/php /home/sites/myapp/prod/current/vendor/mpclarkson/resque-bundle/ResqueBundle/bin/resque-scheduler
 user = myusername
 environment = APP_INCLUDE='/home/sites/myapp/prod/current/vendor/autoload.php',VERBOSE='1',RESQUE_PHP='/home/sites/myapp/prod/current/vendor/chrisboulton/php-resque/lib/Resque.php'
 stopsignal=QUIT
