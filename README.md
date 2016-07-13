@@ -253,15 +253,13 @@ Here's a sample conf file
 
 ```ini
 [program:myapp_phpresque_default]
-command = /usr/bin/php /home/sites/myapp/prod/current/vendor/mpclarkson/resque-bundle/ResqueBundle/bin/resque
+command = /usr/bin/php /home/sites/myapp/bin/console resque:worker-start high --env=prod --foreground --verbose
 user = myusername
-environment = APP_INCLUDE='/home/sites/myapp/prod/current/vendor/autoload.php',VERBOSE='1',QUEUE='default'
 stopsignal=QUIT
 
 [program:myapp_phpresque_scheduledworker]
-command = /usr/bin/php /home/sites/myapp/prod/current/vendor/mpclarkson/resque-bundle/ResqueBundle/bin/resque-scheduler
+command = /usr/bin/php /home/sites/myapp/prod/bin/console resque:scheduledworker-start --env=prod --foreground --verbose
 user = myusername
-environment = APP_INCLUDE='/home/sites/myapp/prod/current/vendor/autoload.php',VERBOSE='1',RESQUE_PHP='/home/sites/myapp/prod/current/vendor/chrisboulton/php-resque/lib/Resque.php'
 stopsignal=QUIT
 
 [group:myapp]
