@@ -1,4 +1,6 @@
-# Intro to ResqueBundle
+# ResqueBundle
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpclarkson/resque-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpclarkson/resque-bundle/?branch=master)
 
 This is a fork of the BCCResqueBundle, as it is no longer being maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed. 
 **Contributions are welcome - I don't have the bandwidth to maintain this alone.**
@@ -20,9 +22,9 @@ It is inspired from resque, a Redis-backed Ruby library for creating background 
 - [x] PSR4
 - [x] Update admin to Bootstrap 3
 - [x] Migration from BCC notes
-- [ ] Travis CI
-- [ ] Code quality - Scruitinizer A is the goal
 - [ ] Symfony 3 compatibility
+- [ ] Travis CI
+- [ ] Code quality - Scrutinizer 9.5+
 - [ ] Community contributions / Ignored PRs
 - [ ] Fix bugs
 - [ ] Tests
@@ -39,6 +41,7 @@ ORIGINAL TODOs:
 Here are some notes to make it easier to migrate from the BCCResqueBundle:
 
 - Find and replace all instances of `BCC\ResqueBundle` with `Mpclarkson\ResqueBundle` throughout your app (e.g. use statements)
+- Update your `routing.yml` - replace `@BCCResque` with `@ResqueBundle`
 - The `bcc:` prefix for all commands has been dropped
 - The container service definition`bcc_resque.resque` has been replaced with simply `resque`. You can either search and replace this or create an alias as follows:
 ```yaml
