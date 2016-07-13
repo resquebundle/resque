@@ -17,7 +17,7 @@ The resque bundle provides integration of [php-resque](https://github.com/chrisb
 
 - [x] PSR4
 - [x] Update admin to Bootstrap 3
-- [ ] Migration from BCC notes
+- [x] Migration from BCC notes
 - [ ] Travis CI
 - [ ] Symfony 3 compatibility
 - [ ] Community contributions / Ignored PRs
@@ -30,6 +30,19 @@ ORIGINAL TODOs:
 - [ ] Redis configuration
 - [ ] Localisation
 - [ ] Tests
+
+## Migrating from BCCResqueBundle:
+
+Here are some notes to make it eaiser to migrate from the BCCResqueBundle:
+
+- Find and replace all instances of `BCC\ResqueBundle` with `Mpclarkson\ResqueBundle` throughout your app (e.g. use statements)
+- The `bcc:` prefix for all commands has been dropped
+- The container service definition`bcc_resque.resque` has been replaced with simply `resque`. You can either search and replace this or create an alias as follows:
+```yaml
+ bcc_resque.resque:
+      alias: resque
+      lazy: true
+```
 
 ## Installation and configuration:
 
