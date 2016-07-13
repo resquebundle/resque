@@ -1,8 +1,10 @@
 # Intro to ResqueBundle
 
-This is a fork of the BCCResqueBundle as it is no longer being maintained, and I need it compatible with Symfony releases (and bugs fixed).
+This is a fork of the BCCResqueBundle, as it is no longer being maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed. 
+**Contributions are welcome - I don't have the bandwidth to maintain this alone.**
 
-The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony2-3. It is inspired from resque, a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later.
+The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony2-3. 
+It is inspired from resque, a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later.
 
 ## Features:
 
@@ -19,6 +21,7 @@ The resque bundle provides integration of [php-resque](https://github.com/chrisb
 - [x] Update admin to Bootstrap 3
 - [x] Migration from BCC notes
 - [ ] Travis CI
+- [ ] Code quality - Scruitinizer A is the goal
 - [ ] Symfony 3 compatibility
 - [ ] Community contributions / Ignored PRs
 - [ ] Fix bugs
@@ -33,7 +36,7 @@ ORIGINAL TODOs:
 
 ## Migrating from BCCResqueBundle:
 
-Here are some notes to make it eaiser to migrate from the BCCResqueBundle:
+Here are some notes to make it easier to migrate from the BCCResqueBundle:
 
 - Find and replace all instances of `BCC\ResqueBundle` with `Mpclarkson\ResqueBundle` throughout your app (e.g. use statements)
 - The `bcc:` prefix for all commands has been dropped
