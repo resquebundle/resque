@@ -23,8 +23,8 @@ It is inspired from resque, a Redis-backed Ruby library for creating background 
 - [x] PSR4
 - [x] Update admin to Bootstrap 3
 - [x] Migration from BCC notes
+- [x] Travis CI
 - [ ] Symfony 3 compatibility
-- [ ] Travis CI
 - [ ] Code quality - Scrutinizer 9.5+
 - [ ] Community contributions / Ignored PRs
 - [ ] Fix bugs
