@@ -67,33 +67,33 @@ if (!empty($PREFIX)) {
 Resque_Event::listen('onFailure', function(Exception $exception, Resque_Job $job) use ($logger) {
     $args = $job->getArguments();
 
-    if (empty($args['bcc_resque.retry_strategy'])) {
+    if (empty($args['resque.retry_strategy'])) {
         return;
     }
 
-    if (!isset($args['bcc_resque.retry_attempt'])) {
-        $args['bcc_resque.retry_attempt'] = 0;
+    if (!isset($args['resque.retry_attempt'])) {
+        $args['resque.retry_attempt'] = 0;
     }
 
-    $backoff = $args['bcc_resque.retry_strategy'];
-    if (!isset($backoff[$args['bcc_resque.retry_attempt']])) {
+    $backoff = $args['resque.retry_strategy'];
+    if (!isset($backoff[$args['resque.retry_attempt']])) {
         return;
     }
 
-    $delay = $backoff[$args['bcc_resque.retry_attempt']];
-    $args['bcc_resque.retry_attempt']++;
+    $delay = $backoff[$args['resque.retry_attempt']];
+    $args['resque.retry_attempt']++;
 
     if ($delay == 0) {
         Resque::enqueue($job->queue, $job->payload['class'], $args);
         $logger->log(Psr\Log\LogLevel::ERROR, 'Job failed. Auto re-queued, attempt number: {attempt}', array(
-            'attempt' => $args['bcc_resque.retry_attempt'] - 1)
+            'attempt' => $args['resque.retry_attempt'] - 1)
         );
     } else {
         $at = time() + $delay;
         ResqueScheduler::enqueueAt($at, $job->queue, $job->payload['class'], $args);
         $logger->log(Psr\Log\LogLevel::ERROR, 'Job failed. Auto re-queued. Scheduled for: {timestamp}, attempt number: {attempt}', array(
             'timestamp' => date('Y-m-d H:i:s', $at),
-            'attempt'   => $args['bcc_resque.retry_attempt'] - 1,
+            'attempt'   => $args['resque.retry_attempt'] - 1,
         ));
     }
 });

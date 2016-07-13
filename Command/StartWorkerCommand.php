@@ -14,8 +14,8 @@ class StartWorkerCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('bcc:resque:worker-start')
-            ->setDescription('Start a bcc resque worker')
+            ->setName('resque:worker-start')
+            ->setDescription('Start a resque worker')
             ->addArgument('queues', InputArgument::REQUIRED, 'Queue names (separate using comma)')
             ->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'How many workers to fork', 1)
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'How often to check for new jobs across the queues', 5)
@@ -47,9 +47,9 @@ class StartWorkerCommand extends ContainerAwareCommand
         $env['QUEUE']       = $input->getArgument('queues');
         $env['VERBOSE']     = 1;
 
-        $prefix = $this->getContainer()->getParameter('bcc_resque.prefix');
+        $prefix = $this->getContainer()->getParameter('resque.prefix');
         if (!empty($prefix)) {
-            $env['PREFIX'] = $this->getContainer()->getParameter('bcc_resque.prefix');
+            $env['PREFIX'] = $this->getContainer()->getParameter('resque.prefix');
         }
 
         if ($input->getOption('verbose')) {
@@ -60,9 +60,9 @@ class StartWorkerCommand extends ContainerAwareCommand
             unset($env['VERBOSE']);
         }
 
-        $redisHost     = $this->getContainer()->getParameter('bcc_resque.resque.redis.host');
-        $redisPort     = $this->getContainer()->getParameter('bcc_resque.resque.redis.port');
-        $redisDatabase = $this->getContainer()->getParameter('bcc_resque.resque.redis.database');
+        $redisHost     = $this->getContainer()->getParameter('resque.resque.redis.host');
+        $redisPort     = $this->getContainer()->getParameter('resque.resque.redis.port');
+        $redisDatabase = $this->getContainer()->getParameter('resque.resque.redis.database');
 
         if ($redisHost != null && $redisPort != null) {
             $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;

@@ -91,7 +91,7 @@ class DefaultController extends Controller
      */
     protected function getResque()
     {
-        return $this->get('bcc_resque.resque');
+        return $this->get('resque');
     }
 
     /**

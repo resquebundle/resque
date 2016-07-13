@@ -4,23 +4,23 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="BCCResqueBundle_homepage" path="/">
-        <default key="_controller">BCCResqueBundle:Default:index</default>
+    <route id="ResqueBundle_homepage" path="/">
+        <default key="_controller">ResqueBundle:Default:index</default>
     </route>
 
-    <route id="BCCResqueBundle_queue_show" path="/queue/{queue}">
-        <default key="_controller">BCCResqueBundle:Default:showQueue</default>
+    <route id="ResqueBundle_queue_show" path="/queue/{queue}">
+        <default key="_controller">ResqueBundle:Default:showQueue</default>
     </route>
 
-    <route id="BCCResqueBundle_failed_list" path="/failed/list">
-        <default key="_controller">BCCResqueBundle:Default:listFailed</default>
+    <route id="ResqueBundle_failed_list" path="/failed/list">
+        <default key="_controller">ResqueBundle:Default:listFailed</default>
     </route>
 
-    <route id="BCCResqueBundle_scheduled_list" path="/scheduled/list">
-        <default key="_controller">BCCResqueBundle:Default:listScheduled</default>
+    <route id="ResqueBundle_scheduled_list" path="/scheduled/list">
+        <default key="_controller">ResqueBundle:Default:listScheduled</default>
     </route>
 
-    <route id="BCCResqueBundle_scheduled_timestamp" path="/scheduled/{timestamp}">
-        <default key="_controller">BCCResqueBundle:Default:showTimestamp</default>
+    <route id="ResqueBundle_scheduled_timestamp" path="/scheduled/{timestamp}">
+        <default key="_controller">ResqueBundle:Default:showTimestamp</default>
     </route>
 </routes>

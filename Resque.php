@@ -261,11 +261,11 @@ class Resque
 
         if (isset($this->jobRetryStrategy[$class])) {
             if (count($this->jobRetryStrategy[$class])) {
-                $job->args['bcc_resque.retry_strategy'] = $this->jobRetryStrategy[$class];
+                $job->args['resque.retry_strategy'] = $this->jobRetryStrategy[$class];
             }
-            $job->args['bcc_resque.retry_strategy'] = $this->jobRetryStrategy[$class];
+            $job->args['resque.retry_strategy'] = $this->jobRetryStrategy[$class];
         } elseif (count($this->globalRetryStrategy)) {
-            $job->args['bcc_resque.retry_strategy'] = $this->globalRetryStrategy;
+            $job->args['resque.retry_strategy'] = $this->globalRetryStrategy;
         }
     }
 }

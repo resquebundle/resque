@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('bcc_resque');
+        $rootNode = $treeBuilder->root('resque');
 
         $rootNode
             ->addDefaultsIfNotSet()

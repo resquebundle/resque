@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class BCCResqueExtension extends Extension
+class ResqueExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -25,30 +25,30 @@ class BCCResqueExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        $container->setParameter('bcc_resque.resque.vendor_dir', $config['vendor_dir']);
-        $container->setParameter('bcc_resque.resque.class', $config['class']);
-        $container->setParameter('bcc_resque.resque.redis.host', $config['redis']['host']);
-        $container->setParameter('bcc_resque.resque.redis.port', $config['redis']['port']);
-        $container->setParameter('bcc_resque.resque.redis.database', $config['redis']['database']);
+        $container->setParameter('resque.resque.vendor_dir', $config['vendor_dir']);
+        $container->setParameter('resque.resque.class', $config['class']);
+        $container->setParameter('resque.resque.redis.host', $config['redis']['host']);
+        $container->setParameter('resque.resque.redis.port', $config['redis']['port']);
+        $container->setParameter('resque.resque.redis.database', $config['redis']['database']);
 
         if (!empty($config['prefix'])) {
-            $container->setParameter('bcc_resque.prefix', $config['prefix']);
-            $container->getDefinition('bcc_resque.resque')->addMethodCall('setPrefix', array($config['prefix']));
+            $container->setParameter('resque.prefix', $config['prefix']);
+            $container->getDefinition('resque.resque')->addMethodCall('setPrefix', array($config['prefix']));
         }
 
         if (!empty($config['worker']['root_dir'])) {
-            $container->setParameter('bcc_resque.worker.root_dir', $config['worker']['root_dir']);
+            $container->setParameter('resque.worker.root_dir', $config['worker']['root_dir']);
         }
 
         if (!empty($config['auto_retry'])) {
             if (isset($config['auto_retry'][0])) {
-                $container->getDefinition('bcc_resque.resque')->addMethodCall('setGlobalRetryStrategy', array($config['auto_retry'][0]));
+                $container->getDefinition('resque.resque')->addMethodCall('setGlobalRetryStrategy', array($config['auto_retry'][0]));
             } else {
                 if (isset($config['auto_retry']['default'])) {
-                    $container->getDefinition('bcc_resque.resque')->addMethodCall('setGlobalRetryStrategy', array($config['auto_retry']['default']));
+                    $container->getDefinition('resque.resque')->addMethodCall('setGlobalRetryStrategy', array($config['auto_retry']['default']));
                     unset($config['auto_retry']['default']);
                 }
-                $container->getDefinition('bcc_resque.resque')->addMethodCall('setJobRetryStrategy', array($config['auto_retry']));
+                $container->getDefinition('resque.resque')->addMethodCall('setJobRetryStrategy', array($config['auto_retry']));
             }
         }
     }

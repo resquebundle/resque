@@ -13,8 +13,8 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('bcc:resque:scheduledworker-start')
-            ->setDescription('Start a bcc scheduled resque worker')
+            ->setName('resque:scheduledworker-start')
+            ->setDescription('Start a scheduled resque worker')
             ->addOption('foreground', 'f', InputOption::VALUE_NONE, 'Should the worker run in foreground')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force creation of a new worker if the PID file exists')
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'How often to check for new jobs across the queues', 5)
@@ -23,7 +23,7 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pidFile=$this->getContainer()->get('kernel')->getCacheDir().'/bcc_resque_scheduledworker.pid';
+        $pidFile=$this->getContainer()->get('kernel')->getCacheDir().'/resque_scheduledworker.pid';
         if (file_exists($pidFile) && !$input->getOption('force')) {
             throw new \Exception('PID file exists - use --force to override');
         }
@@ -35,18 +35,18 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
         $env = array(
             'APP_INCLUDE' => $this->getContainer()->getParameter('kernel.root_dir').'/bootstrap.php.cache',
             'VVERBOSE'    => 1,
-            'RESQUE_PHP'  => $this->getContainer()->getParameter('bcc_resque.resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
+            'RESQUE_PHP'  => $this->getContainer()->getParameter('resque.resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
             'INTERVAL'    => $input->getOption('interval'),
         );
 
-        $prefix = $this->getContainer()->getParameter('bcc_resque.prefix');
+        $prefix = $this->getContainer()->getParameter('resque.prefix');
         if (!empty($prefix)) {
-            $env['PREFIX'] = $this->getContainer()->getParameter('bcc_resque.prefix');
+            $env['PREFIX'] = $this->getContainer()->getParameter('resque.prefix');
         }
 
-        $redisHost = $this->getContainer()->getParameter('bcc_resque.resque.redis.host');
-        $redisPort = $this->getContainer()->getParameter('bcc_resque.resque.redis.port');
-        $redisDatabase = $this->getContainer()->getParameter('bcc_resque.resque.redis.database');
+        $redisHost = $this->getContainer()->getParameter('resque.resque.redis.host');
+        $redisPort = $this->getContainer()->getParameter('resque.resque.redis.port');
+        $redisDatabase = $this->getContainer()->getParameter('resque.resque.redis.database');
         if ($redisHost != null && $redisPort != null) {
             $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
         }
