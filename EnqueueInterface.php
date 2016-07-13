@@ -15,7 +15,6 @@ namespace Mpclarkson\ResqueBundle;
  */
 interface EnqueueInterface
 {
-
     public function enqueue(Job $job, $trackStatus = false);
     public function enqueueOnce(Job $job, $trackStatus = false);
     public function enqueueAt($at, Job $job);

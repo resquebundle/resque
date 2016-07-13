@@ -1,6 +1,6 @@
 <?php
 
-namespace ResqueBundle\Controller;
+namespace Mpclarkson\ResqueBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
