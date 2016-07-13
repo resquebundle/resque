@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-if (!defined('SIGTERM')) define('SIGTERM', 15);
+if (!defined('SIGTERM')) {
+    define('SIGTERM', 15);
+}
 
 class StopScheduledWorkerCommand extends ContainerAwareCommand
 {
@@ -20,18 +22,18 @@ class StopScheduledWorkerCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pidFile=$this->getContainer()->get('kernel')->getCacheDir().'/resque_scheduledworker.pid';
+        $pidFile = $this->getContainer()->get('kernel')->getCacheDir().'/resque_scheduledworker.pid';
         if (!file_exists($pidFile)) {
             $output->writeln('No PID file found');
 
             return -1;
         }
 
-        $pid=file_get_contents($pidFile);
+        $pid = file_get_contents($pidFile);
 
         $output->writeln('Killing process '.$pid);
 
-        \posix_kill($pid,SIGTERM);
+        \posix_kill($pid, SIGTERM);
 
         unlink($pidFile);
 
