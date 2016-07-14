@@ -43,9 +43,10 @@ ORIGINAL TODOs:
 Here are some notes to make it easier to migrate from the BCCResqueBundle:
 
 - Find and replace all instances of `BCC\ResqueBundle` with `Mpclarkson\ResqueBundle` throughout your app (e.g. use statements)
-- Update your `routing.yml` - replace `@BCCResque` with `@ResqueBundle`
+- Update your `routing.yml` by replacing `@BCCResque` with `@ResqueBundle`
 - The `bcc:` prefix for all commands has been dropped
-- The container service definition`bcc_resque.resque` has been replaced with simply `resque`. You can either search and replace this or create an alias as follows:
+- Stop and restart all workers
+- The container service definition`bcc_resque.resque` has been replaced with `resque`. You can either search and replace this or create an alias as follows:
 ```yaml
  bcc_resque.resque:
       alias: resque
