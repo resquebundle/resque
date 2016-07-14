@@ -66,4 +66,9 @@ class Worker
 
         return $job->getInstance();
     }
+
+    public function getWorker()
+    {
+        return $this->worker;
+    }
 }
