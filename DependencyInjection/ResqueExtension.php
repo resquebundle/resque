@@ -26,6 +26,7 @@ class ResqueExtension extends Extension
         $loader->load('services.xml');
 
         $container->setParameter('resque.vendor_dir', $config['vendor_dir']);
+        $container->setParameter('resque.app_include', $config['app_include']);
         $container->setParameter('resque.class', $config['class']);
         $container->setParameter('resque.redis.host', $config['redis']['host']);
         $container->setParameter('resque.redis.port', $config['redis']['port']);

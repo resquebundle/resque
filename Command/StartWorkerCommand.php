@@ -41,11 +41,15 @@ class StartWorkerCommand extends ContainerAwareCommand
             );
         }
 
-        $env['APP_INCLUDE'] = $this->getContainer()->getParameter('kernel.root_dir').'/../var/bootstrap.php.cache';
+        $env['APP_INCLUDE'] = $this->getContainer()->getParameter('resque.app_include');
         $env['COUNT']       = $input->getOption('count');
         $env['INTERVAL']    = $input->getOption('interval');
         $env['QUEUE']       = $input->getArgument('queues');
         $env['VERBOSE']     = 1;
+
+        if (false !== getenv('APP_INCLUDE')) {
+            $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
+        }
 
         $prefix = $this->getContainer()->getParameter('resque.prefix');
         if (!empty($prefix)) {
