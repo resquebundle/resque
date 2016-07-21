@@ -3,6 +3,7 @@
 namespace Mpclarkson\ResqueBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -18,9 +19,9 @@ class DefaultController extends Controller
         );
     }
 
-    public function showQueueAction($queue)
+    public function showQueueAction($queue, Request $request)
     {
-        list($start, $count, $showingAll) = $this->getShowParameters();
+        list($start, $count, $showingAll) = $this->getShowParameters($request);
 
         $queue = $this->getResque()->getQueue($queue);
         $jobs = $queue->getJobs($start, $count);
@@ -39,9 +40,9 @@ class DefaultController extends Controller
         );
     }
 
-    public function listFailedAction()
+    public function listFailedAction(Request $request)
     {
-        list($start, $count, $showingAll) = $this->getShowParameters();
+        list($start, $count, $showingAll) = $this->getShowParameters($request);
 
         $jobs = $this->getResque()->getFailedJobs($start, $count);
 
@@ -97,15 +98,17 @@ class DefaultController extends Controller
     /**
      * decide which parts of a job queue to show
      *
+     * @param Request $request
+     *
      * @return array
      */
-    private function getShowParameters()
+    private function getShowParameters(Request $request)
     {
         $showingAll = false;
         $start = -100;
         $count = -1;
 
-        if ($this->getRequest()->query->has('all')) {
+        if ($request->query->has('all')) {
             $start = 0;
             $count = -1;
             $showingAll = true;

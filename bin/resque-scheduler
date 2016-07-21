@@ -2,7 +2,16 @@
 <?php
 
 require __DIR__ . '/../../../../app/autoload.php';
-require __DIR__ . '/../../../../var/bootstrap.php.cache';
+
+// Load the user's application if one exists
+$APP_INCLUDE = getenv('APP_INCLUDE');
+if ($APP_INCLUDE) {
+    if (!file_exists($APP_INCLUDE)) {
+        die('APP_INCLUDE ('.$APP_INCLUDE.") does not exist.\n");
+    }
+
+    require_once $APP_INCLUDE;
+}
 
 // Look for an environment variable with
 $RESQUE_PHP = getenv('RESQUE_PHP');
@@ -36,16 +45,6 @@ $interval = 5;
 $INTERVAL = getenv('INTERVAL');
 if (!empty($INTERVAL)) {
   $interval = $INTERVAL;
-}
-
-// Load the user's application if one exists
-$APP_INCLUDE = getenv('APP_INCLUDE');
-if ($APP_INCLUDE) {
-  if (!file_exists($APP_INCLUDE)) {
-    die('APP_INCLUDE ('.$APP_INCLUDE.") does not exist.\n");
-  }
-
-  require_once $APP_INCLUDE;
 }
 
 $PREFIX = getenv('PREFIX');
