@@ -19,6 +19,8 @@
     ],
     "require": {
         "symfony/framework-bundle": ">=2.8,<4.0",
+        "symfony/console": ">=2.8,<4.0",
+        "symfony/process": ">=2.8,<4.0",
         "chrisboulton/php-resque": "dev-master#df69e8980cc21652f10cd775cb6a0e8c572ffd2d",
         "chrisboulton/php-resque-scheduler": "dev-master#ab8bd52949cac1f815bbb97aa39f51c7b5766a86"
     },
