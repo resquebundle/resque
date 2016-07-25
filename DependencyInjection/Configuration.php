@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Set the vendor dir')
                 ->end()
                 ->scalarNode('app_include')
-                    ->defaultValue('%kernel.root_dir%/bootstrap.php.cache')
+                    ->defaultValue('%kernel.root_dir%/../var/bootstrap.php.cache')
                     ->cannotBeEmpty()
                     ->info('Set the APP_INCLUDE for php-resque')
                 ->end()
