@@ -123,7 +123,7 @@ You may want to add some configuration to your `config.yml`
 # app/config/config.yml
 resque:
     class: Mpclarkson\ResqueBundle\Resque    # the resque class if different from default
-    vendor_dir: %kernel.root_dir%/../vendor  # the vendor dir if different from default
+    vendor_dir: "%kernel.root_dir%/../vendor"  # the vendor dir if different from default
     app_include: /pathto/bootstrap.php.cache # app include file if different from default
     prefix: my-resque-prefix                 # optional prefix to separate Resque data per site/app
     redis:
