@@ -22,7 +22,7 @@ class StopWorkerCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $resque = $this->getContainer()->get('resque.resque');
+        $resque = $this->getContainer()->get('resque');
 
         if ($input->getOption('all')) {
             $workers = $resque->getWorkers();
