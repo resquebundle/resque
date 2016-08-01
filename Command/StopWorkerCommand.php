@@ -38,7 +38,7 @@ class StopWorkerCommand extends ContainerAwareCommand
                         $output->writeln($worker->getId());
                     }
                 } else {
-                    $output->writeln('<error>There is no running worker.</error>');
+                    $output->writeln('<error>There are no running workers to stop.</error>');
                 }
 
                 return 1;
@@ -47,6 +47,12 @@ class StopWorkerCommand extends ContainerAwareCommand
             $workers = array($worker);
         }
 
+        if (!count($workers)) {
+            $output->writeln('<error>There are no running workers to stop.</error>');
+
+            return 0;
+        }
+        
         foreach ($workers as $worker) {
             $output->writeln(\sprintf('Stopping %s...', $worker->getId()));
             $worker->stop();
