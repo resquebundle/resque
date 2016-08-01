@@ -23,7 +23,7 @@ class Worker
     {
         $parts = \explode(':', $this->getId());
 
-        \posix_kill($parts[1], 3);
+        \posix_kill($parts[1], SIGKILL);
     }
 
     public function getQueues()
