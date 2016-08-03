@@ -124,7 +124,7 @@ class Resque implements EnqueueInterface
 
         $result = \Resque::enqueue($job->queue, \get_class($job), $job->args, $trackStatus);
 
-        if ($trackStatus) {
+        if ($trackStatus && $result) {
             return new \Resque_Job_Status($result);
         }
 
