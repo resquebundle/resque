@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/resquebundle/resque.svg?branch=master)](https://travis-ci.org/resquebundle/resque)
+
 # ResqueBundle
 
 This is a fork of the BCCResqueBundle, as it is no longer being maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed.
