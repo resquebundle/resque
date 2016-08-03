@@ -1,10 +1,9 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle;
+namespace ResqueBundle\Resque;
 
 /**
  * Interface EnqueueInterface
- * @package Mpclarkson\ResqueBundle
  */
 interface EnqueueInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\DependencyInjection;
+namespace ResqueBundle\Resque\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultNull()
                     ->end()
                 ->scalarNode('class')
-                    ->defaultValue('Mpclarkson\ResqueBundle\Resque')
+                    ->defaultValue('ResqueBundle\Resque\Resque')
                     ->cannotBeEmpty()
                     ->info('Set the resque class dir')
                 ->end()

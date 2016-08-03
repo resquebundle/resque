@@ -1,6 +1,6 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\Command;
+namespace ResqueBundle\Resque\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * Class StartWorkerCommand
- * @package Mpclarkson\ResqueBundle\Command
+ * @package ResqueBundle\Resque\Command
  */
 class StartWorkerCommand extends ContainerAwareCommand
 {

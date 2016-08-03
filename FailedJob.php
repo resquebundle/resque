@@ -1,10 +1,10 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle;
+namespace ResqueBundle\Resque;
 
 /**
  * Class FailedJob
- * @package Mpclarkson\ResqueBundle
+ * @package ResqueBundle\Resque
  */
 class FailedJob
 {

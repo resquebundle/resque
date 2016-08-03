@@ -1,13 +1,13 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\Tests\DependencyInjection;
+namespace ResqueBundle\Resque\Tests\DependencyInjection;
 
-use Mpclarkson\ResqueBundle\DependencyInjection\Configuration;
+use ResqueBundle\Resque\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class ConfigurationTest
- * @package Mpclarkson\ResqueBundle\Tests\DependencyInjection
+ * @package ResqueBundle\Resque\Tests\DependencyInjection
  */
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {

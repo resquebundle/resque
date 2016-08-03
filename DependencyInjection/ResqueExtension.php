@@ -1,6 +1,6 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\DependencyInjection;
+namespace ResqueBundle\Resque\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

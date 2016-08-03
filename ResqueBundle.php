@@ -1,12 +1,12 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle;
+namespace ResqueBundle\Resque;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Class ResqueBundle
- * @package Mpclarkson\ResqueBundle
+ * @package ResqueBundle\Resque
  */
 class ResqueBundle extends Bundle
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\Command;
+namespace ResqueBundle\Resque\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * Class StartScheduledWorkerCommand
- * @package Mpclarkson\ResqueBundle\Command
+ * @package ResqueBundle\Resque\Command
  */
 class StartScheduledWorkerCommand extends ContainerAwareCommand
 {

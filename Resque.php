@@ -1,12 +1,12 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle;
+namespace ResqueBundle\Resque;
 
 use Psr\Log\NullLogger;
 
 /**
  * Class Resque
- * @package Mpclarkson\ResqueBundle
+ * @package ResqueBundle\Resque
  */
 class Resque implements EnqueueInterface
 {

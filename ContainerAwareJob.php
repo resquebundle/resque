@@ -1,6 +1,6 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle;
+namespace ResqueBundle\Resque;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class ContainerAwareJob
- * @package Mpclarkson\ResqueBundle
+ * @package ResqueBundle\Resque
  */
 abstract class ContainerAwareJob extends Job
 {

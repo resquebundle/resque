@@ -1,14 +1,14 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\Tests\DependencyInjection;
+namespace ResqueBundle\Resque\Tests\DependencyInjection;
 
 
-use Mpclarkson\ResqueBundle\DependencyInjection\ResqueExtension;
+use ResqueBundle\Resque\DependencyInjection\ResqueExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Class ResqueExtensionTest
- * @package Mpclarkson\ResqueBundle\Tests\DependencyInjection
+ * @package ResqueBundle\Resque\Tests\DependencyInjection
  */
 class ResqueExtensionTest extends \PHPUnit_Framework_TestCase
 {

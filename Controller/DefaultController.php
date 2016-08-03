@@ -1,15 +1,15 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\Controller;
+namespace ResqueBundle\Resque\Controller;
 
-use Mpclarkson\ResqueBundle\Resque;
+use ResqueBundle\Resque\Resque;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DefaultController
- * @package Mpclarkson\ResqueBundle\Controller
+ * @package ResqueBundle\Resque\Controller
  */
 class DefaultController extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\Command;
+namespace ResqueBundle\Resque\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class StopWorkerCommand
- * @package Mpclarkson\ResqueBundle\Command
+ * @package ResqueBundle\Resque\Command
  */
 class StopWorkerCommand extends ContainerAwareCommand
 {

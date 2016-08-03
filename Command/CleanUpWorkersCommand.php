@@ -1,15 +1,15 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle\Command;
+namespace ResqueBundle\Resque\Command;
 
-use Mpclarkson\ResqueBundle\Resque;
+use ResqueBundle\Resque\Resque;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class CleanUpWorkersCommand
- * @package Mpclarkson\ResqueBundle\Command
+ * @package ResqueBundle\Resque\Command
  */
 class CleanUpWorkersCommand extends ContainerAwareCommand
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Mpclarkson\ResqueBundle;
+namespace ResqueBundle\Resque;
 
 /**
  * Class Job
- * @package Mpclarkson\ResqueBundle
+ * @package ResqueBundle\Resque
  */
 abstract class Job
 {

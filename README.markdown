@@ -1,10 +1,11 @@
 # ResqueBundle
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mpclarkson/resque-bundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mpclarkson/resque-bundle/?branch=master)
-[![Build Status](https://travis-ci.org/mpclarkson/resque-bundle.svg?branch=master)](https://travis-ci.org/mpclarkson/resque-bundle)
+This is a fork of the BCCResqueBundle, as it is no longer being maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed.
+This is also a rebrand of Mpclarkson\ResqueBundle to place under a GitHub Organisation for future proof distributed development
 
-This is a fork of the BCCResqueBundle, as it is no longer being maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed. 
-**Contributions are welcome - I don't have the bandwidth to maintain this alone.**
+**This project is under ACTIVE development (July 2016)**
+
+**Contributions are welcome**
 
 The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony2-3. 
 It is inspired from resque, a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later.
@@ -26,24 +27,21 @@ It is inspired from resque, a Redis-backed Ruby library for creating background 
 - [x] Travis CI
 - [x] Symfony 3 compatibility
 - [ ] Implement Full Unit Tests
-- [ ] Make decision to support PHP 7+ ;-)
+- [ ] Make decision to support PHP 7+ ONLY ;-)
 - [ ] Code quality - Scrutinizer 9.5+
 - [ ] Replicate functionality of the resque-web ruby lib (i.e .retry and delete failed jobs etc)
 - [ ] Community contributions / Ignored PRs
 - [ ] Fix bugs
-
-ORIGINAL TODOs:
 - [ ] Log management
 - [ ] Job status tracking
 - [ ] Redis configuration
 - [ ] Localisation
-- [ ] Tests
 
 ## Migrating from BCCResqueBundle:
 
 Here are some notes to make it easier to migrate from the BCCResqueBundle:
 
-- Find and replace all instances of `BCC\ResqueBundle` with `Mpclarkson\ResqueBundle` throughout your app (e.g. use statements)
+- Find and replace all instances of `BCC\ResqueBundle` with `ResqueBundle\Resque` throughout your app (e.g. use statements)
 - Update your `routing.yml` by replacing `@BCCResque` with `@ResqueBundle`
 - The `bcc:` prefix for all commands has been dropped
 - Stop and restart all workers
@@ -53,6 +51,12 @@ Here are some notes to make it easier to migrate from the BCCResqueBundle:
       alias: resque
       lazy: true
 ```
+
+## Migrating from Mpclarkson\ResqueBundle:
+
+- replace all `Mpclarkson\ResqueBundle` with `ResqueBundle\Resque`
+- Ensure AppKernel.php loads `new ResqueBundle\Resque\ResqueBundle(),`
+
 
 ## Installation and configuration:
 
@@ -68,7 +72,7 @@ Add `mpclarkson/resque-bundle` to your dependencies:
 {
     "require": {
         ...
-        "mpclarkson/resque-bundle": "dev-master"
+        "resquebundle/resque": "dev-master"
     }
     ...
 }
@@ -86,7 +90,7 @@ To install, run `php composer.phar [update|install]`.
     {
         return array(
             // ...
-            new Mpclarkson\ResqueBundle\ResqueBundle(),
+            new ResqueBundle\Resque\ResqueBundle(),
             // ...
         );
     }
@@ -123,7 +127,7 @@ You may want to add some configuration to your `config.yml`
 ``` yml
 # app/config/config.yml
 resque:
-    class: Mpclarkson\ResqueBundle\Resque    # the resque class if different from default
+    class: ResqueBundle\Resque\Resque    # the resque class if different from default
     vendor_dir: "%kernel.root_dir%/../vendor"  # the vendor dir if different from default
     app_include: /pathto/bootstrap.php.cache # app include file if different from default (i.e. /var/bootstrap.php.cache)
     prefix: my-resque-prefix                 # optional prefix to separate Resque data per site/app
@@ -147,7 +151,7 @@ This bundle is prepared for lazy loading in order to make a connection to redis 
 
 ## Creating a Job
 
-A job is a subclass of the `Mpclarkson\ResqueBundle\Job` class. You also can use the `Mpclarkson\Resque\ContainerAwareJob` if you need to leverage the container during job execution.
+A job is a subclass of the `ResqueBundle\Resque\Job` class. You also can use the `Mpclarkson\Resque\ContainerAwareJob` if you need to leverage the container during job execution.
 You will be forced to implement the run method that will contain your job logic:
 
 ``` php
@@ -155,7 +159,7 @@ You will be forced to implement the run method that will contain your job logic:
 
 namespace My;
 
-use Mpclarkson\ResqueBundle\Job;
+use ResqueBundle\Resque\Job;
 
 class MyJob extends Job
 {
@@ -289,7 +293,7 @@ From within the job:
 
 namespace My;
 
-use Mpclarkson\ResqueBundle\Job;
+use ResqueBundle\Resque\Job;
 
 class MyJob extends Job
 {
@@ -324,7 +328,7 @@ Just extend the `ContainerAwareJob`:
 
 namespace My;
 
-use Mpclarkson\ResqueBundle\ContainerAwareJob;
+use ResqueBundle\Resque\ContainerAwareJob;
 
 class MyJob extends ContainerAwareJob
 {
