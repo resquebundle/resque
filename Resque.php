@@ -222,7 +222,7 @@ class Resque implements EnqueueInterface
      */
     public function getQueues()
     {
-        return \array_map(function ($queue) {
+        return \array_map(function($queue) {
             return new Queue($queue);
         }, \Resque::queues());
     }
@@ -241,7 +241,7 @@ class Resque implements EnqueueInterface
      */
     public function getWorkers()
     {
-        return \array_map(function ($worker) {
+        return \array_map(function($worker) {
             return new Worker($worker);
         }, \Resque_Worker::all());
     }
