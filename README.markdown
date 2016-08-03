@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/resquebundle/resque.svg?branch=master)](https://travis-ci.org/resquebundle/resque)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/resquebundle/resque/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/resquebundle/resque/?branch=master)
+
 
 # ResqueBundle
 
