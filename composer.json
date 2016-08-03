@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "A Symfony 2-3 bundle to manage Resque job queues",
     "keywords": ["resque", "job queue", "queue", "symfony", "symfony2", "symfony3"],
-    "homepage": "http://github.com/mpclarkson/resque-bundle",
+    "homepage": "https://github.com/resquebundle/resque/",
     "license": "MIT",
     "authors": [
         {
