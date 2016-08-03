@@ -15,6 +15,11 @@
             "name": "Michel Salib",
             "email": "michelsalib@hotmail.com",
             "homepage": "http://michelsalib.com"
+        },
+        {
+            "name": "Phil E Taylor",
+            "email": "phil@phil-taylor.com",
+            "homepage": "https://www.phil-taylor.com/"
         }
     ],
     "require": {

@@ -1,0 +1,5 @@
+# see: https://scrutinizer-ci.com/docs/code_rating_system
+checks:
+    php:
+        code_rating: true
+        duplication: true
