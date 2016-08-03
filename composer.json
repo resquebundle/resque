@@ -1,5 +1,5 @@
 {
-    "name": "mpclarkson/resque-bundle",
+    "name": "ResqueBundle/resque",
     "type": "symfony-bundle",
     "description": "A Symfony 2-3 bundle to manage Resque job queues",
     "keywords": ["resque", "job queue", "queue", "symfony", "symfony2", "symfony3"],
@@ -29,7 +29,7 @@
     },
     "autoload" : {
         "psr-4": {
-            "Mpclarkson\\ResqueBundle\\": ""
+            "ResqueBundle\\Resque\\": ""
         }
     },
     "extra" : {
