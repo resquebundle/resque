@@ -24,6 +24,15 @@ abstract class Job
     public $args = [];
 
     /**
+     * Job constructor.
+     * @param array $args The Job Arguments
+     */
+    public function __construct($args = [])
+    {
+        $this->args = $args;
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -32,7 +41,8 @@ abstract class Job
     }
 
     /**
-     *
+     * Default function used to set up, can be overloaded by individual Jobs
+     * @todo test - I dont think this method is actually used?
      */
     public function setUp()
     {
@@ -40,7 +50,7 @@ abstract class Job
     }
 
     /**
-     *
+     * @todo test - I dont think this method is actually used?
      */
     public function perform()
     {
@@ -48,13 +58,16 @@ abstract class Job
     }
 
     /**
+     * This is the method that is called when the job is run
+     *
      * @param $args
      * @return mixed
      */
     abstract public function run($args);
 
     /**
-     *
+     * Default function used to tear down, can be overloaded by individual Jobs
+     * @todo test - I dont think this method is actually used?
      */
     public function tearDown()
     {
