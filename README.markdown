@@ -4,10 +4,11 @@
 
 # ResqueBundle
 
-This is a fork of the BCCResqueBundle, as it is no longer being maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed.
-This is also a rebrand of Mpclarkson\ResqueBundle to place under a GitHub Organisation for future proof distributed development
+This is a fork of the BCCResqueBundle as that bundle is no longer being activly maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed in that project, with no activity, so we forked it, and will activly support and develop the code further in this repo. 
 
-**This project is under ACTIVE development (July 2016)**
+This is also a rebrand of Mpclarkson\ResqueBundle to place the code under a GitHub Organisation for future proof distributed development
+
+**This project IS under ACTIVE development (July 2016)**
 
 **Contributions are welcome**
 
