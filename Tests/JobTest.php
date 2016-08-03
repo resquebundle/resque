@@ -16,6 +16,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         // test init correctly
         $this->assertContains('Job', $stub->getName());
+        $this->assertInstanceOf('PHPUnit_Framework_MockObject_MockObject', $stub);
         $this->assertEquals('default', $stub->queue);
         $this->assertEquals([1, 2, 3], $stub->args);
 
