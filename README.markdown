@@ -58,6 +58,11 @@ Here are some notes to make it easier to migrate from the BCCResqueBundle:
 
 ## Migrating from Mpclarkson\ResqueBundle:
 
+- Replace in composer with 
+```
+composer remove mpclarkson/resque-bundle
+composer require resquebundle/resque
+```
 - replace all `Mpclarkson\ResqueBundle` with `ResqueBundle\Resque`
 - Ensure AppKernel.php loads `new ResqueBundle\Resque\ResqueBundle(),`
 
