@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matthew
- * Date: 25/06/2014
- * Time: 9:30 AM
- */
 
 namespace Mpclarkson\ResqueBundle\Command;
 
@@ -13,8 +7,15 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class CleanUpWorkersCommand
+ * @package Mpclarkson\ResqueBundle\Command
+ */
 class CleanUpWorkersCommand extends ContainerAwareCommand
 {
+    /**
+     *
+     */
     protected function configure()
     {
         $this
@@ -22,6 +23,11 @@ class CleanUpWorkersCommand extends ContainerAwareCommand
             ->setDescription('Unregisters all workers in Redis. Workers may need to be restarted.');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $resque = $this->getContainer()->get('resque');
@@ -34,7 +40,5 @@ class CleanUpWorkersCommand extends ContainerAwareCommand
                 $worker->getWorker()->unregisterWorker();
             }
         }
-
-        $output->writeln('*** Finished ***');
     }
 }

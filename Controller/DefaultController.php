@@ -2,23 +2,45 @@
 
 namespace Mpclarkson\ResqueBundle\Controller;
 
+use Mpclarkson\ResqueBundle\Resque;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class DefaultController
+ * @package Mpclarkson\ResqueBundle\Controller
+ */
 class DefaultController extends Controller
 {
+    /**
+     * @return Response
+     */
     public function indexAction()
     {
         $this->getResque()->pruneDeadWorkers();
-        
+
         return $this->render(
             'ResqueBundle:Default:index.html.twig',
-            array(
+            [
                 'resque' => $this->getResque(),
-            )
+            ]
         );
     }
 
+    /**
+     * @return Resque
+     */
+    protected function getResque()
+    {
+        return $this->get('resque');
+    }
+
+    /**
+     * @param $queue
+     * @param Request $request
+     * @return Response
+     */
     public function showQueueAction($queue, Request $request)
     {
         list($start, $count, $showingAll) = $this->getShowParameters($request);
@@ -32,14 +54,40 @@ class DefaultController extends Controller
 
         return $this->render(
             'ResqueBundle:Default:queue_show.html.twig',
-            array(
-                'queue' => $queue,
-                'jobs' => $jobs,
+            [
+                'queue'      => $queue,
+                'jobs'       => $jobs,
                 'showingAll' => $showingAll
-            )
+            ]
         );
     }
 
+    /**
+     * Decide which parts of a job queue to show
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getShowParameters(Request $request)
+    {
+        $showingAll = FALSE;
+        $start = -100;
+        $count = -1;
+
+        if ($request->query->has('all')) {
+            $start = 0;
+            $count = -1;
+            $showingAll = TRUE;
+        }
+
+        return [$start, $count, $showingAll];
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function listFailedAction(Request $request)
     {
         list($start, $count, $showingAll) = $this->getShowParameters($request);
@@ -52,68 +100,45 @@ class DefaultController extends Controller
 
         return $this->render(
             'ResqueBundle:Default:failed_list.html.twig',
-            array(
-                'jobs' => $jobs,
+            [
+                'jobs'       => $jobs,
                 'showingAll' => $showingAll,
-            )
+            ]
         );
     }
 
+    /**
+     * @return Response
+     */
     public function listScheduledAction()
     {
         return $this->render(
             'ResqueBundle:Default:scheduled_list.html.twig',
-            array(
+            [
                 'timestamps' => $this->getResque()->getDelayedJobTimestamps()
-            )
+            ]
         );
     }
 
+    /**
+     * @param $timestamp
+     * @return Response
+     */
     public function showTimestampAction($timestamp)
     {
-        $jobs = array();
+        $jobs = [];
 
         // we don't want to enable the twig debug extension for this...
         foreach ($this->getResque()->getJobsForTimestamp($timestamp) as $job) {
-            $jobs[] = print_r($job, true);
+            $jobs[] = print_r($job, TRUE);
         }
 
         return $this->render(
             'ResqueBundle:Default:scheduled_timestamp.html.twig',
-            array(
+            [
                 'timestamp' => $timestamp,
-                'jobs' => $jobs
-            )
+                'jobs'      => $jobs
+            ]
         );
-    }
-
-    /**
-     * @return \Mpclarkson\ResqueBundle\Resque
-     */
-    protected function getResque()
-    {
-        return $this->get('resque');
-    }
-
-    /**
-     * decide which parts of a job queue to show
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
-    private function getShowParameters(Request $request)
-    {
-        $showingAll = false;
-        $start = -100;
-        $count = -1;
-
-        if ($request->query->has('all')) {
-            $start = 0;
-            $count = -1;
-            $showingAll = true;
-        }
-
-        return array($start, $count, $showingAll);
     }
 }

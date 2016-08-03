@@ -2,10 +2,10 @@
 
 namespace Mpclarkson\ResqueBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -22,7 +22,7 @@ class ResqueExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
 
         $container->setParameter('resque.vendor_dir', $config['vendor_dir']);
@@ -34,7 +34,7 @@ class ResqueExtension extends Extension
 
         if (!empty($config['prefix'])) {
             $container->setParameter('resque.prefix', $config['prefix']);
-            $container->getDefinition('resque')->addMethodCall('setPrefix', array($config['prefix']));
+            $container->getDefinition('resque')->addMethodCall('setPrefix', [$config['prefix']]);
         }
 
         if (!empty($config['worker']['root_dir'])) {
@@ -43,13 +43,13 @@ class ResqueExtension extends Extension
 
         if (!empty($config['auto_retry'])) {
             if (isset($config['auto_retry'][0])) {
-                $container->getDefinition('resque')->addMethodCall('setGlobalRetryStrategy', array($config['auto_retry'][0]));
+                $container->getDefinition('resque')->addMethodCall('setGlobalRetryStrategy', [$config['auto_retry'][0]]);
             } else {
                 if (isset($config['auto_retry']['default'])) {
-                    $container->getDefinition('resque')->addMethodCall('setGlobalRetryStrategy', array($config['auto_retry']['default']));
+                    $container->getDefinition('resque')->addMethodCall('setGlobalRetryStrategy', [$config['auto_retry']['default']]);
                     unset($config['auto_retry']['default']);
                 }
-                $container->getDefinition('resque')->addMethodCall('setJobRetryStrategy', array($config['auto_retry']));
+                $container->getDefinition('resque')->addMethodCall('setJobRetryStrategy', [$config['auto_retry']]);
             }
         }
     }

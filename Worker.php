@@ -2,6 +2,10 @@
 
 namespace Mpclarkson\ResqueBundle;
 
+/**
+ * Class Worker
+ * @package Mpclarkson\ResqueBundle
+ */
 class Worker
 {
     /**
@@ -9,57 +13,82 @@ class Worker
      */
     protected $worker;
 
+    /**
+     * Worker constructor.
+     * @param \Resque_Worker $worker
+     */
     public function __construct(\Resque_Worker $worker)
     {
         $this->worker = $worker;
     }
 
-    public function getId()
-    {
-        return (string) $this->worker;
-    }
-
+    /**
+     * @return bool
+     */
     public function stop()
     {
         $parts = \explode(':', $this->getId());
 
-        \posix_kill($parts[1], SIGKILL);
+        return \posix_kill($parts[1], 3);
     }
 
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return (string)$this->worker;
+    }
+
+    /**
+     * @return array
+     */
     public function getQueues()
     {
-        return \array_map(function($queue) {
+        return \array_map(function ($queue) {
             return new Queue($queue);
         }, $this->worker->queues());
     }
 
+    /**
+     * @return integer
+     */
     public function getProcessedCount()
     {
         return $this->worker->getStat('processed');
     }
 
+    /**
+     * @return integer
+     */
     public function getFailedCount()
     {
         return $this->worker->getStat('failed');
     }
 
+    /**
+     * @return \DateTime|null
+     */
     public function getCurrentJobStart()
     {
         $job = $this->worker->job();
 
         if (!$job) {
-            return null;
+            return NULL;
         }
 
         return new \DateTime($job['run_at']);
     }
 
+    /**
+     * @return null
+     */
     public function getCurrentJob()
     {
         $job = $this->worker->job();
 
         if (!$job) {
-            return null;
+            return NULL;
         }
 
         $job = new \Resque_Job($job['queue'], $job['payload']);
@@ -67,6 +96,9 @@ class Worker
         return $job->getInstance();
     }
 
+    /**
+     * @return \Resque_Worker
+     */
     public function getWorker()
     {
         return $this->worker;

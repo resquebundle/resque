@@ -25,11 +25,12 @@ It is inspired from resque, a Redis-backed Ruby library for creating background 
 - [x] Migration from BCC notes
 - [x] Travis CI
 - [x] Symfony 3 compatibility
+- [ ] Implement Full Unit Tests
+- [ ] Make decision to support PHP 7+ ;-)
 - [ ] Code quality - Scrutinizer 9.5+
 - [ ] Replicate functionality of the resque-web ruby lib (i.e .retry and delete failed jobs etc)
 - [ ] Community contributions / Ignored PRs
 - [ ] Fix bugs
-- [ ] Tests
 
 ORIGINAL TODOs:
 - [ ] Log management

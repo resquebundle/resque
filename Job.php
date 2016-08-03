@@ -2,6 +2,10 @@
 
 namespace Mpclarkson\ResqueBundle;
 
+/**
+ * Class Job
+ * @package Mpclarkson\ResqueBundle
+ */
 abstract class Job
 {
     /**
@@ -17,25 +21,41 @@ abstract class Job
     /**
      * @var array The job args
      */
-    public $args = array();
+    public $args = [];
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return \get_class($this);
     }
 
+    /**
+     *
+     */
     public function setUp()
     {
 
     }
 
+    /**
+     *
+     */
     public function perform()
     {
         $this->run($this->args);
     }
 
+    /**
+     * @param $args
+     * @return mixed
+     */
     abstract public function run($args);
 
+    /**
+     *
+     */
     public function tearDown()
     {
 

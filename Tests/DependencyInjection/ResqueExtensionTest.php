@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matt
- * Date: 13/07/2016
- * Time: 3:39 PM
- */
 
 namespace Mpclarkson\ResqueBundle\Tests\DependencyInjection;
 
@@ -12,6 +6,10 @@ namespace Mpclarkson\ResqueBundle\Tests\DependencyInjection;
 use Mpclarkson\ResqueBundle\DependencyInjection\ResqueExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * Class ResqueExtensionTest
+ * @package Mpclarkson\ResqueBundle\Tests\DependencyInjection
+ */
 class ResqueExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -25,7 +23,7 @@ class ResqueExtensionTest extends \PHPUnit_Framework_TestCase
     public function testLoadExtensionThrowsExceptionIfNotConfigured()
     {
         $loader = new ResqueExtension();
-        $config = array('key' => 'foo');
-        $loader->load(array($config), new ContainerBuilder());
+        $config = ['key' => 'foo'];
+        $loader->load([$config], new ContainerBuilder());
     }
 }

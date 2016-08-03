@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matt
- * Date: 13/07/2016
- * Time: 2:39 PM
- */
 
 namespace Mpclarkson\ResqueBundle;
-
 
 /**
  * Interface EnqueueInterface
@@ -15,8 +8,31 @@ namespace Mpclarkson\ResqueBundle;
  */
 interface EnqueueInterface
 {
-    public function enqueue(Job $job, $trackStatus = false);
-    public function enqueueOnce(Job $job, $trackStatus = false);
+    /**
+     * @param Job $job
+     * @param bool $trackStatus
+     * @return mixed
+     */
+    public function enqueue(Job $job, $trackStatus = FALSE);
+
+    /**
+     * @param Job $job
+     * @param bool $trackStatus
+     * @return mixed
+     */
+    public function enqueueOnce(Job $job, $trackStatus = FALSE);
+
+    /**
+     * @param $at
+     * @param Job $job
+     * @return mixed
+     */
     public function enqueueAt($at, Job $job);
+
+    /**
+     * @param $in
+     * @param Job $job
+     * @return mixed
+     */
     public function enqueueIn($in, Job $job);
 }

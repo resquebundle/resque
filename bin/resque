@@ -11,13 +11,13 @@ require __DIR__ . '/../../../../app/autoload.php';
 $APP_INCLUDE = getenv('APP_INCLUDE');
 if ($APP_INCLUDE) {
     if (!file_exists($APP_INCLUDE)) {
-        die('APP_INCLUDE ('.$APP_INCLUDE.") does not exist.\n");
+        die('APP_INCLUDE (' . $APP_INCLUDE . ") does not exist.\n");
     }
 
     require_once $APP_INCLUDE;
 }
 
-$REDIS_BACKEND    = getenv('REDIS_BACKEND');
+$REDIS_BACKEND = getenv('REDIS_BACKEND');
 $REDIS_BACKEND_DB = getenv('REDIS_BACKEND_DB');
 if (!empty($REDIS_BACKEND)) {
     if (empty($REDIS_BACKEND_DB)) {
@@ -27,14 +27,14 @@ if (!empty($REDIS_BACKEND)) {
     }
 }
 
-$logLevel = false;
-$LOGGING  = getenv('LOGGING');
-$VERBOSE  = getenv('VERBOSE');
+$logLevel = FALSE;
+$LOGGING = getenv('LOGGING');
+$VERBOSE = getenv('VERBOSE');
 $VVERBOSE = getenv('VVERBOSE');
 if (!empty($LOGGING) || !empty($VERBOSE)) {
-    $logLevel = true;
+    $logLevel = TRUE;
 } else if (!empty($VVERBOSE)) {
-    $logLevel = true;
+    $logLevel = TRUE;
 }
 
 // See if the APP_INCLUDE containes a logger object,
@@ -59,12 +59,12 @@ if (!empty($COUNT) && $COUNT > 1) {
 
 $PREFIX = getenv('PREFIX');
 if (!empty($PREFIX)) {
-    $logger->log(Psr\Log\LogLevel::INFO, 'Prefix set to {prefix}', array('prefix' => $PREFIX));
+    $logger->log(Psr\Log\LogLevel::INFO, 'Prefix set to {prefix}', ['prefix' => $PREFIX]);
     Resque_Redis::prefix($PREFIX);
 }
 
 // If set, re-attach failed jobs based on retry_strategy
-Resque_Event::listen('onFailure', function(Exception $exception, Resque_Job $job) use ($logger) {
+Resque_Event::listen('onFailure', function (Exception $exception, Resque_Job $job) use ($logger) {
     $args = $job->getArguments();
 
     if (empty($args['resque.retry_strategy'])) {
@@ -85,16 +85,16 @@ Resque_Event::listen('onFailure', function(Exception $exception, Resque_Job $job
 
     if ($delay == 0) {
         Resque::enqueue($job->queue, $job->payload['class'], $args);
-        $logger->log(Psr\Log\LogLevel::ERROR, 'Job failed. Auto re-queued, attempt number: {attempt}', array(
-            'attempt' => $args['resque.retry_attempt'] - 1)
+        $logger->log(Psr\Log\LogLevel::ERROR, 'Job failed. Auto re-queued, attempt number: {attempt}', [
+                'attempt' => $args['resque.retry_attempt'] - 1]
         );
     } else {
         $at = time() + $delay;
         ResqueScheduler::enqueueAt($at, $job->queue, $job->payload['class'], $args);
-        $logger->log(Psr\Log\LogLevel::ERROR, 'Job failed. Auto re-queued. Scheduled for: {timestamp}, attempt number: {attempt}', array(
+        $logger->log(Psr\Log\LogLevel::ERROR, 'Job failed. Auto re-queued. Scheduled for: {timestamp}, attempt number: {attempt}', [
             'timestamp' => date('Y-m-d H:i:s', $at),
             'attempt'   => $args['resque.retry_attempt'] - 1,
-        ));
+        ]);
     }
 });
 
@@ -102,14 +102,14 @@ if ($count > 1) {
     for ($i = 0; $i < $count; ++$i) {
         $pid = Resque::fork();
         if ($pid == -1) {
-            $logger->log(Psr\Log\LogLevel::EMERGENCY, 'Could not fork worker {count}', array('count' => $i));
+            $logger->log(Psr\Log\LogLevel::EMERGENCY, 'Could not fork worker {count}', ['count' => $i]);
             die();
         } else if (!$pid) {
             // Child, start the worker
             $queues = explode(',', $QUEUE);
             $worker = new Resque_Worker($queues);
             $worker->setLogger($logger);
-            $logger->log(Psr\Log\LogLevel::NOTICE, 'Starting worker {worker}', array('worker' => $worker));
+            $logger->log(Psr\Log\LogLevel::NOTICE, 'Starting worker {worker}', ['worker' => $worker]);
             $worker->work($interval, $BLOCKING);
             break;
         }
@@ -123,9 +123,9 @@ if ($count > 1) {
     $PIDFILE = getenv('PIDFILE');
     if ($PIDFILE) {
         file_put_contents($PIDFILE, getmypid()) or
-            die('Could not write PID information to ' . $PIDFILE);
+        die('Could not write PID information to ' . $PIDFILE);
     }
 
-    $logger->log(Psr\Log\LogLevel::NOTICE, 'Starting worker {worker}', array('worker' => $worker));
+    $logger->log(Psr\Log\LogLevel::NOTICE, 'Starting worker {worker}', ['worker' => $worker]);
     $worker->work($interval, $BLOCKING);
 }

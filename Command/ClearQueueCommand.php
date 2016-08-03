@@ -7,17 +7,28 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class ClearQueueCommand
+ * @package Mpclarkson\ResqueBundle\Command
+ */
 class ClearQueueCommand extends ContainerAwareCommand
 {
+    /**
+     *
+     */
     protected function configure()
     {
         $this
             ->setName('resque:clear-queue')
             ->setDescription('Clear a resque queue')
-            ->addArgument('queue', InputArgument::REQUIRED, 'Queue name')
-        ;
+            ->addArgument('queue', InputArgument::REQUIRED, 'Queue name');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $resque = $this->getContainer()->get('resque');
@@ -25,7 +36,7 @@ class ClearQueueCommand extends ContainerAwareCommand
         $queue = $input->getArgument('queue');
         $count = $resque->clearQueue($queue);
 
-        $output->writeln('Cleared queue '.$queue.' - removed '.$count.' entries');
+        $output->writeln('Cleared queue ' . $queue . ' - removed ' . $count . ' entries');
 
         return 0;
     }

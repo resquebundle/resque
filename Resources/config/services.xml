@@ -6,12 +6,12 @@
 
     <parameters>
         <parameter key="resque.kernel.root_dir">%kernel.root_dir%</parameter>
-        <parameter key="resque.vendor_dir" />
+        <parameter key="resque.vendor_dir"/>
         <parameter key="resque.class"/>
-        <parameter key="resque.prefix" />
-        <parameter key="resque.redis.host" />
-        <parameter key="resque.redis.port" />
-        <parameter key="resque.redis.database" />
+        <parameter key="resque.prefix"/>
+        <parameter key="resque.redis.host"/>
+        <parameter key="resque.redis.port"/>
+        <parameter key="resque.redis.database"/>
     </parameters>
 
     <services>

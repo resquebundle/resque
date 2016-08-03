@@ -8,18 +8,29 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class StopWorkerCommand
+ * @package Mpclarkson\ResqueBundle\Command
+ */
 class StopWorkerCommand extends ContainerAwareCommand
 {
+    /**
+     *
+     */
     protected function configure()
     {
         $this
             ->setName('resque:worker-stop')
             ->setDescription('Stop a resque worker')
             ->addArgument('id', InputArgument::OPTIONAL, 'Worker id')
-            ->addOption('all', 'a', InputOption::VALUE_NONE, 'Should kill all workers')
-        ;
+            ->addOption('all', 'a', InputOption::VALUE_NONE, 'Should kill all workers');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $resque = $this->getContainer()->get('resque');
@@ -44,7 +55,7 @@ class StopWorkerCommand extends ContainerAwareCommand
                 return 1;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         }
 
         if (!count($workers)) {

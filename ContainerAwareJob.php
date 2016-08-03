@@ -2,33 +2,50 @@
 
 namespace Mpclarkson\ResqueBundle;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class ContainerAwareJob
+ * @package Mpclarkson\ResqueBundle
+ */
 abstract class ContainerAwareJob extends Job
 {
     /**
      * @var KernelInterface
      */
-    private $kernel = null;
+    private $kernel = NULL;
+
+    /**
+     * @param array $kernelOptions
+     */
+    public function setKernelOptions(array $kernelOptions)
+    {
+        $this->args = \array_merge($this->args, $kernelOptions);
+    }
+
+    /**
+     *
+     */
+    public function tearDown()
+    {
+        if ($this->kernel) {
+            $this->kernel->shutdown();
+        }
+    }
 
     /**
      * @return ContainerInterface
      */
     protected function getContainer()
     {
-        if ($this->kernel === null) {
+        if ($this->kernel === NULL) {
             $this->kernel = $this->createKernel();
             $this->kernel->boot();
         }
 
         return $this->kernel->getContainer();
-    }
-
-    public function setKernelOptions(array $kernelOptions)
-    {
-        $this->args = \array_merge($this->args, $kernelOptions);
     }
 
     /**
@@ -46,14 +63,7 @@ abstract class ContainerAwareJob extends Job
 
         return new $class(
             isset($this->args['kernel.environment']) ? $this->args['kernel.environment'] : 'dev',
-            isset($this->args['kernel.debug']) ? $this->args['kernel.debug'] : true
+            isset($this->args['kernel.debug']) ? $this->args['kernel.debug'] : TRUE
         );
-    }
-
-    public function tearDown()
-    {
-        if ($this->kernel) {
-            $this->kernel->shutdown();
-        }
     }
 }
