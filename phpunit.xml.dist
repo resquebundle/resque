@@ -10,7 +10,7 @@
 
     <testsuites>
         <testsuite name="ResqueBundle Test Suite">
-            <directory suffix="Test.php">./Tests/*</directory>
+            <directory suffix="Test.php">./Tests*</directory>
         </testsuite>
     </testsuites>
 
