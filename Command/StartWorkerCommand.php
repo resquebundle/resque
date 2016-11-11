@@ -107,7 +107,7 @@ class StartWorkerCommand extends ContainerAwareCommand
         $workerCommand = strtr('%php% %opt% %dir%/resque', [
             '%php%' => $phpExecutable,
             '%opt%' => $opt,
-            '%dir%' => $workdirectory ? $workdirectory . '/vendor/resquebundle/resque/bin' : __DIR__ . '/../bin',
+            '%dir%' => $workdirectory ? $workdirectory . '/../vendor/resquebundle/resque/bin' : __DIR__ . '/../bin',
         ]);
 
         if (!$input->getOption('foreground')) {
@@ -135,7 +135,7 @@ class StartWorkerCommand extends ContainerAwareCommand
 
         // if foreground, we redirect output
         if ($input->getOption('foreground')) {
-            $process->run(function($type, $buffer) use ($output) {
+            $process->run(function ($type, $buffer) use ($output) {
                 $output->write($buffer);
             });
         } // else we recompose and display the worker id
