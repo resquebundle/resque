@@ -65,6 +65,9 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
         $redisPort = $this->getContainer()->getParameter('resque.redis.port');
         $redisDatabase = $this->getContainer()->getParameter('resque.redis.database');
 
+        // Allow overriding of root_dir if deploying to a symlinked folder
+        $workdirectory = $this->getContainer()->getParameter('resque.worker.root_dir');
+
         if ($redisHost != NULL && $redisPort != NULL) {
             $env['REDIS_BACKEND'] = $redisHost . ':' . $redisPort;
         }
@@ -82,7 +85,8 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
             }
         }
 
-        $workerCommand = $phpExecutable . ' ' . __DIR__ . '/../bin/resque-scheduler';
+        $workdirectory = $workdirectory ? $workdirectory . '/vendor/resquebundle/resque/bin/' : __DIR__ . '/../bin/';
+        $workerCommand = $phpExecutable . ' ' . $workdirectory . 'resque-scheduler';
 
         if (!$input->getOption('foreground')) {
             $logFile = $this->getContainer()->getParameter(
