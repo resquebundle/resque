@@ -27,7 +27,7 @@ class StartWorkerCommand extends ContainerAwareCommand
             ->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'How many workers to fork', 1)
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'How often to check for new jobs across the queues', 5)
             ->addOption('foreground', 'f', InputOption::VALUE_NONE, 'Should the worker run in foreground')
-            ->addOption('memory-limit', 'm', InputOption::VALUE_REQUIRED, 'Force cli memory_limit (expressed in Mbytes)');
+            ->addOption('memory-limit', 'm', InputOption::VALUE_REQUIRED, 'Force cli memory_limit (expressed in Mbytes)')
             ->addOption('log-file', 'l', InputOption::VALUE_REQUIRED, 'Name of log file if not run in foreground');
     }
 
