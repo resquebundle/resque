@@ -28,7 +28,7 @@ class StartWorkerCommand extends ContainerAwareCommand
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'How often to check for new jobs across the queues', 5)
             ->addOption('foreground', 'f', InputOption::VALUE_NONE, 'Should the worker run in foreground')
             ->addOption('memory-limit', 'm', InputOption::VALUE_REQUIRED, 'Force cli memory_limit (expressed in Mbytes)')
-            ->addOption('log-file', 'l', InputOption::VALUE_REQUIRED, 'Name of log file if not run in foreground');
+            ->addOption('log-file', 'l', InputOption::VALUE_REQUIRED, 'Name of log file in %logs_dir% to use if run in background', 'resque.log');
     }
 
     /**
@@ -109,11 +109,10 @@ class StartWorkerCommand extends ContainerAwareCommand
         ]);
 
         if (!$input->getOption('foreground')) {
-            $logFile = $input->getOption('log-file') ?: 'resque.log';
             $workerCommand = strtr('nohup %cmd% > %logs_dir%/%log_file% 2>&1 & echo $!', [
                 '%cmd%'      => $workerCommand,
                 '%logs_dir%' => $this->getContainer()->getParameter('kernel.logs_dir'),
-                '%log_file%' => $logFile,
+                '%log_file%' => $input->getOption('log-file'),
             ]);
         }
 
