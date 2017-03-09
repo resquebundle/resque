@@ -28,7 +28,7 @@ class StartWorkerCommand extends ContainerAwareCommand
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'How often to check for new jobs across the queues', 5)
             ->addOption('foreground', 'f', InputOption::VALUE_NONE, 'Should the worker run in foreground')
             ->addOption('memory-limit', 'm', InputOption::VALUE_REQUIRED, 'Force cli memory_limit (expressed in Mbytes)')
-            ->addOption('log-file', 'l', InputOption::VALUE_REQUIRED, 'Name of log file in %logs_dir% to use if run in background', 'resque.log');
+            ->addOption('log-file', 'l', InputOption::VALUE_REQUIRED, 'Name of log file in kernel.logs_dir to use if run in background', 'resque.log');
     }
 
     /**
