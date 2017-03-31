@@ -16,6 +16,14 @@
         <default key="_controller">ResqueBundle:Default:listFailed</default>
     </route>
 
+    <route id="ResqueBundle_failed_retry" path="/failed/retry">
+        <default key="_controller">ResqueBundle:Default:retryFailed</default>
+    </route>
+
+    <route id="ResqueBundle_failed_clear" path="/failed/clear">
+        <default key="_controller">ResqueBundle:Default:clearFailed</default>
+    </route>
+
     <route id="ResqueBundle_scheduled_list" path="/scheduled/list">
         <default key="_controller">ResqueBundle:Default:listScheduled</default>
     </route>

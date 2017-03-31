@@ -141,4 +141,28 @@ class DefaultController extends Controller
             ]
         );
     }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function retryFailedAction()
+    {
+        $count = $this->getResque()->retryFailedJobs();
+
+        $this->addFlash('info', 'Retry '.$count.' failed jobs.');
+
+        return $this->redirectToRoute('ResqueBundle_homepage');
+    }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function clearFailedAction()
+    {
+        $count = $this->getResque()->clearFailedJobs();
+
+        $this->addFlash('info', 'Clear '.$count.' failed jobs.');
+
+        return $this->redirectToRoute('ResqueBundle_homepage');
+    }
 }
