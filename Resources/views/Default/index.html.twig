@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>failed</td>
-                    <td><a href="{{ path('ResqueBundle_failed_list') }}">{{ resque.failedJobs|length }}</a></td>
+                    <td><a href="{{ path('ResqueBundle_failed_list') }}">{{ resque.numberOfFailedJobs }}</a></td>
                 </tr>
 
             </table>
