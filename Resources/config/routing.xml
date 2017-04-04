@@ -12,6 +12,10 @@
         <default key="_controller">ResqueBundle:Default:showQueue</default>
     </route>
 
+    <route id="ResqueBundle_queue_remove" path="/queue/{queue}/remove">
+        <default key="_controller">ResqueBundle:Default:removeQueue</default>
+    </route>
+
     <route id="ResqueBundle_failed_list" path="/failed/list">
         <default key="_controller">ResqueBundle:Default:listFailed</default>
     </route>

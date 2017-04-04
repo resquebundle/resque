@@ -329,10 +329,7 @@ class Resque implements EnqueueInterface
      */
     public function clearQueue($queue)
     {
-        $length = \Resque::redis()->llen('queue:' . $queue);
-        \Resque::redis()->del('queue:' . $queue);
-
-        return $length;
+        return $this->getQueue($queue)->clear();
     }
 
     /**
