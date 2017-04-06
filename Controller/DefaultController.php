@@ -110,6 +110,19 @@ class DefaultController extends Controller
     /**
      * @return Response
      */
+    public function workersAction()
+    {
+        return $this->render(
+            'ResqueBundle:Default:workers.html.twig',
+            [
+                'resque' => $this->getResque(),
+            ]
+        );
+    }
+
+    /**
+     * @return Response
+     */
     public function listScheduledAction()
     {
         return $this->render(

@@ -1,0 +1,9 @@
+{% extends 'ResqueBundle::layout.html.twig' %}
+{% block body %}
+    {% include "ResqueBundle:Default:_menu.html.twig" with {activeNav: 'workers'} %}
+    <div class="col-md-12">
+        <h2>{{ resque.numberOfWorkers }} Worker</h2>
+        <p class="lead">The workers listed below are all registered as active on your system.</p>
+        {% include "ResqueBundle:Default:workers.table.html.twig" with {workers: resque.workers } %}
+    </div>
+{% endblock %}

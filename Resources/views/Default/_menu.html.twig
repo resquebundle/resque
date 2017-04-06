@@ -15,6 +15,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li {{ nav.activeClass(activeNav,'homepage') }}><a href="{{ path('ResqueBundle_homepage') }}">Home</a></li>
+                <li {{ nav.activeClass(activeNav,'workers') }}><a href="{{ path('ResqueBundle_workers') }}">Workers</a></li>
                 <li {{ nav.activeClass(activeNav,'scheduled_list') }}><a href="{{ path('ResqueBundle_scheduled_list') }}">Scheduled</a></li>
                 <li {{ nav.activeClass(activeNav,'failed_list') }}><a href="{{ path('ResqueBundle_failed_list') }}">Failed</a></li>
                 {#<li class="dropdown">#}

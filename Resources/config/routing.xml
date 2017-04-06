@@ -16,6 +16,10 @@
         <default key="_controller">ResqueBundle:Default:listFailed</default>
     </route>
 
+    <route id="ResqueBundle_workers" path="/workers">
+        <default key="_controller">ResqueBundle:Default:workers</default>
+    </route>
+
     <route id="ResqueBundle_scheduled_list" path="/scheduled/list">
         <default key="_controller">ResqueBundle:Default:listScheduled</default>
     </route>

@@ -1,0 +1,63 @@
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="span3">
+                Where
+            </th>
+            <th class="span2">
+                Queues
+            </th>
+            <th class="span5">
+                Processing
+            </th>
+            <th class="span1">
+                Processed
+            </th>
+            <th class="span1">
+                Failed
+            </th>
+        </tr>
+        </thead>
+
+        {% for worker in workers %}
+            <tr>
+                <td>{{ worker.id }}</td>
+                <td>
+                    {% for queue in worker.queues %}
+                        <span class="label label-info">{{ queue.name }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% set job = worker.currentJob %}
+                    {% if job %}
+                        <div>
+                            <strong>{{ job.name }}</strong>
+                        </div>
+                        <div class="text-right">{{ worker.currentJobStart|date }}</div>
+                        <div>
+                            <ul class="unstyled">
+                                {% for argname, argvalue in job.args %}
+                                    <li>
+                                        <span>{{ argname }}</span>
+                                        <em class="pull-right">{{ argvalue | json_encode(constant('JSON_PRETTY_PRINT')) }}</em>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% else %}
+                        <em>idle</em>
+                    {% endif %}
+                </td>
+                <td>{{ worker.processedCount }}</td>
+                <td>{{ worker.failedCount }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">
+                    <em>Nothing is happening right now...</em>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
