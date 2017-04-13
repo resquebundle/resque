@@ -84,4 +84,12 @@ class FailedJob
     {
         return $this->data['backtrace'];
     }
+
+    /**
+     * @return array
+     */
+    public function getArgs()
+    {
+        return $this->data['payload']['args'];
+    }
 }
