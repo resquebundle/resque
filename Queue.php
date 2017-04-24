@@ -51,4 +51,19 @@ class Queue
 
         return $result;
     }
+
+    public function remove()
+    {
+        \Resque::redis()->srem('queues', $this->name);
+    }
+
+    /**
+     * @return int
+     */
+    public function clear()
+    {
+        $length = \Resque::redis()->llen('queue:' . $this->name);
+        \Resque::redis()->del('queue:' . $this->name);
+        return $length;
+    }
 }

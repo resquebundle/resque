@@ -31,7 +31,22 @@
                         {{ job.error }}<br>
                      </td>
                     <td class="span6">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#strackTrace" data-detail="{{ job.backtrace | join('<br>')}}">View</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#strackTrace" data-detail="#{{ job.id }}_stack">Stack Trace</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#strackTrace" data-detail="#{{ job.id }}_args">Args</button>
+
+                        <div class="hide" id="{{ job.id }}_stack">
+                            <p>
+                                {{ job.backtrace | join('<br>') }}
+                            </p>
+                        </div>
+                        <div class="hide" id="{{ job.id }}_args">
+                            <dl class="dl-horizontal">
+                                {% for argname, argvalue in job.args.0 %}
+                                    <dt>{{ argname }}</dt>
+                                    <dd>{{ argvalue | json_encode(constant('JSON_PRETTY_PRINT')) }}</dd>
+                                {% endfor %}
+                            </dl>
+                        </div>
                     </td>
                 </tr>
                 {% else %}
@@ -47,11 +62,9 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="strackTraceLabel">Stack Trace</h4>
+                                    <h4 class="modal-title" id="strackTraceLabel"></h4>
                                 </div>
-                                <div class="modal-body">
-                                    <p></p>
-                                </div>
+                                <div class="modal-body"></div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
@@ -68,10 +81,11 @@
     <script>
         $(document).ready(function() {
             $("#strackTrace").on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget)
-                var data = button.data('detail')
-                var modal = $(this)
-                modal.find('.modal-body p').html(data)
+                var $button = $(event.relatedTarget);
+                $('#strackTraceLabel').text($button.text());
+                $(this)
+                    .find('.modal-body')
+                    .html($($button.data('detail')).html());
             })
         });
     </script>

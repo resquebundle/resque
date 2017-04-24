@@ -62,6 +62,18 @@ class DefaultController extends Controller
         );
     }
 
+    public function removeQueueAction($queue, Request $request)
+    {
+        $queue = $this->getResque()->getQueue($queue);
+        $count = $queue->clear();
+        $queue->remove();
+
+        $this->addFlash('info', 'Remove ' . $queue->getName() . ' queue and ' . $count . ' jobs.');
+
+        return $this->redirectToRoute('ResqueBundle_homepage');
+    }
+
+
     /**
      * Decide which parts of a job queue to show
      *
@@ -103,6 +115,19 @@ class DefaultController extends Controller
             [
                 'jobs'       => $jobs,
                 'showingAll' => $showingAll,
+            ]
+        );
+    }
+
+    /**
+     * @return Response
+     */
+    public function workersAction()
+    {
+        return $this->render(
+            'ResqueBundle:Default:workers.html.twig',
+            [
+                'resque' => $this->getResque(),
             ]
         );
     }

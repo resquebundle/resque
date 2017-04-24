@@ -237,13 +237,23 @@ class Resque implements EnqueueInterface
     }
 
     /**
-     * @return array
+     * @return Worker[]
      */
     public function getWorkers()
     {
         return \array_map(function($worker) {
             return new Worker($worker);
         }, \Resque_Worker::all());
+    }
+
+    /**
+     * @return Worker[]
+     */
+    public function getRunningWorkers()
+    {
+        return array_filter($this->getWorkers(), function (Worker $worker) {
+            return $worker->getCurrentJob() !== null;
+        });
     }
 
     /**
@@ -259,6 +269,29 @@ class Resque implements EnqueueInterface
         }
 
         return new Worker($worker);
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfWorkers()
+    {
+        return \Resque::redis()->scard('workers');
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfWorkingWorkers()
+    {
+        $count = 0;
+        foreach ($this->getWorkers() as $worker) {
+            if ($worker->getCurrentJob() !== null) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     /**
@@ -329,10 +362,7 @@ class Resque implements EnqueueInterface
      */
     public function clearQueue($queue)
     {
-        $length = \Resque::redis()->llen('queue:' . $queue);
-        \Resque::redis()->del('queue:' . $queue);
-
-        return $length;
+        return $this->getQueue($queue)->clear();
     }
 
     /**
@@ -351,6 +381,14 @@ class Resque implements EnqueueInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfFailedJobs()
+    {
+        return \Resque::redis()->llen('failed');
     }
 
     /**

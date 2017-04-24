@@ -30,77 +30,14 @@
                 </tr>
                 <tr>
                     <td>failed</td>
-                    <td><a href="{{ path('ResqueBundle_failed_list') }}">{{ resque.failedJobs|length }}</a></td>
+                    <td><a href="{{ path('ResqueBundle_failed_list') }}">{{ resque.numberOfFailedJobs }}</a></td>
                 </tr>
 
             </table>
 
-        <h2>Workers</h2>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th class="span3">
-                    Where
-                </th>
-                <th class="span2">
-                    Queues
-                </th>
-                <th class="span5">
-                    Processing
-                </th>
-                <th class="span1">
-                    Processed
-                </th>
-                <th class="span1">
-                    Failed
-                </th>
-            </tr>
-            </thead>
-
-            {% for worker in resque.workers %}
-                <tr>
-                    <td>{{ worker.id }}</td>
-                    <td>
-                        {% for queue in worker.queues %}
-                            <span class="label label-info">{{ queue.name }}</span>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% set job = worker.currentJob %}
-                        {% if job %}
-                            <div>
-                                <strong>{{ job.name }}</strong>
-                            </div>
-                            <div class="row">
-                                <span class="pull-right">{{ worker.currentJobStart|date }}</span>
-                            </div>
-                            <div>
-                                <span>
-                                    <ul class="unstyled">
-                                        {% for argname, argvalue in job.args %}
-                                            <li>
-                                                <span>{{ argname }}</span>
-                                                <em class="pull-right">{{ argvalue | json_encode(constant('JSON_PRETTY_PRINT')) }}</em>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </span>
-                            </div>
-                        {% else %}
-                            <em>idle</em>
-                        {% endif %}
-                    </td>
-                    <td>{{ worker.processedCount }}</td>
-                    <td>{{ worker.failedCount }}</td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5">
-                        <em>empty...</em>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        <h2>{{ resque.numberOfWorkingWorkers }} of {{ resque.numberOfWorkers }} Workers Working</h2>
+        <p class="lead">The list below contains all workers which are currently running a job.</p>
+        {% include "ResqueBundle:Default:workers.table.html.twig" with {workers: resque.runningWorkers } %}
 
         <h2>Redis</h2>
         <table class="table table-bordered table-striped">
