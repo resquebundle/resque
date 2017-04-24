@@ -392,11 +392,16 @@ class Resque implements EnqueueInterface
     }
 
     /**
+     * @param bool $clear
+     *
      * @return int
      */
-    public function retryFailedJobs()
+    public function retryFailedJobs($clear = false)
     {
         $jobs = \Resque::redis()->lrange('failed', 0, -1);
+        if ($clear) {
+            $this->clearFailedJobs();
+        }
         foreach ($jobs as $job) {
             $failedJob = new FailedJob(json_decode($job, true));
             \Resque::enqueue($failedJob->getQueueName(), $failedJob->getName(), $failedJob->getArgs()[0]);

@@ -182,6 +182,18 @@ class DefaultController extends Controller
     /**
      * @return RedirectResponse
      */
+    public function retryClearFailedAction()
+    {
+        $count = $this->getResque()->retryFailedJobs(true);
+
+        $this->addFlash('info', 'Retry and clear '.$count.' failed jobs.');
+
+        return $this->redirectToRoute('ResqueBundle_homepage');
+    }
+
+    /**
+     * @return RedirectResponse
+     */
     public function clearFailedAction()
     {
         $count = $this->getResque()->clearFailedJobs();
