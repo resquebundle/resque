@@ -2,6 +2,13 @@
 {% block body %}
 {% include "ResqueBundle:Default:_menu.html.twig" with {activeNav: 'homepage'} %}
     <div class="col-md-12">
+
+        {% for flash_message in app.session.flashBag.get('info') %}
+            <div class="alert alert-info">
+                {{ flash_message }}
+            </div>
+        {% endfor %}
+
         <h2>Queues</h2>
         <p>This list shows all registered queues with the number of jobs currently in each queue.</p>
             <table class="table table-bordered">
