@@ -382,4 +382,12 @@ class Resque implements EnqueueInterface
 
         return $result;
     }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfFailedJobs()
+    {
+        return \Resque::redis()->llen('failed');
+    }
 }
