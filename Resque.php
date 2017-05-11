@@ -402,11 +402,23 @@ class Resque implements EnqueueInterface
         if ($clear) {
             $this->clearFailedJobs();
         }
+        $count = 0;
         foreach ($jobs as $job) {
             $failedJob = new FailedJob(json_decode($job, true));
-            \Resque::enqueue($failedJob->getQueueName(), $failedJob->getName(), $failedJob->getArgs()[0]);
+            $args = $failedJob->getArgs()[0];
+
+            // check retry strategy and only retry last attment and not all failed jobs!
+            if ($failedJob->hasRetryStrategy()) {
+                if (!$failedJob->isLastAttempt()) {
+                    continue;
+                }
+                $args['resque.retry_attempt'] = 0;
+            }
+
+            $count++;
+            \Resque::enqueue($failedJob->getQueueName(), $failedJob->getName(), $args);
         }
-        return count($jobs);
+        return $count;
     }
 
     /**

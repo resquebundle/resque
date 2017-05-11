@@ -92,4 +92,24 @@ class FailedJob
     {
         return $this->data['payload']['args'];
     }
+
+    /**
+     * @return bool
+     */
+    public function hasRetryStrategy()
+    {
+        return
+            array_key_exists('resque.retry_strategy', $this->data['payload']['args'][0]) &&
+            count($this->data['payload']['args'][0]['resque.retry_strategy']) > 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLastAttempt()
+    {
+        return
+            array_key_exists('resque.retry_attempt', $this->data['payload']['args'][0]) &&
+            count($this->data['payload']['args'][0]['resque.retry_strategy']) === $this->data['payload']['args'][0]['resque.retry_attempt'];
+    }
 }
