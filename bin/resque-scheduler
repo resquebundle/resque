@@ -1,7 +1,18 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . '/../../../../app/autoload.php';
+$autoloadFiles = [
+    __DIR__ . '/../../../../app/autoload.php',
+    __DIR__ . '/../../../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+];
+
+foreach ($autoloadFiles as $autoloadFile) {
+    if (file_exists($autoloadFile)) {
+        require $autoloadFile;
+        break;
+    }
+}
 
 // Load the user's application if one exists
 $APP_INCLUDE = getenv('APP_INCLUDE');
