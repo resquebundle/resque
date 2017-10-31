@@ -29,7 +29,7 @@ class Worker
     {
         $parts = \explode(':', $this->getId());
 
-        return \posix_kill($parts[1], 3);
+        return \posix_kill($parts[1], SIGQUIT);
     }
 
     /**
