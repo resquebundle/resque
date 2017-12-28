@@ -31,9 +31,9 @@
     }
   ],
   "require": {
-    "symfony/framework-bundle": ">=2.8,<4.0",
-    "symfony/console": ">=2.8,<4.0",
-    "symfony/process": ">=2.8,<4.0",
+    "symfony/framework-bundle": ">=2.8|~3.0|^4.0",
+    "symfony/console": ">=2.8|~3.0|^4.0",
+    "symfony/process": ">=2.8|~3.0|^4.0",
     "chrisboulton/php-resque": "dev-master",
     "chrisboulton/php-resque-scheduler": "dev-master"
   },

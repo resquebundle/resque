@@ -63,11 +63,16 @@ class StopWorkerCommand extends ContainerAwareCommand
 
             return 0;
         }
-        
+
         foreach ($workers as $worker) {
-            $output->writeln(\sprintf('Stopping %s...', $worker->getId()));
-            $worker->stop();
-            $worker->getWorker()->unregisterWorker();
+            if ($worker->stop()) {
+                // The worker was successfully killed.
+                $worker->getWorker()->unregisterWorker();
+                $output->writeln(\sprintf('Stopped %s', $worker->getId()));
+            }
+            else {
+                $output->writeln(\sprintf('<error>Failed to stop %s</error>', $worker->getId()));
+            }
         }
 
         return 0;
