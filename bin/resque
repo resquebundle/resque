@@ -6,7 +6,7 @@ if (empty($QUEUE)) {
     die("Set QUEUE env var containing the list of queues to work.\n");
 }
 
-require __DIR__ . '/../../../../app/autoload.php';
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 $APP_INCLUDE = getenv('APP_INCLUDE');
 if ($APP_INCLUDE) {
