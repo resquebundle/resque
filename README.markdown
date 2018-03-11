@@ -188,8 +188,8 @@ You can get the resque service simply by using the container. From your controll
 ``` php
 <?php
 
-// get resque
-$resque = $this->get('resque');
+// get resque (only if service has been made public - else using DI)
+$resque = $this->get('ResqueBundle\Resque\Resque');
 
 // create your job
 $job = new MyJob();
@@ -226,8 +226,8 @@ From your controller you can do:
 ``` php
 <?php
 
-// get resque
-$resque = $this->get('resque');
+// get resque (only if service has been made public - else using DI)
+$resque = $this->get('ResqueBundle\Resque\Resque');
 
 // create your job
 $job = new MyJob();
