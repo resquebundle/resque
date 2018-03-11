@@ -34,7 +34,7 @@ class ResqueExtension extends Extension
 
         if (!empty($config['prefix'])) {
             $container->setParameter('resque.prefix', $config['prefix']);
-            $container->getDefinition('resque')->addMethodCall('setPrefix', [$config['prefix']]);
+            $container->getDefinition('ResqueBundle\Resque\Resque')->addMethodCall('setPrefix', [$config['prefix']]);
         }
 
         if (!empty($config['worker']['root_dir'])) {
@@ -43,13 +43,13 @@ class ResqueExtension extends Extension
 
         if (!empty($config['auto_retry'])) {
             if (isset($config['auto_retry'][0])) {
-                $container->getDefinition('resque')->addMethodCall('setGlobalRetryStrategy', [$config['auto_retry'][0]]);
+                $container->getDefinition('ResqueBundle\Resque\Resque')->addMethodCall('setGlobalRetryStrategy', [$config['auto_retry'][0]]);
             } else {
                 if (isset($config['auto_retry']['default'])) {
-                    $container->getDefinition('resque')->addMethodCall('setGlobalRetryStrategy', [$config['auto_retry']['default']]);
+                    $container->getDefinition('ResqueBundle\Resque\Resque')->addMethodCall('setGlobalRetryStrategy', [$config['auto_retry']['default']]);
                     unset($config['auto_retry']['default']);
                 }
-                $container->getDefinition('resque')->addMethodCall('setJobRetryStrategy', [$config['auto_retry']]);
+                $container->getDefinition('ResqueBundle\Resque\Resque')->addMethodCall('setJobRetryStrategy', [$config['auto_retry']]);
             }
         }
     }
