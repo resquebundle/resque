@@ -33,7 +33,7 @@ class DefaultController extends Controller
      */
     protected function getResque()
     {
-        return $this->get('resque');
+        return $this->get('ResqueBundle\Resque\Resque');
     }
 
     /**
