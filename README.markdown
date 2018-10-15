@@ -75,7 +75,7 @@ Make sure you have redis installed on your machine: http://redis.io/
 
 ### Get the bundle
 
-Add `mpclarkson/resque-bundle` to your dependencies:
+Add `resquebundle/resque` to your dependencies:
 
 ``` json
 {
