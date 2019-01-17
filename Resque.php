@@ -100,7 +100,16 @@ class Resque implements EnqueueInterface
 
         foreach ($jobs AS $j) {
             if ($j->job->payload['class'] == get_class($job)) {
-                if (count(array_intersect($j->args, $job->args)) == count($job->args)) {
+
+                // remove the retry strategy which is an internal arg
+                unset($j->args['resque.retry_strategy']);
+
+                // flatten recursive arrays
+                $existingJob = json_encode($j->args);
+                $newJob = json_encode($job->args);
+
+                // compare the two strings
+                if ($existingJob === $newJob){
                     return ($trackStatus) ? $j->job->payload['id'] : NULL;
                 }
             }
