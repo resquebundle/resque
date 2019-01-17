@@ -105,8 +105,8 @@ class Resque implements EnqueueInterface
                 unset($j->args['resque.retry_strategy']);
 
                 // flatten recursive arrays
-                $existingJob = json_encode($j->args);
-                $newJob = json_encode($job->args);
+                $existingJob = \json_encode($j->args);
+                $newJob = \json_encode($job->args);
 
                 // compare the two strings
                 if ($existingJob === $newJob){
