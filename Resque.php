@@ -153,7 +153,6 @@ class Resque implements EnqueueInterface
             if (count($this->jobRetryStrategy[$class])) {
                 $job->args['resque.retry_strategy'] = $this->jobRetryStrategy[$class];
             }
-            $job->args['resque.retry_strategy'] = $this->jobRetryStrategy[$class];
         } elseif (count($this->globalRetryStrategy)) {
             $job->args['resque.retry_strategy'] = $this->globalRetryStrategy;
         }
