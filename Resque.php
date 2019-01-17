@@ -101,14 +101,19 @@ class Resque implements EnqueueInterface
         foreach ($jobs AS $j) {
             if ($j->job->payload['class'] == get_class($job)) {
 
-                // remove the retry strategy which is an internal arg
-                unset($j->args['resque.retry_strategy']);
+                // add the kernel options
+                if ($job instanceof ContainerAwareJob) {
+                    $job->setKernelOptions($this->kernelOptions);
+                }
+
+                // add the retry strategy
+                $this->attachRetryStrategy($job);
 
                 // flatten recursive arrays
                 $existingJob = \json_encode($j->args);
                 $newJob = \json_encode($job->args);
 
-                // compare the two strings
+                // Now we can compare the two strings
                 if ($existingJob === $newJob){
                     return ($trackStatus) ? $j->job->payload['id'] : NULL;
                 }
