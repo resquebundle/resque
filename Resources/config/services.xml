@@ -15,11 +15,7 @@
     </parameters>
 
     <services>
-        <defaults autoconfigure="true" public="true" autowire="true" />
-        <prototype namespace="ResqueBundle\Resque\Command\" resource="../../Command">
-            <tag name="console.command"/>
-        </prototype>
-        <service id="resque" class="%resque.class%" lazy="true">
+        <service id="ResqueBundle\Resque\Resque" class="%resque.class%" lazy="true">
             <argument type="collection">
                 <argument key="kernel.root_dir">%resque.worker.root_dir%</argument>
                 <argument key="kernel.debug">%kernel.debug%</argument>
@@ -31,6 +27,5 @@
                 <argument>%resque.redis.database%</argument>
             </call>
         </service>
-        <service id="ResqueBundle\Resque\Resque" alias="resque"/>
     </services>
 </container>

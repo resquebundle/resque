@@ -6,7 +6,35 @@ if (empty($QUEUE)) {
     die("Set QUEUE env var containing the list of queues to work.\n");
 }
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+$autoloadFiles = [
+    __DIR__ . '/../../../../app/autoload.php',
+    __DIR__ . '/../../../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+];
+
+foreach ($autoloadFiles as $autoloadFile) {
+    if (file_exists($autoloadFile)) {
+        require $autoloadFile;
+        break;
+    }
+}
+
+// Add support for https://sentry.io through env
+$sentryClient = null;
+if ($SENTRY_DSN = getenv('SENTRY_DSN')) {
+    $RavenAutoloader = __DIR__ . '/../../../../vendor/sentry/sentry/lib/Raven/Autoloader.php';
+    if (file_exists($RavenAutoloader)) {
+        $autoload1 = TRUE;
+        require $RavenAutoloader;
+        $autoload2 = TRUE;
+        \Raven_Autoloader::register();
+        $sentryClient = new \Raven_Client($SENTRY_DSN);
+        $error_handler = new Raven_ErrorHandler($sentryClient);
+        $error_handler->registerExceptionHandler();
+        $error_handler->registerErrorHandler();
+        $error_handler->registerShutdownFunction();
+    }
+}
 
 $APP_INCLUDE = getenv('APP_INCLUDE');
 if ($APP_INCLUDE) {
@@ -43,6 +71,10 @@ if (!isset($logger) || !is_object($logger)) {
     $logger = new Resque_Log($logLevel);
 }
 
+if ($SENTRY_DSN = getenv('SENTRY_DSN')) {
+    $logger->log(Psr\Log\LogLevel::INFO, 'SENTRY_DSN Reporting will be sent to {SENTRY_DSN}', ['SENTRY_DSN' => $SENTRY_DSN]);
+}
+
 $BLOCKING = getenv('BLOCKING') !== FALSE;
 
 $interval = 5;
@@ -64,7 +96,13 @@ if (!empty($PREFIX)) {
 }
 
 // If set, re-attach failed jobs based on retry_strategy
-Resque_Event::listen('onFailure', function (Exception $exception, Resque_Job $job) use ($logger) {
+Resque_Event::listen('onFailure', function (Exception $exception, Resque_Job $job) use ($logger, $sentryClient) {
+
+    // Allow integration with Sentry.io
+    if (null !== $sentryClient){
+        $sentryClient->captureException($exception);
+    }
+
     $args = $job->getArguments();
 
     if (empty($args['resque.retry_strategy'])) {

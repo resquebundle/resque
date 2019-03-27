@@ -31,7 +31,7 @@ class ClearQueueCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $resque = $this->getContainer()->get('resque');
+        $resque = $this->getContainer()->get('ResqueBundle\Resque\Resque');
 
         $queue = $input->getArgument('queue');
         $count = $resque->clearQueue($queue);

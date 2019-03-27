@@ -58,6 +58,14 @@ class StartWorkerCommand extends ContainerAwareCommand
         $env['QUEUE'] = $input->getArgument('queues');
         $env['VERBOSE'] = 1;
 
+        // Allow Sentry.io integration
+        if ($this->getContainer()->hasParameter('sentry.dsn')){
+            if ($sentryDSN = $this->getContainer()->getParameter('sentry.dsn')){
+                $output->writeln('Enabling Sentry Reporting to DSN '. $sentryDSN);
+                $env['SENTRY_DSN'] = $sentryDSN;
+            }
+        }
+
         if (FALSE !== getenv('APP_INCLUDE')) {
             $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
         }
