@@ -31,5 +31,6 @@
                 <argument>%resque.redis.database%</argument>
             </call>
         </service>
+        <service id="ResqueBundle\Resque\Resque" alias="resque"/>
     </services>
 </container>
