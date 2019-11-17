@@ -2,11 +2,12 @@
 
 namespace ResqueBundle\Resque;
 
+
 /**
  * Class Job
  * @package ResqueBundle\Resque
  */
-abstract class Job
+class Job extends ContainerAwareJob
 {
     /**
      * @var \Resque_Job
@@ -49,21 +50,17 @@ abstract class Job
 
     }
 
-    /**
-     * @todo test - I dont think this method is actually used?
-     */
     public function perform()
     {
-        $this->run($this->args);
-    }
+        // boot container
+        $container = $this->getContainer();
 
-    /**
-     * This is the method that is called when the job is run
-     *
-     * @param $args
-     * @return mixed
-     */
-    abstract public function run($args);
+        // get the class from $args['resque.jobclass']
+        $jobClass = $container->get($this->args['resque.jobclass']);
+
+        // run the job
+        $jobClass->run($this->args);
+    }
 
     /**
      * Default function used to tear down, can be overloaded by individual Jobs

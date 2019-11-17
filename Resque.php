@@ -99,15 +99,16 @@ class Resque implements EnqueueInterface
         $jobs = $queue->getJobs();
 
         foreach ($jobs AS $j) {
-            if ($j->job->payload['class'] == get_class($job)) {
+            if ($j->job->payload['class'] == get_class(Job::class)) {
 
                 // add the kernel options
-                if ($job instanceof ContainerAwareJob) {
+                if ($job instanceof Job) {
                     $job->setKernelOptions($this->kernelOptions);
                 }
 
                 // add the retry strategy
                 $this->attachRetryStrategy($job);
+                $this->wrap($job);
 
                 // flatten recursive arrays
                 $existingJob = \json_encode($j->args);
@@ -130,19 +131,28 @@ class Resque implements EnqueueInterface
      */
     public function enqueue(Job $job, $trackStatus = FALSE)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
         $this->attachRetryStrategy($job);
+        $this->wrap($job);
 
-        $result = \Resque::enqueue($job->queue, \get_class($job), $job->args, $trackStatus);
+        $result = \Resque::enqueue($job->queue, Job::class, $job->args, $trackStatus);
 
         if ($trackStatus && $result !== FALSE) {
             return new \Resque_Job_Status($result);
         }
 
         return NULL;
+    }
+
+    /**
+     * @param Job $job
+     */
+    protected function wrap($job)
+    {
+        $job->args['resque.jobclass'] = get_class($job);
     }
 
     /**
@@ -170,13 +180,14 @@ class Resque implements EnqueueInterface
      */
     public function enqueueAt($at, Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
         $this->attachRetryStrategy($job);
+        $this->wrap($job);
 
-        \ResqueScheduler::enqueueAt($at, $job->queue, \get_class($job), $job->args);
+        \ResqueScheduler::enqueueAt($at, $job->queue, Job::class, $job->args);
 
         return NULL;
     }
@@ -188,13 +199,14 @@ class Resque implements EnqueueInterface
      */
     public function enqueueIn($in, Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
         $this->attachRetryStrategy($job);
+        $this->wrap($job);
 
-        \ResqueScheduler::enqueueIn($in, $job->queue, \get_class($job), $job->args);
+        \ResqueScheduler::enqueueIn($in, $job->queue, Job::class, $job->args);
 
         return NULL;
     }
@@ -205,13 +217,14 @@ class Resque implements EnqueueInterface
      */
     public function removedDelayed(Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
         $this->attachRetryStrategy($job);
+        $this->wrap($job);
 
-        return \ResqueScheduler::removeDelayed($job->queue, \get_class($job), $job->args);
+        return \ResqueScheduler::removeDelayed($job->queue, Job::class, $job->args);
     }
 
     /**
@@ -221,13 +234,14 @@ class Resque implements EnqueueInterface
      */
     public function removeFromTimestamp($at, Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
         $this->attachRetryStrategy($job);
+        $this->wrap($job);
 
-        return \ResqueScheduler::removeDelayedJobFromTimestamp($at, $job->queue, \get_class($job), $job->args);
+        return \ResqueScheduler::removeDelayedJobFromTimestamp($at, $job->queue, Job::class, $job->args);
     }
 
     /**

@@ -15,7 +15,7 @@
     </parameters>
 
     <services>
-        <service id="ResqueBundle\Resque\Resque" class="%resque.class%" lazy="true">
+        <service id="ResqueBundle\Resque\Resque" class="%resque.class%" lazy="true" public="true">
             <argument type="collection">
                 <argument key="kernel.root_dir">%resque.worker.root_dir%</argument>
                 <argument key="kernel.debug">%kernel.debug%</argument>
@@ -27,5 +27,6 @@
                 <argument>%resque.redis.database%</argument>
             </call>
         </service>
+        <service id="resque" alias="ResqueBundle\Resque\Resque" public="true"/>
     </services>
 </container>

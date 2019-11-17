@@ -19,8 +19,8 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('resque');
 
-        // Symfony 4
         if (method_exists($treeBuilder,'getRootNode')){
+            // Symfony 4+
             $root =   $treeBuilder->getRootNode();
         } else {
             // Symfony 3
@@ -36,8 +36,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Set the vendor dir')
                 ->end()
                 ->scalarNode('app_include')
-                    ->defaultValue('%kernel.root_dir%/../var/bootstrap.php.cache')
-                    ->cannotBeEmpty()
+                    ->defaultValue(null)
                     ->info('Set the APP_INCLUDE for php-resque')
                 ->end()
                 ->scalarNode('prefix')

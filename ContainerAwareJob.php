@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * Class ContainerAwareJob
  * @package ResqueBundle\Resque
  */
-abstract class ContainerAwareJob extends Job
+abstract class ContainerAwareJob
 {
     /**
      * @var KernelInterface
