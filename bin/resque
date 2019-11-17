@@ -23,7 +23,7 @@ foreach ($autoloadFiles as $autoloadFile) {
 $sentryClient = null;
 if ($SENTRY_DSN = getenv('SENTRY_DSN')) {
     // Sentry sdk 2.0
-    if (class_exists('Sentry\init')) {
+    if (function_exists('Sentry\init')) {
         \Sentry\init(['dsn' => $SENTRY_DSN]);
     } else {
         // ver 1
