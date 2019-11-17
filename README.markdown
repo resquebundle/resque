@@ -1,17 +1,35 @@
 [![Build Status](https://travis-ci.org/resquebundle/resque.svg?branch=master)](https://travis-ci.org/resquebundle/resque)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/resquebundle/resque/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/resquebundle/resque/?branch=master)
 
-**This project IS under ACTIVE development (2019)**
+**This project IS under ACTIVE development (last major update November 2019)**
 
 # ResqueBundle
 
-This is a fork of the BCCResqueBundle as ***that** bundle is no longer being activly maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed in that project, with no activity, so we forked it, and will activly support and develop the code further in this repo. 
+## Update November 2019.
+
+I have now worked on the master branch to implement compatibility with Symfony 4+, using Dependancy injection instead of `ContainerAwareJob`.
+
+If you are still using Symfony 3 then you MUST peg your composer.json to release 2.0.9
+
+The first version of this bundle that is highly compatible with, and activly maintained, is 3.0.0
+
+If you have used this before, and want to get up to date, then you need to 
+ - upgrade to 3.0.0+ version of this bundle
+ - use Symfony 4 (im using 4.4.0RC1 at the moment)
+ - change your Jobs to extend `ResqueBundle\Resque\Job` and not `ContainerAwareJob`
+ - add `__construct` methods to inject your depenancies
+ - remove ALL REFERENCES to the container or `getContainer` from your jobs
+ - Enjoy!
+
+# ResqueBundle History
+
+This is a fork of the BCCResqueBundle as ***that** bundle is no longer being actively maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed in that project, with no activity, so we forked it, and will activly support and develop the code further in this repo. 
 
 This is also a rebrand of Mpclarkson\ResqueBundle to place the code under a GitHub Organisation for future proof distributed development
 
 **Contributions are welcome**
 
-The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony2-3. 
+The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony4. 
 It is inspired from resque, a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later.
 
 ## Features:
@@ -22,56 +40,13 @@ It is inspired from resque, a Redis-backed Ruby library for creating background 
 - An interface to monitor your queues, workers and job statuses
 - Schedule jobs to run at a specific time or after a number of seconds delay
 - Auto re-queue failed jobs, with back-off strategies
-
-## Todos:
-
-- [x] PSR4
-- [x] Update admin to Bootstrap 3
-- [x] Migration from BCC notes
-- [x] Travis CI
-- [x] Symfony 3 compatibility
-- [ ] Implement Full Unit Tests
-- [ ] Make decision to support PHP 7+ ONLY ;-)
-- [ ] Code quality - Scrutinizer 9.5+
-- [ ] Replicate functionality of the resque-web ruby lib (i.e .retry and delete failed jobs etc)
-- [ ] Community contributions / Ignored PRs
-- [ ] Fix bugs
-- [ ] Log management
-- [ ] Job status tracking
-- [ ] Redis configuration
-- [ ] Localisation
-
-## Migrating from BCCResqueBundle:
-
-Here are some notes to make it easier to migrate from the BCCResqueBundle:
-
-- Find and replace all instances of `BCC\ResqueBundle` with `ResqueBundle\Resque` throughout your app (e.g. use statements)
-- Update your `routing.yml` by replacing `@BCCResque` with `@ResqueBundle`
-- The `bcc:` prefix for all commands has been dropped
-- Stop and restart all workers
-- The container service definition`bcc_resque.resque` has been replaced with `resque`. You can either search and replace this or create an alias as follows:
-```yaml
- bcc_resque.resque:
-      alias: resque
-      lazy: true
-```
-
-## Migrating from Mpclarkson\ResqueBundle:
-
-- Replace in composer with 
-```
-composer remove mpclarkson/resque-bundle
-composer require resquebundle/resque
-```
-- replace all `Mpclarkson\ResqueBundle` with `ResqueBundle\Resque`
-- Ensure AppKernel.php loads `new ResqueBundle\Resque\ResqueBundle(),`
-
+- Dependency Injection to Jobs
 
 ## Installation and configuration:
 
 ### Requirements
 
-Make sure you have redis installed on your machine: http://redis.io/
+Symfony 4+
 
 ### Get the bundle
 
@@ -81,29 +56,13 @@ Add `resquebundle/resque` to your dependencies:
 {
     "require": {
         ...
-        "resquebundle/resque": "dev-master"
+        "resquebundle/resque": "^3.0"
     }
     ...
 }
 ```
 
-To install, run `php composer.phar [update|install]`.
-
-### Add ResqueBundle to your application kernel
-
-``` php
-<?php
-
-    // app/AppKernel.php
-    public function registerBundles()
-    {
-        return array(
-            // ...
-            new ResqueBundle\Resque\ResqueBundle(),
-            // ...
-        );
-    }
-```
+To install, run `composer update`.
 
 ### Import the routing configuration
 
@@ -136,8 +95,6 @@ You may want to add some configuration to your `config.yml`
 ``` yml
 # app/config/config.yml
 resque:
-    class: ResqueBundle\Resque\Resque    # the resque class if different from default
-    vendor_dir: "%kernel.root_dir%/../vendor"  # the vendor dir if different from default
     app_include: /pathto/bootstrap.php.cache # app include file if different from default (i.e. /var/bootstrap.php.cache)
     prefix: my-resque-prefix                 # optional prefix to separate Resque data per site/app
     redis:
@@ -154,10 +111,6 @@ See the [Auto retry](#auto-retry) section for more on how to use `auto_retry`.
 Set `worker: root_dir:` in case job fails to run when worker systems are hosted on separate server/dir from the system creating the queue.
 When running multiple configured apps for multiple workers, all apps must be able to access by the same root_dir defined in `worker: root_dir`.
 
-### Optional, configure lazy loading
-
-This bundle is prepared for lazy loading in order to make a connection to redis only when its really used. Symfony2 supports that starting with 2.3. To make it work an additional step needs to be done. You need to install a proxy manager to your Symfony2 project. The full documentation for adding the proxy manager can be found in [Symfony2's Lazy Service documentation](http://symfony.com/doc/current/components/dependency_injection/lazy_services.html).
-
 ## Creating a Job
 
 A job is a subclass of the `ResqueBundle\Resque\Job` class. You also can use the `Mpclarkson\Resque\ContainerAwareJob` if you need to leverage the container during job execution.
@@ -169,9 +122,41 @@ You will be forced to implement the run method that will contain your job logic:
 namespace My;
 
 use ResqueBundle\Resque\Job;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class MyJob extends Job
 {
+    /**
+     * @var string The queue name
+     */
+    public $queue = 'myqueue';
+
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
+    
+    /**
+     * @var ObjectManager
+     */
+    private $em;
+
+    /**
+     * Use the __construct to inject your dependencies
+     *
+     * @param array           $args
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(
+        $args = [],
+        ManagerRegistry $registry
+    ) {
+        $this->registry      = $registry;
+        $this->em            = $registry->getManager();
+        parent::__construct($args);
+    }
+
     public function run($args)
     {
         file_put_contents($args['file'], $args['content']);
@@ -188,8 +173,8 @@ You can get the resque service simply by using the container. From your controll
 ``` php
 <?php
 
-// get resque (only if service has been made public - else using DI)
-$resque = $this->get('ResqueBundle\Resque\Resque');
+// get resque (only if service has been made public - else USE DI LIKE YOU SHOULD)
+// $resque = $this->get('ResqueBundle\Resque\Resque');
 
 // create your job
 $job = new MyJob();
@@ -226,8 +211,8 @@ From your controller you can do:
 ``` php
 <?php
 
-// get resque (only if service has been made public - else using DI)
-$resque = $this->get('ResqueBundle\Resque\Resque');
+// get resque (only if service has been made public - else use DI LIKE YOU SHOULD)
+//$resque = $this->get('ResqueBundle\Resque\Resque');
 
 // create your job
 $job = new MyJob();
@@ -328,26 +313,6 @@ $job = new MyJob();
 $job->queue = 'my_queue';
 ```
 
-### Access the container from inside your job
-
-Just extend the `ContainerAwareJob`:
-
-``` php
-<?php
-
-namespace My;
-
-use ResqueBundle\Resque\ContainerAwareJob;
-
-class MyJob extends ContainerAwareJob
-{
-    public function run($args)
-    {
-        $doctrine = $this->getContainer()->getDoctrine();
-        ...
-    }
-}
-```
 
 ### Stop a worker
 

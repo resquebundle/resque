@@ -1,14 +1,13 @@
 {
   "name": "resquebundle/resque",
   "type": "symfony-bundle",
-  "description": "A Symfony 2-3 bundle to manage Resque job queues",
+  "description": "A Symfony 4 bundle to manage Resque job queues",
   "keywords": [
     "resque",
     "job queue",
     "queue",
     "symfony",
-    "symfony2",
-    "symfony3",
+    "symfony4",
     "redis"
   ],
   "homepage": "https://github.com/resquebundle/resque/",
@@ -31,9 +30,9 @@
     }
   ],
   "require": {
-    "symfony/framework-bundle": ">=2.8|~3.0|^4.0",
-    "symfony/console": ">=2.8|~3.0|^4.0",
-    "symfony/process": ">=2.8|~3.0|^4.0",
+    "symfony/framework-bundle": "^4.0",
+    "symfony/console": "^4.0",
+    "symfony/process": "^4.0",
     "chrisboulton/php-resque": "dev-master",
     "chrisboulton/php-resque-scheduler": "dev-master"
   },
