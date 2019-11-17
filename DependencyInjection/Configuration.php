@@ -19,7 +19,15 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('resque');
 
-        $treeBuilder->getRootNode()
+        if (method_exists($treeBuilder,'getRootNode')){
+            // Symfony 4+
+            $root =   $treeBuilder->getRootNode();
+        } else {
+            // Symfony 3
+            $root = $treeBuilder->root('resque');
+        }
+        
+        $root
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('vendor_dir')

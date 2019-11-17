@@ -22,17 +22,23 @@ foreach ($autoloadFiles as $autoloadFile) {
 // Add support for https://sentry.io through env
 $sentryClient = null;
 if ($SENTRY_DSN = getenv('SENTRY_DSN')) {
-    $RavenAutoloader = __DIR__ . '/../../../../vendor/sentry/sentry/lib/Raven/Autoloader.php';
-    if (file_exists($RavenAutoloader)) {
-        $autoload1 = TRUE;
-        require $RavenAutoloader;
-        $autoload2 = TRUE;
-        \Raven_Autoloader::register();
-        $sentryClient = new \Raven_Client($SENTRY_DSN);
-        $error_handler = new Raven_ErrorHandler($sentryClient);
-        $error_handler->registerExceptionHandler();
-        $error_handler->registerErrorHandler();
-        $error_handler->registerShutdownFunction();
+    // Sentry sdk 2.0
+    if (function_exists('Sentry\init')) {
+        \Sentry\init(['dsn' => $SENTRY_DSN]);
+    } else {
+        // ver 1
+        $RavenAutoloader = __DIR__ . '/../../../../vendor/sentry/sentry/lib/Raven/Autoloader.php';
+        if (file_exists($RavenAutoloader)) {
+            $autoload1 = TRUE;
+            require $RavenAutoloader;
+            $autoload2 = TRUE;
+            \Raven_Autoloader::register();
+            $sentryClient = new \Raven_Client($SENTRY_DSN);
+            $error_handler = new Raven_ErrorHandler($sentryClient);
+            $error_handler->registerExceptionHandler();
+            $error_handler->registerErrorHandler();
+            $error_handler->registerShutdownFunction();
+        }
     }
 }
 
