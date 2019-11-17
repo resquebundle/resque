@@ -52,25 +52,14 @@ class Job extends ContainerAwareJob
 
     public function perform()
     {
-        $this->run($this->args);
-    }
-
-    /**
-     * This is the method that is called when the job is run
-     *
-     * @param $args
-     * @return mixed
-     */
-    public function run($args){
-
         // boot container
         $container = $this->getContainer();
 
         // get the class from $args['resque.jobclass']
-        $jobClass = $container->get($args['resque.jobclass']);
+        $jobClass = $container->get($this->args['resque.jobclass']);
 
         // run the job
-        $jobClass->run($args);
+        $jobClass->run($this->args);
     }
 
     /**
