@@ -1,11 +1,15 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque;
 
-
 /**
- * Class Job
- * @package ResqueBundle\Resque
+ * Class Job.
  */
 class Job extends ContainerAwareJob
 {
@@ -26,6 +30,7 @@ class Job extends ContainerAwareJob
 
     /**
      * Job constructor.
+     *
      * @param array $args The Job Arguments
      */
     public function __construct($args = [])
@@ -42,12 +47,12 @@ class Job extends ContainerAwareJob
     }
 
     /**
-     * Default function used to set up, can be overloaded by individual Jobs
+     * Default function used to set up, can be overloaded by individual Jobs.
+     *
      * @todo test - I dont think this method is actually used?
      */
     public function setUp()
     {
-
     }
 
     public function perform()
@@ -63,11 +68,11 @@ class Job extends ContainerAwareJob
     }
 
     /**
-     * Default function used to tear down, can be overloaded by individual Jobs
+     * Default function used to tear down, can be overloaded by individual Jobs.
+     *
      * @todo test - I dont think this method is actually used?
      */
     public function tearDown()
     {
-
     }
 }

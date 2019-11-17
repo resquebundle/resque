@@ -1,4 +1,10 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque;
 
@@ -7,27 +13,23 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Class ContainerAwareJob
- * @package ResqueBundle\Resque
+ * Class ContainerAwareJob.
  */
 abstract class ContainerAwareJob
 {
     /**
      * @var KernelInterface
      */
-    private $kernel = NULL;
+    private $kernel = null;
 
     /**
      * @param array $kernelOptions
      */
     public function setKernelOptions(array $kernelOptions)
     {
-        $this->args = \array_merge($this->args, $kernelOptions);
+        $this->args = array_merge($this->args, $kernelOptions);
     }
 
-    /**
-     *
-     */
     public function tearDown()
     {
         if ($this->kernel) {
@@ -40,7 +42,7 @@ abstract class ContainerAwareJob
      */
     protected function getContainer()
     {
-        if ($this->kernel === NULL) {
+        if (null === $this->kernel) {
             $this->kernel = $this->createKernel();
             $this->kernel->boot();
         }
@@ -56,14 +58,14 @@ abstract class ContainerAwareJob
         $finder = new Finder();
         $finder->name('*Kernel.php')->depth(0)->in($this->args['kernel.root_dir']);
         $results = iterator_to_array($finder);
-        $file = current($results);
-        $class = $file->getBasename('.php');
+        $file    = current($results);
+        $class   = $file->getBasename('.php');
 
         require_once $file;
 
         return new $class(
             isset($this->args['kernel.environment']) ? $this->args['kernel.environment'] : 'dev',
-            isset($this->args['kernel.debug']) ? $this->args['kernel.debug'] : TRUE
+            isset($this->args['kernel.debug']) ? $this->args['kernel.debug'] : true
         );
     }
 }

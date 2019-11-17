@@ -1,10 +1,15 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque;
 
 /**
- * Class Worker
- * @package ResqueBundle\Resque
+ * Class Worker.
  */
 class Worker
 {
@@ -15,6 +20,7 @@ class Worker
 
     /**
      * Worker constructor.
+     *
      * @param \Resque_Worker $worker
      */
     public function __construct(\Resque_Worker $worker)
@@ -27,9 +33,9 @@ class Worker
      */
     public function stop()
     {
-        $parts = \explode(':', $this->getId());
+        $parts = explode(':', $this->getId());
 
-        return \posix_kill($parts[1], SIGQUIT);
+        return posix_kill($parts[1], SIGQUIT);
     }
 
     /**
@@ -37,7 +43,7 @@ class Worker
      */
     public function getId()
     {
-        return (string)$this->worker;
+        return (string) $this->worker;
     }
 
     /**
@@ -45,13 +51,13 @@ class Worker
      */
     public function getQueues()
     {
-        return \array_map(function($queue) {
+        return array_map(function ($queue) {
             return new Queue($queue);
         }, $this->worker->queues());
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getProcessedCount()
     {
@@ -59,7 +65,7 @@ class Worker
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getFailedCount()
     {
@@ -74,21 +80,18 @@ class Worker
         $job = $this->worker->job();
 
         if (!$job) {
-            return NULL;
+            return;
         }
 
         return new \DateTime($job['run_at']);
     }
 
-    /**
-     * @return null
-     */
     public function getCurrentJob()
     {
         $job = $this->worker->job();
 
         if (!$job) {
-            return NULL;
+            return;
         }
 
         $job = new \Resque_Job($job['queue'], $job['payload']);

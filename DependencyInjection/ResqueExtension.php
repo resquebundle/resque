@@ -1,4 +1,10 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque\DependencyInjection;
 
@@ -8,21 +14,21 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * This is the class that loads and manages your bundle configuration
+ * This is the class that loads and manages your bundle configuration.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
 class ResqueExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config        = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $container->setParameter('resque.vendor_dir', $config['vendor_dir']);

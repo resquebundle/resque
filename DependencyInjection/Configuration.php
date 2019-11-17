@@ -1,4 +1,10 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque\DependencyInjection;
 
@@ -6,27 +12,27 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files
+ * This is the class that validates and merges configuration from your app/config files.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('resque');
 
-        if (method_exists($treeBuilder,'getRootNode')){
+        if (method_exists($treeBuilder, 'getRootNode')) {
             // Symfony 4+
             $root =   $treeBuilder->getRootNode();
         } else {
             // Symfony 3
             $root = $treeBuilder->root('resque');
         }
-        
+
         $root
             ->addDefaultsIfNotSet()
             ->children()
@@ -50,10 +56,11 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('auto_retry')
                     ->beforeNormalization()
                         ->ifArray()
-                        ->then(function($var) {
-                            if (array_key_exists(0, $var)) {
+                        ->then(function ($var) {
+                            if (\array_key_exists(0, $var)) {
                                 return [$var];
                             }
+
                             return $var;
                         })
                     ->end()

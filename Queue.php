@@ -1,10 +1,15 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque;
 
 /**
- * Class Queue
- * @package ResqueBundle\Resque
+ * Class Queue.
  */
 class Queue
 {
@@ -37,15 +42,16 @@ class Queue
     /**
      * @param int $start
      * @param int $stop
+     *
      * @return array
      */
     public function getJobs($start = 0, $stop = -1)
     {
-        $jobs = \Resque::redis()->lrange('queue:' . $this->name, $start, $stop);
+        $jobs = \Resque::redis()->lrange('queue:'.$this->name, $start, $stop);
 
         $result = [];
         foreach ($jobs as $job) {
-            $job = new \Resque_Job($this->name, \json_decode($job, TRUE));
+            $job      = new \Resque_Job($this->name, json_decode($job, true));
             $result[] = $job->getInstance();
         }
 
@@ -62,8 +68,9 @@ class Queue
      */
     public function clear()
     {
-        $length = \Resque::redis()->llen('queue:' . $this->name);
-        \Resque::redis()->del('queue:' . $this->name);
+        $length = \Resque::redis()->llen('queue:'.$this->name);
+        \Resque::redis()->del('queue:'.$this->name);
+
         return $length;
     }
 }

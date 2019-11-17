@@ -1,12 +1,12 @@
 <?php
-/**
- * @author    Phil Taylor <phil@phil-taylor.com>
- * @source    https://github.com/PhilETaylor/
- * @copyright Copyright (C) 2016 Blue Flame IT Ltd. All rights reserved.
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
  */
 
 namespace ResqueBundle\Resque;
-
 
 class JobTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,13 +20,11 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('default', $stub->queue);
         $this->assertEquals([1, 2, 3], $stub->args);
 
-
         // test that perform calls run
         $stub
             ->expects($this->once())
             ->method('run');
 
         $stub->perform();
-
     }
 }

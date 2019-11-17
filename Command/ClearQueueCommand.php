@@ -1,4 +1,10 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque\Command;
 
@@ -8,14 +14,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ClearQueueCommand
- * @package ResqueBundle\Resque\Command
+ * Class ClearQueueCommand.
  */
 class ClearQueueCommand extends ContainerAwareCommand
 {
-    /**
-     *
-     */
     protected function configure()
     {
         $this
@@ -25,8 +27,9 @@ class ClearQueueCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -36,7 +39,7 @@ class ClearQueueCommand extends ContainerAwareCommand
         $queue = $input->getArgument('queue');
         $count = $resque->clearQueue($queue);
 
-        $output->writeln('Cleared queue ' . $queue . ' - removed ' . $count . ' entries');
+        $output->writeln('Cleared queue '.$queue.' - removed '.$count.' entries');
 
         return 0;
     }

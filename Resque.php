@@ -1,12 +1,17 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque;
 
 use Psr\Log\NullLogger;
 
 /**
- * Class Resque
- * @package ResqueBundle\Resque
+ * Class Resque.
  */
 class Resque implements EnqueueInterface
 {
@@ -32,6 +37,7 @@ class Resque implements EnqueueInterface
 
     /**
      * Resque constructor.
+     *
      * @param array $kernelOptions
      */
     public function __construct(array $kernelOptions)
@@ -83,24 +89,24 @@ class Resque implements EnqueueInterface
             'port'     => $port,
             'database' => $database,
         ];
-        $host = substr($host, 0, 1) == '/' ? $host : $host . ':' . $port;
+        $host = '/' == substr($host, 0, 1) ? $host : $host.':'.$port;
 
         \Resque::setBackend($host, $database);
     }
 
     /**
-     * @param Job $job
+     * @param Job  $job
      * @param bool $trackStatus
-     * @return null|\Resque_Job_Status
+     *
+     * @return \Resque_Job_Status|null
      */
-    public function enqueueOnce(Job $job, $trackStatus = FALSE)
+    public function enqueueOnce(Job $job, $trackStatus = false)
     {
         $queue = new Queue($job->queue);
-        $jobs = $queue->getJobs();
+        $jobs  = $queue->getJobs();
 
-        foreach ($jobs AS $j) {
-            if ($j->job->payload['class'] == get_class(Job::class)) {
-
+        foreach ($jobs as $j) {
+            if ($j->job->payload['class'] == \get_class(Job::class)) {
                 // add the kernel options
                 if ($job instanceof Job) {
                     $job->setKernelOptions($this->kernelOptions);
@@ -111,12 +117,12 @@ class Resque implements EnqueueInterface
                 $this->wrap($job);
 
                 // flatten recursive arrays
-                $existingJob = \json_encode($j->args);
-                $newJob = \json_encode($job->args);
+                $existingJob = json_encode($j->args);
+                $newJob      = json_encode($job->args);
 
                 // Now we can compare the two strings
-                if ($existingJob === $newJob){
-                    return ($trackStatus) ? $j->job->payload['id'] : NULL;
+                if ($existingJob === $newJob) {
+                    return ($trackStatus) ? $j->job->payload['id'] : null;
                 }
             }
         }
@@ -125,11 +131,12 @@ class Resque implements EnqueueInterface
     }
 
     /**
-     * @param Job $job
+     * @param Job  $job
      * @param bool $trackStatus
-     * @return null|\Resque_Job_Status
+     *
+     * @return \Resque_Job_Status|null
      */
-    public function enqueue(Job $job, $trackStatus = FALSE)
+    public function enqueue(Job $job, $trackStatus = false)
     {
         if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
@@ -140,11 +147,11 @@ class Resque implements EnqueueInterface
 
         $result = \Resque::enqueue($job->queue, Job::class, $job->args, $trackStatus);
 
-        if ($trackStatus && $result !== FALSE) {
+        if ($trackStatus && false !== $result) {
             return new \Resque_Job_Status($result);
         }
 
-        return NULL;
+        return;
     }
 
     /**
@@ -152,7 +159,7 @@ class Resque implements EnqueueInterface
      */
     protected function wrap($job)
     {
-        $job->args['resque.jobclass'] = get_class($job);
+        $job->args['resque.jobclass'] = \get_class($job);
     }
 
     /**
@@ -162,13 +169,13 @@ class Resque implements EnqueueInterface
      */
     protected function attachRetryStrategy($job)
     {
-        $class = get_class($job);
+        $class = \get_class($job);
 
         if (isset($this->jobRetryStrategy[$class])) {
-            if (count($this->jobRetryStrategy[$class])) {
+            if (\count($this->jobRetryStrategy[$class])) {
                 $job->args['resque.retry_strategy'] = $this->jobRetryStrategy[$class];
             }
-        } elseif (count($this->globalRetryStrategy)) {
+        } elseif (\count($this->globalRetryStrategy)) {
             $job->args['resque.retry_strategy'] = $this->globalRetryStrategy;
         }
     }
@@ -176,7 +183,6 @@ class Resque implements EnqueueInterface
     /**
      * @param $at
      * @param Job $job
-     * @return null
      */
     public function enqueueAt($at, Job $job)
     {
@@ -189,13 +195,12 @@ class Resque implements EnqueueInterface
 
         \ResqueScheduler::enqueueAt($at, $job->queue, Job::class, $job->args);
 
-        return NULL;
+        return;
     }
 
     /**
      * @param $in
      * @param Job $job
-     * @return null
      */
     public function enqueueIn($in, Job $job)
     {
@@ -208,11 +213,12 @@ class Resque implements EnqueueInterface
 
         \ResqueScheduler::enqueueIn($in, $job->queue, Job::class, $job->args);
 
-        return NULL;
+        return;
     }
 
     /**
      * @param Job $job
+     *
      * @return mixed
      */
     public function removedDelayed(Job $job)
@@ -230,6 +236,7 @@ class Resque implements EnqueueInterface
     /**
      * @param $at
      * @param Job $job
+     *
      * @return mixed
      */
     public function removeFromTimestamp($at, Job $job)
@@ -249,13 +256,14 @@ class Resque implements EnqueueInterface
      */
     public function getQueues()
     {
-        return \array_map(function($queue) {
+        return array_map(function ($queue) {
             return new Queue($queue);
         }, \Resque::queues());
     }
 
     /**
      * @param $queue
+     *
      * @return Queue
      */
     public function getQueue($queue)
@@ -268,7 +276,7 @@ class Resque implements EnqueueInterface
      */
     public function getWorkers()
     {
-        return \array_map(function($worker) {
+        return array_map(function ($worker) {
             return new Worker($worker);
         }, \Resque_Worker::all());
     }
@@ -279,12 +287,13 @@ class Resque implements EnqueueInterface
     public function getRunningWorkers()
     {
         return array_filter($this->getWorkers(), function (Worker $worker) {
-            return $worker->getCurrentJob() !== null;
+            return null !== $worker->getCurrentJob();
         });
     }
 
     /**
      * @param $id
+     *
      * @return Worker|null
      */
     public function getWorker($id)
@@ -292,7 +301,7 @@ class Resque implements EnqueueInterface
         $worker = \Resque_Worker::find($id);
 
         if (!$worker) {
-            return NULL;
+            return;
         }
 
         return new Worker($worker);
@@ -313,8 +322,8 @@ class Resque implements EnqueueInterface
     {
         $count = 0;
         foreach ($this->getWorkers() as $worker) {
-            if ($worker->getCurrentJob() !== null) {
-                $count++;
+            if (null !== $worker->getCurrentJob()) {
+                ++$count;
             }
         }
 
@@ -337,11 +346,11 @@ class Resque implements EnqueueInterface
     public function getFirstDelayedJobTimestamp()
     {
         $timestamps = $this->getDelayedJobTimestamps();
-        if (count($timestamps) > 0) {
+        if (\count($timestamps) > 0) {
             return $timestamps[0];
         }
 
-        return [NULL, 0];
+        return [null, 0];
     }
 
     /**
@@ -354,7 +363,7 @@ class Resque implements EnqueueInterface
         //TODO: find a more efficient way to do this
         $out = [];
         foreach ($timestamps as $timestamp) {
-            $out[] = [$timestamp, \Resque::redis()->llen('delayed:' . $timestamp)];
+            $out[] = [$timestamp, \Resque::redis()->llen('delayed:'.$timestamp)];
         }
 
         return $out;
@@ -370,14 +379,15 @@ class Resque implements EnqueueInterface
 
     /**
      * @param $timestamp
+     *
      * @return array
      */
     public function getJobsForTimestamp($timestamp)
     {
-        $jobs = \Resque::redis()->lrange('delayed:' . $timestamp, 0, -1);
-        $out = [];
+        $jobs = \Resque::redis()->lrange('delayed:'.$timestamp, 0, -1);
+        $out  = [];
         foreach ($jobs as $job) {
-            $out[] = json_decode($job, TRUE);
+            $out[] = json_decode($job, true);
         }
 
         return $out;
@@ -385,6 +395,7 @@ class Resque implements EnqueueInterface
 
     /**
      * @param $queue
+     *
      * @return int
      */
     public function clearQueue($queue)
@@ -395,6 +406,7 @@ class Resque implements EnqueueInterface
     /**
      * @param int $start
      * @param int $count
+     *
      * @return array
      */
     public function getFailedJobs($start = -100, $count = 100)
@@ -404,7 +416,7 @@ class Resque implements EnqueueInterface
         $result = [];
 
         foreach ($jobs as $job) {
-            $result[] = new FailedJob(json_decode($job, TRUE));
+            $result[] = new FailedJob(json_decode($job, true));
         }
 
         return $result;
@@ -433,7 +445,8 @@ class Resque implements EnqueueInterface
             $failedJob = new FailedJob(json_decode($job, true));
             \Resque::enqueue($failedJob->getQueueName(), $failedJob->getName(), $failedJob->getArgs()[0]);
         }
-        return count($jobs);
+
+        return \count($jobs);
     }
 
     /**

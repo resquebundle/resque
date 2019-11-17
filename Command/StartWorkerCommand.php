@@ -1,4 +1,10 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque\Command;
 
@@ -10,14 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 /**
- * Class StartWorkerCommand
- * @package ResqueBundle\Resque\Command
+ * Class StartWorkerCommand.
  */
 class StartWorkerCommand extends ContainerAwareCommand
 {
-    /**
-     *
-     */
     protected function configure()
     {
         $this
@@ -31,9 +33,10 @@ class StartWorkerCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @return int|null|void
+     *
+     * @return int|void|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -53,20 +56,20 @@ class StartWorkerCommand extends ContainerAwareCommand
         }
 
         $env['APP_INCLUDE'] = $this->getContainer()->getParameter('resque.app_include');
-        $env['COUNT'] = $input->getOption('count');
-        $env['INTERVAL'] = $input->getOption('interval');
-        $env['QUEUE'] = $input->getArgument('queues');
-        $env['VERBOSE'] = 1;
+        $env['COUNT']       = $input->getOption('count');
+        $env['INTERVAL']    = $input->getOption('interval');
+        $env['QUEUE']       = $input->getArgument('queues');
+        $env['VERBOSE']     = 1;
 
         // Allow Sentry.io integration
-        if ($this->getContainer()->hasParameter('sentry.dsn')){
-            if ($sentryDSN = $this->getContainer()->getParameter('sentry.dsn')){
-                $output->writeln('Enabling Sentry Reporting to DSN '. $sentryDSN);
+        if ($this->getContainer()->hasParameter('sentry.dsn')) {
+            if ($sentryDSN = $this->getContainer()->getParameter('sentry.dsn')) {
+                $output->writeln('Enabling Sentry Reporting to DSN '.$sentryDSN);
                 $env['SENTRY_DSN'] = $sentryDSN;
             }
         }
 
-        if (FALSE !== getenv('APP_INCLUDE')) {
+        if (false !== getenv('APP_INCLUDE')) {
             $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
         }
 
@@ -83,15 +86,15 @@ class StartWorkerCommand extends ContainerAwareCommand
             unset($env['VERBOSE']);
         }
 
-        $redisHost = $this->getContainer()->getParameter('resque.redis.host');
-        $redisPort = $this->getContainer()->getParameter('resque.redis.port');
+        $redisHost     = $this->getContainer()->getParameter('resque.redis.host');
+        $redisPort     = $this->getContainer()->getParameter('resque.redis.port');
         $redisDatabase = $this->getContainer()->getParameter('resque.redis.database');
 
         // Allow overriding of root_dir if deploying to a symlinked folder
         $workdirectory = $this->getContainer()->getParameter('resque.worker.root_dir');
 
-        if ($redisHost != NULL && $redisPort != NULL) {
-            $env['REDIS_BACKEND'] = $redisHost . ':' . $redisPort;
+        if (null != $redisHost && null != $redisPort) {
+            $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
         }
 
         if (isset($redisDatabase)) {
@@ -99,15 +102,15 @@ class StartWorkerCommand extends ContainerAwareCommand
         }
 
         $opt = '';
-        if (0 !== $m = (int)$input->getOption('memory-limit')) {
+        if (0 !== $m = (int) $input->getOption('memory-limit')) {
             $opt = sprintf('-d memory_limit=%dM', $m);
         }
 
         if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
             $phpExecutable = PHP_BINARY;
         } else {
-            $phpExecutable = PHP_BINDIR . '/php';
-            if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $phpExecutable = PHP_BINDIR.'/php';
+            if (\defined('PHP_WINDOWS_VERSION_BUILD')) {
                 $phpExecutable = 'php';
             }
         }
@@ -115,7 +118,7 @@ class StartWorkerCommand extends ContainerAwareCommand
         $workerCommand = strtr('%php% %opt% %dir%/resque', [
             '%php%' => $phpExecutable,
             '%opt%' => $opt,
-            '%dir%' => $workdirectory ? $workdirectory . '/../vendor/resquebundle/resque/bin' : __DIR__ . '/../bin',
+            '%dir%' => $workdirectory ? $workdirectory.'/../vendor/resquebundle/resque/bin' : __DIR__.'/../bin',
         ]);
 
         if (!$input->getOption('foreground')) {
@@ -128,17 +131,17 @@ class StartWorkerCommand extends ContainerAwareCommand
         // In windows: When you pass an environment to CMD it replaces the old environment
         // That means we create a lot of problems with respect to user accounts and missing vars
         // this is a workaround where we add the vars to the existing environment.
-        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+        if (\defined('PHP_WINDOWS_VERSION_BUILD')) {
             foreach ($env as $key => $value) {
-                putenv($key . "=" . $value);
+                putenv($key.'='.$value);
             }
-            $env = NULL;
+            $env = null;
         }
 
-        $process = new Process($workerCommand, NULL, $env, NULL, NULL);
+        $process = new Process($workerCommand, null, $env, null, null);
 
         if (!$input->getOption('quiet')) {
-            $output->writeln(\sprintf('Starting worker <info>%s</info>', $process->getCommandLine()));
+            $output->writeln(sprintf('Starting worker <info>%s</info>', $process->getCommandLine()));
         }
 
         // if foreground, we redirect output
@@ -149,16 +152,16 @@ class StartWorkerCommand extends ContainerAwareCommand
         } // else we recompose and display the worker id
         else {
             $process->run();
-            $pid = \trim($process->getOutput());
+            $pid = trim($process->getOutput());
 
-            if (function_exists('gethostname')) {
+            if (\function_exists('gethostname')) {
                 $hostname = gethostname();
             } else {
                 $hostname = php_uname('n');
             }
 
             if (!$input->getOption('quiet')) {
-                $output->writeln(\sprintf('<info>Worker started</info> %s:%s:%s', $hostname, $pid, $input->getArgument('queues')));
+                $output->writeln(sprintf('<info>Worker started</info> %s:%s:%s', $hostname, $pid, $input->getArgument('queues')));
             }
         }
     }

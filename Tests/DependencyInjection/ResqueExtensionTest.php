@@ -1,14 +1,18 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque\Tests\DependencyInjection;
-
 
 use ResqueBundle\Resque\DependencyInjection\ResqueExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Class ResqueExtensionTest
- * @package ResqueBundle\Resque\Tests\DependencyInjection
+ * Class ResqueExtensionTest.
  */
 class ResqueExtensionTest extends \PHPUnit_Framework_TestCase
 {

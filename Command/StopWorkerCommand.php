@@ -1,4 +1,10 @@
 <?php
+/*
+ * @copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+ * @author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+ * @see        https://github.com/resquebundle/resque
+ * @license    MIT
+ */
 
 namespace ResqueBundle\Resque\Command;
 
@@ -9,14 +15,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class StopWorkerCommand
- * @package ResqueBundle\Resque\Command
+ * Class StopWorkerCommand.
  */
 class StopWorkerCommand extends ContainerAwareCommand
 {
-    /**
-     *
-     */
     protected function configure()
     {
         $this
@@ -27,8 +29,9 @@ class StopWorkerCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -58,7 +61,7 @@ class StopWorkerCommand extends ContainerAwareCommand
             $workers = [$worker];
         }
 
-        if (!count($workers)) {
+        if (!\count($workers)) {
             $output->writeln('<error>There are no running workers to stop.</error>');
 
             return 0;
@@ -68,10 +71,9 @@ class StopWorkerCommand extends ContainerAwareCommand
             if ($worker->stop()) {
                 // The worker was successfully killed.
                 $worker->getWorker()->unregisterWorker();
-                $output->writeln(\sprintf('Stopped %s', $worker->getId()));
-            }
-            else {
-                $output->writeln(\sprintf('<error>Failed to stop %s</error>', $worker->getId()));
+                $output->writeln(sprintf('Stopped %s', $worker->getId()));
+            } else {
+                $output->writeln(sprintf('<error>Failed to stop %s</error>', $worker->getId()));
             }
         }
 
