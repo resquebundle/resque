@@ -102,7 +102,7 @@ class Resque implements EnqueueInterface
             if ($j->job->payload['class'] == get_class(Job::class)) {
 
                 // add the kernel options
-                if ($job instanceof ContainerAwareJob) {
+                if ($job instanceof Job) {
                     $job->setKernelOptions($this->kernelOptions);
                 }
 
@@ -131,7 +131,7 @@ class Resque implements EnqueueInterface
      */
     public function enqueue(Job $job, $trackStatus = FALSE)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
@@ -180,7 +180,7 @@ class Resque implements EnqueueInterface
      */
     public function enqueueAt($at, Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
@@ -199,7 +199,7 @@ class Resque implements EnqueueInterface
      */
     public function enqueueIn($in, Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
@@ -217,7 +217,7 @@ class Resque implements EnqueueInterface
      */
     public function removedDelayed(Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
@@ -234,7 +234,7 @@ class Resque implements EnqueueInterface
      */
     public function removeFromTimestamp($at, Job $job)
     {
-        if ($job instanceof ContainerAwareJob) {
+        if ($job instanceof Job) {
             $job->setKernelOptions($this->kernelOptions);
         }
 
