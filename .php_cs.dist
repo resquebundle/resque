@@ -1,0 +1,41 @@
+<?php
+
+if (!file_exists(__DIR__.'/src')) {
+    exit(0);
+}
+
+$finder = PhpCsFixer\Finder::create()
+    ->in([
+        __DIR__.'/app',
+        __DIR__.'/bin',
+        __DIR__.'/src'
+        ]
+        )
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules(array(
+        'RemoveDebugStatements/dump' => true,
+        'simplified_null_return' => true,
+        '@Symfony' => true,
+        '@DoctrineAnnotation' => true,
+        '@Symfony:risky' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'binary_operator_spaces' => ['align_double_arrow' => true, 'align_equals' => true],
+        'protected_to_private' => false,
+        'semicolon_after_instruction' => false,
+        'no_superfluous_phpdoc_tags'=>false,
+        'header_comment' => [
+            'separate'=>'bottom',
+            'header' => <<<EOF
+@copyright  Copyright (C) 2019 Blue Flame Digital Solutions Limited / Phil Taylor. All rights reserved.
+@author     Phil Taylor <phil@phil-taylor.com> and others, see README.md
+@see        https://github.com/https://github.com/resquebundle/resque
+@license    MIT
+EOF
+        ]
+    ))
+    ->registerCustomFixers([new Drew\DebugStatementsFixers\Dump()])
+    ->setRiskyAllowed(true)
+    ->setFinder($finder)
+;
