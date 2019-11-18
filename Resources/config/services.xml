@@ -15,6 +15,11 @@
     </parameters>
 
     <services>
+        <defaults autowire="true" autoconfigure="true" public="false" />
+        <prototype
+                namespace="ResqueBundle\Resque\Command\"
+                resource="../../Command/*"
+        />
         <service id="ResqueBundle\Resque\Resque" class="%resque.class%" lazy="true" public="true">
             <argument type="collection">
                 <argument key="kernel.root_dir">%resque.worker.root_dir%</argument>
