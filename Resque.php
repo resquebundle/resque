@@ -106,7 +106,7 @@ class Resque implements EnqueueInterface
         $jobs  = $queue->getJobs();
 
         foreach ($jobs as $j) {
-            if ($j->job->payload['class'] == \get_class(Job::class)) {
+            if ($j->job->payload['args'][0]['resque.jobclass'] == \get_class($job)) {
                 // add the kernel options
                 if ($job instanceof Job) {
                     $job->setKernelOptions($this->kernelOptions);
