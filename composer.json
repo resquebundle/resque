@@ -34,7 +34,7 @@
     "symfony/framework-bundle": "^3.4 || ^4.0",
     "symfony/console": "^3.4 || ^4.0",
     "symfony/process": "^3.4 || ^4.0",
-    "resque/php-resque": "dev-master"
+    "resque/php-resque": "^1.3"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.4"
