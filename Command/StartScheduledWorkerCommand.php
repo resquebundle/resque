@@ -54,6 +54,10 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
             'RESQUE_PHP'  => $this->getContainer()->getParameter('resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
             'INTERVAL'    => $input->getOption('interval'),
         ];
+        
+        if (!file_exists($env['RESQUE_PHP'])){
+            $env['RESQUE_PHP'] = $this->getContainer()->getParameter('resque.vendor_dir').'/resque/php-resque/lib/Resque.php';
+        }
 
         if (false !== getenv('APP_INCLUDE')) {
             $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
