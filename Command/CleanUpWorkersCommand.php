@@ -41,7 +41,6 @@ class CleanUpWorkersCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         if ($this->resque instanceof Resque) {
             $workers = $this->resque->getWorkers();
 

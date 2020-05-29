@@ -12,9 +12,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
+use Symfony\Component\Process\Process;
 
 /**
  * Class StartScheduledWorkerCommand.
@@ -59,13 +58,13 @@ class StartScheduledWorkerCommand extends Command
         }
 
         $env = [
-            'APP_INCLUDE' =>  $this->params->get('resque.app_include'),
+            'APP_INCLUDE' => $this->params->get('resque.app_include'),
             'VVERBOSE'    => 1,
-            'RESQUE_PHP'  =>  $this->params->get('resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
+            'RESQUE_PHP'  => $this->params->get('resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
             'INTERVAL'    => $input->getOption('interval'),
         ];
-        
-        if (!file_exists($env['RESQUE_PHP'])){
+
+        if (!file_exists($env['RESQUE_PHP'])) {
             $env['RESQUE_PHP'] =  $this->params->get('resque.vendor_dir').'/resque/php-resque/lib/Resque.php';
         }
 
@@ -106,7 +105,7 @@ class StartScheduledWorkerCommand extends Command
         if (!$input->getOption('foreground')) {
             $logFile =  $this->params->get(
                     'kernel.logs_dir'
-                ).'/resque-scheduler_'. $this->params->get('kernel.environment').'.log';
+                ).'/resque-scheduler_'.$this->params->get('kernel.environment').'.log';
             $workerCommand = 'nohup '.$workerCommand.' > '.$logFile.' 2>&1 & echo $!';
         }
 

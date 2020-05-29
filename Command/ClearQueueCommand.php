@@ -26,7 +26,7 @@ class ClearQueueCommand extends Command
         $this->resque = $resque;
         parent::__construct($name);
     }
-    
+
     protected function configure()
     {
         $this
@@ -43,8 +43,6 @@ class ClearQueueCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-       
-
         $queue = $input->getArgument('queue');
         $count = $this->resque->clearQueue($queue);
 

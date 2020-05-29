@@ -61,11 +61,11 @@ abstract class ContainerAwareJob
         $file    = current($results);
         $class   = $file->getBasename('.php');
 
-        // Take into account any namespace 
-        preg_match('/namespace\s(.*)\;/',  file_get_contents($file), $matches);
-        if (\count($matches) == 2) {
-          $namespace = '\\'.$matches[1].'\\';
-          $class = $namespace . $class;
+        // Take into account any namespace
+        preg_match('/namespace\s(.*)\;/', file_get_contents($file), $matches);
+        if (2 == \count($matches)) {
+            $namespace = '\\'.$matches[1].'\\';
+            $class     = $namespace.$class;
         }
 
         require_once $file;

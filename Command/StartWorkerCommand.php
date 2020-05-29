@@ -28,7 +28,7 @@ class StartWorkerCommand extends Command
         $this->params = $params;
         parent::__construct($name);
     }
-    
+
     protected function configure()
     {
         $this
@@ -130,7 +130,7 @@ class StartWorkerCommand extends Command
         if (!$input->getOption('foreground')) {
             $workerCommand = strtr('nohup %cmd% > %logs_dir%/resque.log 2>&1 & echo $!', [
                 '%cmd%'      => $workerCommand,
-                '%logs_dir%' =>  $this->params->get('kernel.logs_dir'),
+                '%logs_dir%' => $this->params->get('kernel.logs_dir'),
             ]);
         }
 
@@ -144,10 +144,9 @@ class StartWorkerCommand extends Command
             $env = null;
         }
 
-
-        $workerCommand= explode(' ',$workerCommand);
-        foreach ($workerCommand as $k=>$v){
-            if (trim($v)===''){
+        $workerCommand= explode(' ', $workerCommand);
+        foreach ($workerCommand as $k=> $v) {
+            if ('' === trim($v)) {
                 unset($workerCommand[$k]);
             }
         }

@@ -25,7 +25,7 @@ class StopScheduledWorkerCommand extends Command
         $this->params = $params;
         parent::__construct($name);
     }
-    
+
     protected function configure()
     {
         $this
