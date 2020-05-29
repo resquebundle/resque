@@ -1,11 +1,21 @@
 [![Build Status](https://travis-ci.org/resquebundle/resque.svg?branch=master)](https://travis-ci.org/resquebundle/resque)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/resquebundle/resque/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/resquebundle/resque/?branch=master)
 
-**This project IS under ACTIVE development (last major update November 2019)**
+**This project IS under ACTIVE development (last major update May 2020)**
 
 # ResqueBundle
 
-## Update November 2019.
+## Update May 2020
+
+ - Inject ParameterBagInterface instead of directly accessing container in commands and controller
+ - User kernel.project_dir instead of kernel.root_dir (possibly b/c break?)
+ - Update Routing controller to use long syntax
+ - Use `@Bundle` syntax for loading twig templates
+ - force a minimum of Symfony 4.1.2 for critical security
+ - Use correct Process function for max compatibility
+ - Drop Symfony 3.4 support totally, sorry. 
+
+## Update November 2019
 
 I have now worked on the master branch to implement compatibility with Symfony 4+, using Dependancy injection instead of `ContainerAwareJob`.
 
