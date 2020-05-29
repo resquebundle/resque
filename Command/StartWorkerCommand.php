@@ -144,13 +144,6 @@ class StartWorkerCommand extends Command
             $env = null;
         }
 
-        $workerCommand= explode(' ', $workerCommand);
-        foreach ($workerCommand as $k=> $v) {
-            if ('' === trim($v)) {
-                unset($workerCommand[$k]);
-            }
-        }
-
         $process = Process::fromShellCommandline($workerCommand, null, $env, null, null);
 
         if (!$input->getOption('quiet')) {
