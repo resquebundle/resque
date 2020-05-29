@@ -5,42 +5,42 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="ResqueBundle_homepage" path="/">
-        <default key="_controller">ResqueBundle:Default:index</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController::indexAction</default>
     </route>
 
     <route id="ResqueBundle_queue_show" path="/queue/{queue}">
-        <default key="_controller">ResqueBundle:Default:showQueue</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:showQueueAction</default>
     </route>
 
     <route id="ResqueBundle_queue_remove" path="/queue/{queue}/remove">
-        <default key="_controller">ResqueBundle:Default:removeQueue</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:removeQueueAction</default>
     </route>
 
     <route id="ResqueBundle_failed_list" path="/failed/list">
-        <default key="_controller">ResqueBundle:Default:listFailed</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:listFailedAction</default>
     </route>
 
     <route id="ResqueBundle_failed_retry" path="/failed/retry">
-        <default key="_controller">ResqueBundle:Default:retryFailed</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:retryFailedAction</default>
     </route>
 
     <route id="ResqueBundle_failed_retry_clear" path="/failed/retry-clear">
-        <default key="_controller">ResqueBundle:Default:retryClearFailed</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:retryClearFailedAction</default>
     </route>
 
     <route id="ResqueBundle_failed_clear" path="/failed/clear">
-        <default key="_controller">ResqueBundle:Default:clearFailed</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:clearFailedAction</default>
     </route>
 
     <route id="ResqueBundle_workers" path="/workers">
-        <default key="_controller">ResqueBundle:Default:workers</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:workersAction</default>
     </route>
 
     <route id="ResqueBundle_scheduled_list" path="/scheduled/list">
-        <default key="_controller">ResqueBundle:Default:listScheduled</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:listScheduledAction</default>
     </route>
 
     <route id="ResqueBundle_scheduled_timestamp" path="/scheduled/{timestamp}">
-        <default key="_controller">ResqueBundle:Default:showTimestamp</default>
+        <default key="_controller">ResqueBundle\Resque\Controller\DefaultController:showTimestampAction</default>
     </route>
 </routes>

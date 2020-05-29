@@ -5,7 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="resque.kernel.root_dir">%kernel.root_dir%</parameter>
+        <parameter key="resque.kernel.root_dir">%kernel.project_dir%</parameter>
         <parameter key="resque.vendor_dir"/>
         <parameter key="resque.class"/>
         <parameter key="resque.prefix"/>
@@ -19,6 +19,10 @@
         <prototype
                 namespace="ResqueBundle\Resque\Command\"
                 resource="../../Command/*"
+        />
+        <prototype
+                namespace="ResqueBundle\Resque\Controller\"
+                resource="../../Controller/*"
         />
         <service id="ResqueBundle\Resque\Resque" class="%resque.class%" lazy="true" public="true">
             <argument type="collection">

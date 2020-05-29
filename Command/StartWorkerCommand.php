@@ -8,18 +8,27 @@
 
 namespace ResqueBundle\Resque\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Process\Process;
 
 /**
  * Class StartWorkerCommand.
  */
-class StartWorkerCommand extends ContainerAwareCommand
+class StartWorkerCommand extends Command
 {
+    private $params;
+
+    public function __construct(string $name = null, ParameterBagInterface $params)
+    {
+        $this->params = $params;
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -55,15 +64,15 @@ class StartWorkerCommand extends ContainerAwareCommand
             );
         }
 
-        $env['APP_INCLUDE'] = $this->getContainer()->getParameter('resque.app_include');
+        $env['APP_INCLUDE'] =  $this->params->get('resque.app_include');
         $env['COUNT']       = $input->getOption('count');
         $env['INTERVAL']    = $input->getOption('interval');
         $env['QUEUE']       = $input->getArgument('queues');
         $env['VERBOSE']     = 1;
 
         // Allow Sentry.io integration
-        if ($this->getContainer()->hasParameter('sentry.dsn')) {
-            if ($sentryDSN = $this->getContainer()->getParameter('sentry.dsn')) {
+        if ($this->params->has('sentry.dsn')) {
+            if ($sentryDSN =  $this->params->get('sentry.dsn')) {
                 $output->writeln('Enabling Sentry Reporting to DSN '.$sentryDSN);
                 $env['SENTRY_DSN'] = $sentryDSN;
             }
@@ -73,9 +82,9 @@ class StartWorkerCommand extends ContainerAwareCommand
             $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
         }
 
-        $prefix = $this->getContainer()->getParameter('resque.prefix');
+        $prefix =  $this->params->get('resque.prefix');
         if (!empty($prefix)) {
-            $env['PREFIX'] = $this->getContainer()->getParameter('resque.prefix');
+            $env['PREFIX'] =  $this->params->get('resque.prefix');
         }
 
         if ($input->getOption('verbose')) {
@@ -86,9 +95,9 @@ class StartWorkerCommand extends ContainerAwareCommand
             unset($env['VERBOSE']);
         }
 
-        $redisHost     = $this->getContainer()->getParameter('resque.redis.host');
-        $redisPort     = $this->getContainer()->getParameter('resque.redis.port');
-        $redisDatabase = $this->getContainer()->getParameter('resque.redis.database');
+        $redisHost     =  $this->params->get('resque.redis.host');
+        $redisPort     =  $this->params->get('resque.redis.port');
+        $redisDatabase =  $this->params->get('resque.redis.database');
 
         if (null != $redisHost && null != $redisPort) {
             $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
@@ -121,7 +130,7 @@ class StartWorkerCommand extends ContainerAwareCommand
         if (!$input->getOption('foreground')) {
             $workerCommand = strtr('nohup %cmd% > %logs_dir%/resque.log 2>&1 & echo $!', [
                 '%cmd%'      => $workerCommand,
-                '%logs_dir%' => $this->getContainer()->getParameter('kernel.logs_dir'),
+                '%logs_dir%' => $this->params->get('kernel.logs_dir'),
             ]);
         }
 
@@ -133,6 +142,13 @@ class StartWorkerCommand extends ContainerAwareCommand
                 putenv($key.'='.$value);
             }
             $env = null;
+        }
+
+        $workerCommand= explode(' ', $workerCommand);
+        foreach ($workerCommand as $k=> $v) {
+            if ('' === trim($v)) {
+                unset($workerCommand[$k]);
+            }
         }
 
         $process = Process::fromShellCommandline($workerCommand, null, $env, null, null);

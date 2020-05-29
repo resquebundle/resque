@@ -8,7 +8,8 @@
 
 namespace ResqueBundle\Resque\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use ResqueBundle\Resque\Resque;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,8 +17,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class ClearQueueCommand.
  */
-class ClearQueueCommand extends ContainerAwareCommand
+class ClearQueueCommand extends Command
 {
+    private $resque;
+
+    public function __construct(string $name = null, Resque $resque)
+    {
+        $this->resque = $resque;
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -34,10 +43,8 @@ class ClearQueueCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $resque = $this->getContainer()->get('ResqueBundle\Resque\Resque');
-
         $queue = $input->getArgument('queue');
-        $count = $resque->clearQueue($queue);
+        $count = $this->resque->clearQueue($queue);
 
         $output->writeln('Cleared queue '.$queue.' - removed '.$count.' entries');
 
