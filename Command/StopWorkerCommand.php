@@ -8,7 +8,8 @@
 
 namespace ResqueBundle\Resque\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use ResqueBundle\Resque\Resque;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,8 +18,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class StopWorkerCommand.
  */
-class StopWorkerCommand extends ContainerAwareCommand
+class StopWorkerCommand extends Command
 {
+    private $resque;
+
+    public function __construct(string $name = null, Resque $resque)
+    {
+        $this->resque = $resque;
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -36,19 +45,17 @@ class StopWorkerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $resque = $this->getContainer()->get('ResqueBundle\Resque\Resque');
-
         if ($input->getOption('all')) {
-            $workers = $resque->getWorkers();
+            $workers = $this->resque->getWorkers();
         } else {
-            $worker = $resque->getWorker($input->getArgument('id'));
+            $worker = $this->resque->getWorker($input->getArgument('id'));
 
             if (!$worker) {
-                $availableWorkers = $resque->getWorkers();
+                $availableWorkers = $rthis->esque->getWorkers();
                 if (!empty($availableWorkers)) {
                     $output->writeln('<error>You need to give an existing worker.</error>');
                     $output->writeln('Running workers are:');
-                    foreach ($resque->getWorkers() as $worker) {
+                    foreach ($this->resque->getWorkers() as $worker) {
                         $output->writeln($worker->getId());
                     }
                 } else {

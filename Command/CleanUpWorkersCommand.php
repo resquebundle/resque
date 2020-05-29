@@ -9,15 +9,23 @@
 namespace ResqueBundle\Resque\Command;
 
 use ResqueBundle\Resque\Resque;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class CleanUpWorkersCommand.
  */
-class CleanUpWorkersCommand extends ContainerAwareCommand
+class CleanUpWorkersCommand extends Command
 {
+    private $resque;
+
+    public function __construct(string $name = null, Resque $resque)
+    {
+        $this->resque = $resque;
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -33,10 +41,9 @@ class CleanUpWorkersCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $resque = $this->getContainer()->get('ResqueBundle\Resque\Resque');
 
-        if ($resque instanceof Resque) {
-            $workers = $resque->getWorkers();
+        if ($this->resque instanceof Resque) {
+            $workers = $this->resque->getWorkers();
 
             foreach ($workers as $worker) {
                 $output->writeln(sprintf('Unregistered Worker: %s', $worker->getId()));

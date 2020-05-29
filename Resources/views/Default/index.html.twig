@@ -1,6 +1,6 @@
-{% extends 'ResqueBundle::layout.html.twig' %}
+{% extends '@Resque/layout.html.twig' %}
 {% block body %}
-{% include "ResqueBundle:Default:_menu.html.twig" with {activeNav: 'homepage'} %}
+{% include "@Resque/Default/_menu.html.twig" with {activeNav: 'homepage'} %}
     <div class="col-md-12">
 
         {% for flash_message in app.session.flashBag.get('info') %}
@@ -37,7 +37,7 @@
 
         <h2>{{ resque.numberOfWorkingWorkers }} of {{ resque.numberOfWorkers }} Workers Working</h2>
         <p class="lead">The list below contains all workers which are currently running a job.</p>
-        {% include "ResqueBundle:Default:workers.table.html.twig" with {workers: resque.runningWorkers } %}
+        {% include "@Resque/Default/workers.table.html.twig" with {workers: resque.runningWorkers } %}
 
         <h2>Redis</h2>
         <table class="table table-bordered table-striped">

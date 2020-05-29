@@ -8,17 +8,27 @@
 
 namespace ResqueBundle\Resque\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+
 
 /**
  * Class StartScheduledWorkerCommand.
  */
-class StartScheduledWorkerCommand extends ContainerAwareCommand
+class StartScheduledWorkerCommand extends Command
 {
+    private $params;
+
+    public function __construct(string $name = null, ParameterBagInterface $params)
+    {
+        $this->params = $params;
+        parent::__construct($name);
+    }
+
     protected function configure()
     {
         $this
@@ -39,7 +49,7 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pidFile = $this->getContainer()->get('kernel')->getCacheDir().'/resque_scheduledworker.pid';
+        $pidFile = $this->params->get('kernel.cache_dir').'/resque_scheduledworker.pid';
         if (file_exists($pidFile) && !$input->getOption('force')) {
             throw new \Exception('PID file exists - use --force to override');
         }
@@ -49,29 +59,29 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
         }
 
         $env = [
-            'APP_INCLUDE' => $this->getContainer()->getParameter('resque.app_include'),
+            'APP_INCLUDE' =>  $this->params->get('resque.app_include'),
             'VVERBOSE'    => 1,
-            'RESQUE_PHP'  => $this->getContainer()->getParameter('resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
+            'RESQUE_PHP'  =>  $this->params->get('resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
             'INTERVAL'    => $input->getOption('interval'),
         ];
         
         if (!file_exists($env['RESQUE_PHP'])){
-            $env['RESQUE_PHP'] = $this->getContainer()->getParameter('resque.vendor_dir').'/resque/php-resque/lib/Resque.php';
+            $env['RESQUE_PHP'] =  $this->params->get('resque.vendor_dir').'/resque/php-resque/lib/Resque.php';
         }
 
         if (false !== getenv('APP_INCLUDE')) {
             $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
         }
 
-        $prefix = $this->getContainer()->getParameter('resque.prefix');
+        $prefix =  $this->params->get('resque.prefix');
 
         if (!empty($prefix)) {
-            $env['PREFIX'] = $this->getContainer()->getParameter('resque.prefix');
+            $env['PREFIX'] =  $this->params->get('resque.prefix');
         }
 
-        $redisHost     = $this->getContainer()->getParameter('resque.redis.host');
-        $redisPort     = $this->getContainer()->getParameter('resque.redis.port');
-        $redisDatabase = $this->getContainer()->getParameter('resque.redis.database');
+        $redisHost     =  $this->params->get('resque.redis.host');
+        $redisPort     =  $this->params->get('resque.redis.port');
+        $redisDatabase =  $this->params->get('resque.redis.database');
 
         if (null != $redisHost && null != $redisPort) {
             $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
@@ -94,9 +104,9 @@ class StartScheduledWorkerCommand extends ContainerAwareCommand
         $workerCommand = $phpExecutable.' '.$workdirectory.'resque-scheduler';
 
         if (!$input->getOption('foreground')) {
-            $logFile = $this->getContainer()->getParameter(
+            $logFile =  $this->params->get(
                     'kernel.logs_dir'
-                ).'/resque-scheduler_'.$this->getContainer()->getParameter('kernel.environment').'.log';
+                ).'/resque-scheduler_'. $this->params->get('kernel.environment').'.log';
             $workerCommand = 'nohup '.$workerCommand.' > '.$logFile.' 2>&1 & echo $!';
         }
 

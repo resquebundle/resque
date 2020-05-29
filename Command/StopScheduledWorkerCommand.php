@@ -8,15 +8,24 @@
 
 namespace ResqueBundle\Resque\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class StopScheduledWorkerCommand.
  */
-class StopScheduledWorkerCommand extends ContainerAwareCommand
+class StopScheduledWorkerCommand extends Command
 {
+    private $params;
+
+    public function __construct(string $name = null, ParameterBagInterface $params)
+    {
+        $this->params = $params;
+        parent::__construct($name);
+    }
+    
     protected function configure()
     {
         $this
@@ -32,7 +41,7 @@ class StopScheduledWorkerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pidFile = $this->getContainer()->get('kernel')->getCacheDir().'/resque_scheduledworker.pid';
+        $pidFile = $this->params->get('kernel.cache_dir').'/resque_scheduledworker.pid';
 
         if (!file_exists($pidFile)) {
             $output->writeln('No PID file found');

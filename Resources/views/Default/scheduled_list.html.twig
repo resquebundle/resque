@@ -1,6 +1,6 @@
-{% extends 'ResqueBundle::layout.html.twig' %}
+{% extends '@Resque/layout.html.twig' %}
 {% block body %}
-{% include "ResqueBundle:Default:_menu.html.twig" with {activeNav: 'scheduled_list'} %}
+    {% include "@Resque/Default/_menu.html.twig" with {activeNav: 'scheduled_list'} %}
     <div class="col-md-12">
         <h2>Scheduled Jobs</h2>
         <table class="table table-striped table-bordered">

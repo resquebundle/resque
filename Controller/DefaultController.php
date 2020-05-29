@@ -12,33 +12,36 @@ use ResqueBundle\Resque\Resque;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class DefaultController.
  */
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
+    /**
+     * @var Resque 
+     */
+    private $resque;
+    
+    public function __construct(Resque $resque)
+    {
+        $this->resque = $resque;        
+    }
+
     /**
      * @return Response
      */
     public function indexAction()
     {
-        $this->getResque()->pruneDeadWorkers();
+        $this->resque->pruneDeadWorkers();
 
         return $this->render(
             '@Resque/Default/index.html.twig',
             [
-                'resque' => $this->getResque(),
+                'resque' => $this->resque,
             ]
         );
-    }
-
-    /**
-     * @return Resque
-     */
-    protected function getResque()
-    {
-        return $this->get('ResqueBundle\Resque\Resque');
     }
 
     /**
@@ -51,7 +54,7 @@ class DefaultController extends Controller
     {
         list($start, $count, $showingAll) = $this->getShowParameters($request);
 
-        $queue = $this->getResque()->getQueue($queue);
+        $queue = $this->resque->getQueue($queue);
         $jobs  = $queue->getJobs($start, $count);
 
         if (!$showingAll) {
@@ -70,7 +73,7 @@ class DefaultController extends Controller
 
     public function removeQueueAction($queue, Request $request)
     {
-        $queue = $this->getResque()->getQueue($queue);
+        $queue = $this->resque->getQueue($queue);
         $count = $queue->clear();
         $queue->remove();
 
@@ -110,7 +113,7 @@ class DefaultController extends Controller
     {
         list($start, $count, $showingAll) = $this->getShowParameters($request);
 
-        $jobs = $this->getResque()->getFailedJobs($start, $count);
+        $jobs = $this->resque->getFailedJobs($start, $count);
 
         if (!$showingAll) {
             $jobs = array_reverse($jobs);
@@ -133,7 +136,7 @@ class DefaultController extends Controller
         return $this->render(
             '@Resque/Default/workers.html.twig',
             [
-                'resque' => $this->getResque(),
+                'resque' => $this->resque,
             ]
         );
     }
@@ -146,7 +149,7 @@ class DefaultController extends Controller
         return $this->render(
             '@Resque/Default/scheduled_list.html.twig',
             [
-                'timestamps' => $this->getResque()->getDelayedJobTimestamps(),
+                'timestamps' => $this->resque->getDelayedJobTimestamps(),
             ]
         );
     }
@@ -161,7 +164,7 @@ class DefaultController extends Controller
         $jobs = [];
 
         // we don't want to enable the twig debug extension for this...
-        foreach ($this->getResque()->getJobsForTimestamp($timestamp) as $job) {
+        foreach ($this->resque->getJobsForTimestamp($timestamp) as $job) {
             $jobs[] = print_r($job, true);
         }
 
@@ -179,7 +182,7 @@ class DefaultController extends Controller
      */
     public function retryFailedAction()
     {
-        $count = $this->getResque()->retryFailedJobs();
+        $count = $this->resque->retryFailedJobs();
 
         $this->addFlash('info', 'Retry '.$count.' failed jobs.');
 
@@ -191,7 +194,7 @@ class DefaultController extends Controller
      */
     public function retryClearFailedAction()
     {
-        $count = $this->getResque()->retryFailedJobs(true);
+        $count = $this->resque->retryFailedJobs(true);
 
         $this->addFlash('info', 'Retry and clear '.$count.' failed jobs.');
 
@@ -203,7 +206,7 @@ class DefaultController extends Controller
      */
     public function clearFailedAction()
     {
-        $count = $this->getResque()->clearFailedJobs();
+        $count = $this->resque->clearFailedJobs();
 
         $this->addFlash('info', 'Clear '.$count.' failed jobs.');
 
