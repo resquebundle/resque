@@ -151,7 +151,7 @@ class StartWorkerCommand extends Command
             }
         }
 
-        $process = new Process($workerCommand, null, $env, null, null);
+        $process = Process::fromShellCommandline($workerCommand, null, $env, null, null);
 
         if (!$input->getOption('quiet')) {
             $output->writeln(sprintf('Starting worker <info>%s</info>', $process->getCommandLine()));
