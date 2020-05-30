@@ -56,7 +56,7 @@ abstract class ContainerAwareJob
     protected function createKernel()
     {
         $finder = new Finder();
-        $finder->name('*Kernel.php')->depth(0)->in($this->args['kernel.root_dir']);
+        $finder->name('*Kernel.php')->depth(0)->in($this->args['kernel.project_dir'].'/src');
         $results = iterator_to_array($finder);
         $file    = current($results);
         $class   = $file->getBasename('.php');

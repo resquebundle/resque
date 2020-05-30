@@ -43,8 +43,8 @@ class ResqueExtension extends Extension
             $container->getDefinition('ResqueBundle\Resque\Resque')->addMethodCall('setPrefix', [$config['prefix']]);
         }
 
-        if (!empty($config['worker']['root_dir'])) {
-            $container->setParameter('resque.worker.root_dir', $config['worker']['root_dir']);
+        if (!empty($config['worker']['project_dir'])) {
+            $container->setParameter('resque.worker.project_dir', $config['worker']['project_dir']);
         }
 
         if (!empty($config['auto_retry'])) {

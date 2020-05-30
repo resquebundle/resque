@@ -93,7 +93,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Worker Server configuration')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('root_dir')
+                        ->scalarNode('project_dir')
                             ->defaultValue('%kernel.project_dir%')
                             ->cannotBeEmpty()
                             ->info('The root dir of worker registered app')
