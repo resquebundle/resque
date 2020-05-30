@@ -51,7 +51,7 @@ class StopWorkerCommand extends Command
             $worker = $this->resque->getWorker($input->getArgument('id'));
 
             if (!$worker) {
-                $availableWorkers = $rthis->esque->getWorkers();
+                $availableWorkers = $this->resque->getWorkers();
                 if (!empty($availableWorkers)) {
                     $output->writeln('<error>You need to give an existing worker.</error>');
                     $output->writeln('Running workers are:');
