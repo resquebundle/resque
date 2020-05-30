@@ -16,7 +16,7 @@ Note that we dont offer the same b/c promise as symfony itself, but try our hard
 ## Update May 2020
 
  - Inject ParameterBagInterface instead of directly accessing container in commands and controller
- - User kernel.project_dir instead of kernel.root_dir (possibly b/c break?)
+ - User kernel.project_dir instead of kernel.root_dir (b/c break!, you need to update your config yml)
  - Update Routing controller to use long syntax
  - Use `@Bundle` syntax for loading twig templates
  - force a minimum of Symfony 4.1.2 for critical security
