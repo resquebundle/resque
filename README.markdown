@@ -5,6 +5,14 @@
 
 # ResqueBundle
 
+## Compatibiltiy
+
+ - For Symfony 5+ please use ResqueBundle v4.0.0+
+ - For Symfony 4+ please use major series ResqueBundle v3+ and work towards Symfony 5 migration ;-)
+ - For Symfony 3+ please peg to exact release ResqueBundle v2.0.9+ and think about your decision to even use Symfony 3 ;-)
+
+Note that we dont offer the same b/c promise as symfony itself, but try our hardest to make major versions for major symfony versions.
+
 ## Update May 2020
 
  - Inject ParameterBagInterface instead of directly accessing container in commands and controller
@@ -60,19 +68,7 @@ Symfony 4+
 
 ### Get the bundle
 
-Add `resquebundle/resque` to your dependencies:
-
-``` json
-{
-    "require": {
-        ...
-        "resquebundle/resque": "^3.0"
-    }
-    ...
-}
-```
-
-To install, run `composer update`.
+To install, run `composer req resquebundle/resque`
 
 ### Import the routing configuration
 
@@ -113,17 +109,18 @@ resque:
         database: 1                          # the redis database
     auto_retry: [0, 10, 60]                  # auto retry failed jobs
     worker:
-        root_dir: path/to/worker/root        # the root dir of app that run workers (optional)
+        project_dir: path/to/worker/project_dir        # the project_dir of app that run workers (optional)
 ```
 
 See the [Auto retry](#auto-retry) section for more on how to use `auto_retry`.
 
-Set `worker: root_dir:` in case job fails to run when worker systems are hosted on separate server/dir from the system creating the queue.
+Set `worker: project_dir:` in case job fails to run when worker systems are hosted on separate server/dir from the system creating the queue.
 When running multiple configured apps for multiple workers, all apps must be able to access by the same root_dir defined in `worker: root_dir`.
 
 ## Creating a Job
 
-A job is a subclass of the `ResqueBundle\Resque\Job` class. You also can use the `Mpclarkson\Resque\ContainerAwareJob` if you need to leverage the container during job execution.
+A job is a subclass of the `ResqueBundle\Resque\Job` class. 
+
 You will be forced to implement the run method that will contain your job logic:
 
 ``` php
