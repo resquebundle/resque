@@ -24,6 +24,11 @@
                 namespace="ResqueBundle\Resque\Controller\"
                 resource="../../Controller/*"
         />
+        <prototype
+                namespace="ResqueBundle\Resque\ExampleJobs\"
+                resource="../../ExampleJobs/*"
+                public="true"
+        />
         <service id="ResqueBundle\Resque\Resque" class="%resque.class%" lazy="true" public="true">
             <argument type="collection">
                 <argument key="kernel.root_dir">%resque.worker.root_dir%</argument>
