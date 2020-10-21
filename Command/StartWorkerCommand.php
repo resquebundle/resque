@@ -68,7 +68,6 @@ class StartWorkerCommand extends Command
         $env['COUNT']       = $input->getOption('count');
         $env['INTERVAL']    = $input->getOption('interval');
         $env['QUEUE']       = $input->getArgument('queues');
-        $env['VERBOSE']     = 1;
 
         // Allow Sentry.io integration
         if ($this->params->has('sentry.dsn')) {
