@@ -32,7 +32,11 @@ if (!empty($RESQUE_PHP)) {
 
 $REDIS_BACKEND = getenv('REDIS_BACKEND');
 $REDIS_BACKEND_DB = getenv('REDIS_BACKEND_DB');
+$REDIS_BACKEND_PASSWORD = getenv('REDIS_BACKEND_PASSWORD');
 if (!empty($REDIS_BACKEND)) {
+    if (!empty($REDIS_BACKEND_PASSWORD)) {
+        $REDIS_BACKEND = 'redis://:' . $REDIS_BACKEND_PASSWORD . '@' . $REDIS_BACKEND;
+    }
     if (empty($REDIS_BACKEND_DB)) {
         Resque::setBackend($REDIS_BACKEND);
     } else {

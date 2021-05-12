@@ -107,6 +107,7 @@ resque:
         host: localhost                      # the redis host
         port: 6379                           # the redis port
         database: 1                          # the redis database
+        password: ~                          # the redis password, defaults to null
     auto_retry: [0, 10, 60]                  # auto retry failed jobs
     worker:
         project_dir: path/to/worker/project_dir        # the project_dir of app that run workers (optional)
