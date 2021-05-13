@@ -12,6 +12,7 @@
         <parameter key="resque.redis.host"/>
         <parameter key="resque.redis.port"/>
         <parameter key="resque.redis.database"/>
+        <parameter key="resque.redis.password"/>
     </parameters>
 
     <services>
@@ -39,6 +40,7 @@
                 <argument>%resque.redis.host%</argument>
                 <argument>%resque.redis.port%</argument>
                 <argument>%resque.redis.database%</argument>
+                <argument>%resque.redis.password%</argument>
             </call>
         </service>
         <service id="resque" alias="ResqueBundle\Resque\Resque" public="true"/>

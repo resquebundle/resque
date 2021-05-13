@@ -37,6 +37,7 @@ class ResqueExtension extends Extension
         $container->setParameter('resque.redis.host', $config['redis']['host']);
         $container->setParameter('resque.redis.port', $config['redis']['port']);
         $container->setParameter('resque.redis.database', $config['redis']['database']);
+        $container->setParameter('resque.redis.password', $config['redis']['password']);
 
         if (!empty($config['prefix'])) {
             $container->setParameter('resque.prefix', $config['prefix']);

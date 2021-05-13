@@ -82,16 +82,23 @@ class Resque implements EnqueueInterface
      * @param $port
      * @param $database
      */
-    public function setRedisConfiguration($host, $port, $database)
+    public function setRedisConfiguration($host, $port, $database, $password = null)
     {
         $this->redisConfiguration = [
             'host'     => $host,
             'port'     => $port,
             'database' => $database,
+            'password' => $password,
         ];
-        $host = '/' == substr($host, 0, 1) ? $host : $host.':'.$port;
 
-        \Resque::setBackend($host, $database);
+        if (!isset($password)) {
+            \Resque::setBackend($host.':'.$port, $database);
+        } else {
+            $server = 'redis://:' . $password . '@' . $host . ':' . $port;
+            \Resque::setBackend($server, $database);
+            \Resque::redis()->auth($password);
+        }
+
     }
 
     /**
