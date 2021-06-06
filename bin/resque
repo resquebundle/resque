@@ -106,7 +106,7 @@ if (!empty($PREFIX)) {
 }
 
 // If set, re-attach failed jobs based on retry_strategy
-Resque_Event::listen('onFailure', function (Exception $exception, Resque_Job $job) use ($logger, $sentryClient) {
+Resque_Event::listen('onFailure', function (Error | Exception $exception, Resque_Job $job) use ($logger, $sentryClient) {
 
     // Allow integration with Sentry.io
     if (null !== $sentryClient){
