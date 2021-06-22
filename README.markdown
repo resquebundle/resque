@@ -1,17 +1,23 @@
 [![Build Status](https://travis-ci.org/resquebundle/resque.svg?branch=master)](https://travis-ci.org/resquebundle/resque)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/resquebundle/resque/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/resquebundle/resque/?branch=master)
 
-**This project IS under ACTIVE development (last major update May 2020)**
+**This project IS under ACTIVE development (last major update June 2021)**
 
 # ResqueBundle
 
 ## Compatibiltiy
 
- - For Symfony 5+ please use ResqueBundle v4.0.0+
+ - For Symfony 5+ / PHP8 please use ResqueBundle v5+
  - For Symfony 4+ please use major series ResqueBundle v3+ and work towards Symfony 5 migration ;-)
  - For Symfony 3+ please peg to exact release ResqueBundle v2.0.9+ and think about your decision to even use Symfony 3 ;-)
 
 Note that we dont offer the same b/c promise as symfony itself, but try our hardest to make major versions for major symfony versions.
+
+## Update June 2021
+
+ - New series 5.x to be Symfony 5.3 and PHP 8 compatible only. 
+ - Return correct command exit statuses
+ - Catch correct Exceptions and new TypeError Exception
 
 ## Update May 2020
 
