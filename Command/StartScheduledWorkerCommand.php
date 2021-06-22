@@ -144,5 +144,7 @@ class StartScheduledWorkerCommand extends Command
             $output->writeln(sprintf('<info>Worker started</info> %s:%s', $hostname, $pid));
             file_put_contents($pidFile, $pid);
         }
+
+        return 0;
     }
 }

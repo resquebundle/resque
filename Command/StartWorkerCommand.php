@@ -169,5 +169,7 @@ class StartWorkerCommand extends Command
                 $output->writeln(sprintf('<info>Worker started</info> %s:%s:%s', $hostname, $pid, $input->getArgument('queues')));
             }
         }
+
+        return 0;
     }
 }
