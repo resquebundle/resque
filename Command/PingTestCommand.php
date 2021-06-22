@@ -45,6 +45,6 @@ class PingTestCommand extends Command
         $job = new PingJob();
         $output->writeln($this->resque->enqueue($job, true));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

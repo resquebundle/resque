@@ -62,7 +62,7 @@ class StopWorkerCommand extends Command
                     $output->writeln('<error>There are no running workers.</error>');
                 }
 
-                return 1;
+                return Command::FAILURE;
             }
 
             $workers = [$worker];
@@ -71,7 +71,7 @@ class StopWorkerCommand extends Command
         if (!\count($workers)) {
             $output->writeln('<error>There are no running workers to stop.</error>');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         foreach ($workers as $worker) {
@@ -84,6 +84,6 @@ class StopWorkerCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

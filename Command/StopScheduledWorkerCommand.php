@@ -46,7 +46,7 @@ class StopScheduledWorkerCommand extends Command
         if (!file_exists($pidFile)) {
             $output->writeln('No PID file found');
 
-            return -1;
+            return Command::FAILURE;
         }
 
         $pid = file_get_contents($pidFile);
@@ -57,6 +57,6 @@ class StopScheduledWorkerCommand extends Command
 
         unlink($pidFile);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

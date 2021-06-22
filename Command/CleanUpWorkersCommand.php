@@ -49,5 +49,7 @@ class CleanUpWorkersCommand extends Command
                 $worker->getWorker()->unregisterWorker();
             }
         }
+
+        return Command::SUCCESS;
     }
 }

@@ -48,6 +48,6 @@ class ClearQueueCommand extends Command
 
         $output->writeln('Cleared queue '.$queue.' - removed '.$count.' entries');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
