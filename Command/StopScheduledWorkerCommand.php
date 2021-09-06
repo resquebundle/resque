@@ -8,29 +8,22 @@
 
 namespace ResqueBundle\Resque\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class StopScheduledWorkerCommand.
- */
+#[AsCommand(
+    name: 'resque:scheduledworker-stop',
+    description: 'Stop a resque scheduled worker',
+)]
 class StopScheduledWorkerCommand extends Command
 {
-    private $params;
-
-    public function __construct(string $name = null, ParameterBagInterface $params)
+    public function __construct(
+        private ParameterBagInterface $params)
     {
-        $this->params = $params;
-        parent::__construct($name);
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setName('resque:scheduledworker-stop')
-            ->setDescription('Stop a resque scheduled worker');
+        parent::__construct();
     }
 
     /**

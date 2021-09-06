@@ -8,30 +8,24 @@
 
 namespace ResqueBundle\Resque\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use ResqueBundle\Resque\ExampleJobs\PingJob;
 use ResqueBundle\Resque\Resque;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class PingTestCommand.
- */
+#[AsCommand(
+    name: 'resque:pingtest',
+    description: 'Send a Ping as a test, and let a job reply with pong',
+)]
 class PingTestCommand extends Command
 {
-    private $resque;
-
-    public function __construct(string $name = null, Resque $resque)
+    public function __construct(
+        private Resque $resque
+    )
     {
-        $this->resque = $resque;
-        parent::__construct($name);
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setName('resque:pingtest')
-            ->setDescription('Send a Ping as a test, and let a job reply with pong');
+        parent::__construct();
     }
 
     /**

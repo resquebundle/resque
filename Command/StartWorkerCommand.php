@@ -8,6 +8,7 @@
 
 namespace ResqueBundle\Resque\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,24 +17,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Process\Process;
 
-/**
- * Class StartWorkerCommand.
- */
+#[AsCommand(
+    name: 'resque:worker-start',
+    description: 'Start a resque worker',
+)]
 class StartWorkerCommand extends Command
 {
-    private $params;
-
-    public function __construct(string $name = null, ParameterBagInterface $params)
+    public function __construct(
+        private ParameterBagInterface $params)
     {
-        $this->params = $params;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('resque:worker-start')
-            ->setDescription('Start a resque worker')
             ->addArgument('queues', InputArgument::REQUIRED, 'Queue names (separate using comma)')
             ->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'How many workers to fork', 1)
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'How often to check for new jobs across the queues', 5)

@@ -8,6 +8,7 @@
 
 namespace ResqueBundle\Resque\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,24 +16,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Process\Process;
 
-/**
- * Class StartScheduledWorkerCommand.
- */
+#[AsCommand(
+    name: 'resque:scheduledworker-start',
+    description: 'Start a scheduled resque worker',
+)]
 class StartScheduledWorkerCommand extends Command
 {
-    private $params;
-
-    public function __construct(string $name = null, ParameterBagInterface $params)
+    public function __construct(
+        private ParameterBagInterface $params)
     {
-        $this->params = $params;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('resque:scheduledworker-start')
-            ->setDescription('Start a scheduled resque worker')
             ->addOption('foreground', 'f', InputOption::VALUE_NONE, 'Should the worker run in foreground')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force creation of a new worker if the PID file exists')
             ->addOption('interval', 'i', InputOption::VALUE_REQUIRED, 'How often to check for new jobs across the queues', 5);

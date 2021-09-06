@@ -8,29 +8,23 @@
 
 namespace ResqueBundle\Resque\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use ResqueBundle\Resque\Resque;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class CleanUpWorkersCommand.
- */
+#[AsCommand(
+    name: 'resque:cleanup:workers',
+    description: 'Unregisters all workers in Redis. Workers may need to be restarted.',
+)]
 class CleanUpWorkersCommand extends Command
 {
-    private $resque;
-
-    public function __construct(string $name = null, Resque $resque)
+    public function __construct(
+        private Resque $resque
+    )
     {
-        $this->resque = $resque;
-        parent::__construct($name);
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setName('resque:cleanup:workers')
-            ->setDescription('Unregisters all workers in Redis. Workers may need to be restarted.');
+        parent::__construct();
     }
 
     /**

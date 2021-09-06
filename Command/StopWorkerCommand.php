@@ -8,6 +8,7 @@
 
 namespace ResqueBundle\Resque\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use ResqueBundle\Resque\Resque;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,24 +16,21 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class StopWorkerCommand.
- */
+#[AsCommand(
+    name: 'resque:worker-stop',
+    description: 'Stop a resque worker',
+)]
 class StopWorkerCommand extends Command
 {
-    private $resque;
-
-    public function __construct(string $name = null, Resque $resque)
+    public function __construct(
+        private Resque $resque)
     {
-        $this->resque = $resque;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()
     {
         $this
-            ->setName('resque:worker-stop')
-            ->setDescription('Stop a resque worker')
             ->addArgument('id', InputArgument::OPTIONAL, 'Worker id')
             ->addOption('all', 'a', InputOption::VALUE_NONE, 'Should kill all workers');
     }
