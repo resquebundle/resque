@@ -95,6 +95,7 @@ class StartWorkerCommand extends Command
         $redisHost     =  $this->params->get('resque.redis.host');
         $redisPort     =  $this->params->get('resque.redis.port');
         $redisDatabase =  $this->params->get('resque.redis.database');
+        $redisPassword =  $this->params->get('resque.redis.password');
 
         if (null != $redisHost && null != $redisPort) {
             $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
@@ -102,6 +103,10 @@ class StartWorkerCommand extends Command
 
         if (isset($redisDatabase)) {
             $env['REDIS_BACKEND_DB'] = $redisDatabase;
+        }
+
+        if (isset($redisPassword)) {
+            $env['REDIS_BACKEND_PASSWORD'] = $redisPassword;
         }
 
         $opt = '';
