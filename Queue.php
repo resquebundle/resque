@@ -47,7 +47,7 @@ class Queue
      */
     public function getJobs($start = 0, $stop = -1)
     {
-        $jobs = \Resque::redis()->lrange('queue:'.$this->name, $start, $stop);
+        $jobs = \Resque::redis()->lrange('queue:' . $this->name, $start, $stop);
 
         $result = [];
         foreach ($jobs as $job) {
@@ -68,8 +68,8 @@ class Queue
      */
     public function clear()
     {
-        $length = \Resque::redis()->llen('queue:'.$this->name);
-        \Resque::redis()->del('queue:'.$this->name);
+        $length = \Resque::redis()->llen('queue:' . $this->name);
+        \Resque::redis()->del('queue:' . $this->name);
 
         return $length;
     }

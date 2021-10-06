@@ -92,7 +92,7 @@ class Resque implements EnqueueInterface
         ];
 
         if (!isset($password)) {
-            \Resque::setBackend($host.':'.$port, $database);
+            \Resque::setBackend($host . ':' . $port, $database);
         } else {
             $server = 'redis://:' . $password . '@' . $host . ':' . $port;
             \Resque::setBackend($server, $database);
@@ -263,7 +263,7 @@ class Resque implements EnqueueInterface
      */
     public function getQueues()
     {
-        return array_map(function ($queue) {
+        return array_map(function($queue) {
             return new Queue($queue);
         }, \Resque::queues());
     }
@@ -283,7 +283,7 @@ class Resque implements EnqueueInterface
      */
     public function getWorkers()
     {
-        return array_map(function ($worker) {
+        return array_map(function($worker) {
             return new Worker($worker);
         }, \Resque_Worker::all());
     }
@@ -293,7 +293,7 @@ class Resque implements EnqueueInterface
      */
     public function getRunningWorkers()
     {
-        return array_filter($this->getWorkers(), function (Worker $worker) {
+        return array_filter($this->getWorkers(), function(Worker $worker) {
             return null !== $worker->getCurrentJob();
         });
     }
@@ -370,7 +370,7 @@ class Resque implements EnqueueInterface
         //TODO: find a more efficient way to do this
         $out = [];
         foreach ($timestamps as $timestamp) {
-            $out[] = [$timestamp, \Resque::redis()->llen('delayed:'.$timestamp)];
+            $out[] = [$timestamp, \Resque::redis()->llen('delayed:' . $timestamp)];
         }
 
         return $out;
@@ -391,7 +391,7 @@ class Resque implements EnqueueInterface
      */
     public function getJobsForTimestamp($timestamp)
     {
-        $jobs = \Resque::redis()->lrange('delayed:'.$timestamp, 0, -1);
+        $jobs = \Resque::redis()->lrange('delayed:' . $timestamp, 0, -1);
         $out  = [];
         foreach ($jobs as $job) {
             $out[] = json_decode($job, true);

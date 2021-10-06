@@ -46,7 +46,7 @@ class ClearQueueCommand extends Command
         $queue = $input->getArgument('queue');
         $count = $this->resque->clearQueue($queue);
 
-        $output->writeln('Cleared queue '.$queue.' - removed '.$count.' entries');
+        $output->writeln('Cleared queue ' . $queue . ' - removed ' . $count . ' entries');
 
         return 0;
     }

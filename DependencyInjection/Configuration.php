@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
 
         if (method_exists($treeBuilder, 'getRootNode')) {
             // Symfony 4+
-            $root =   $treeBuilder->getRootNode();
+            $root = $treeBuilder->getRootNode();
         } else {
             // Symfony 3
             $root = $treeBuilder->root('resque');
@@ -56,7 +56,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('auto_retry')
                     ->beforeNormalization()
                         ->ifArray()
-                        ->then(function ($var) {
+                        ->then(function($var) {
                             if (\array_key_exists(0, $var)) {
                                 return [$var];
                             }

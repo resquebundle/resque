@@ -56,7 +56,7 @@ abstract class ContainerAwareJob
     protected function createKernel()
     {
         $finder = new Finder();
-        $finder->name('*Kernel.php')->depth('<=1')->in($this->args['kernel.project_dir'].'/src');
+        $finder->name('*Kernel.php')->depth('<=1')->in($this->args['kernel.project_dir'] . '/src');
         $results = iterator_to_array($finder);
         $file    = current($results);
         $class   = $file->getBasename('.php');
@@ -64,8 +64,8 @@ abstract class ContainerAwareJob
         // Take into account any namespace
         preg_match('/namespace\s(.*)\;/', file_get_contents($file), $matches);
         if (2 == \count($matches)) {
-            $namespace = '\\'.$matches[1].'\\';
-            $class     = $namespace.$class;
+            $namespace = '\\' . $matches[1] . '\\';
+            $class     = $namespace . $class;
         }
 
         require_once $file;
