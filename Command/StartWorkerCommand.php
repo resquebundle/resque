@@ -62,15 +62,15 @@ class StartWorkerCommand extends Command
             );
         }
 
-        $env['APP_INCLUDE'] =  $this->params->get('resque.app_include');
+        $env['APP_INCLUDE'] = $this->params->get('resque.app_include');
         $env['COUNT']       = $input->getOption('count');
         $env['INTERVAL']    = $input->getOption('interval');
         $env['QUEUE']       = $input->getArgument('queues');
 
         // Allow Sentry.io integration
         if ($this->params->has('sentry.dsn')) {
-            if ($sentryDSN =  $this->params->get('sentry.dsn')) {
-                $output->writeln('Enabling Sentry Reporting to DSN '.$sentryDSN);
+            if ($sentryDSN = $this->params->get('sentry.dsn')) {
+                $output->writeln('Enabling Sentry Reporting to DSN ' . $sentryDSN);
                 $env['SENTRY_DSN'] = $sentryDSN;
             }
         }
@@ -79,9 +79,9 @@ class StartWorkerCommand extends Command
             $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
         }
 
-        $prefix =  $this->params->get('resque.prefix');
+        $prefix = $this->params->get('resque.prefix');
         if (!empty($prefix)) {
-            $env['PREFIX'] =  $this->params->get('resque.prefix');
+            $env['PREFIX'] = $this->params->get('resque.prefix');
         }
 
         if ($input->getOption('verbose')) {
@@ -92,13 +92,13 @@ class StartWorkerCommand extends Command
             unset($env['VERBOSE']);
         }
 
-        $redisHost     =  $this->params->get('resque.redis.host');
-        $redisPort     =  $this->params->get('resque.redis.port');
-        $redisDatabase =  $this->params->get('resque.redis.database');
-        $redisPassword =  $this->params->get('resque.redis.password');
+        $redisHost     = $this->params->get('resque.redis.host');
+        $redisPort     = $this->params->get('resque.redis.port');
+        $redisDatabase = $this->params->get('resque.redis.database');
+        $redisPassword = $this->params->get('resque.redis.password');
 
         if (null != $redisHost && null != $redisPort) {
-            $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
+            $env['REDIS_BACKEND'] = $redisHost . ':' . $redisPort;
         }
 
         if (isset($redisDatabase)) {
@@ -110,14 +110,14 @@ class StartWorkerCommand extends Command
         }
 
         $opt = '';
-        if (0 !== $m = (int) $input->getOption('memory-limit')) {
+        if (0 !== $m = (int)$input->getOption('memory-limit')) {
             $opt = sprintf('-d memory_limit=%dM', $m);
         }
 
         if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
             $phpExecutable = PHP_BINARY;
         } else {
-            $phpExecutable = PHP_BINDIR.'/php';
+            $phpExecutable = PHP_BINDIR . '/php';
             if (\defined('PHP_WINDOWS_VERSION_BUILD')) {
                 $phpExecutable = 'php';
             }
@@ -126,7 +126,7 @@ class StartWorkerCommand extends Command
         $workerCommand = strtr('%php% %opt% %dir%/resque', [
             '%php%' => $phpExecutable,
             '%opt%' => $opt,
-            '%dir%' => __DIR__.'/../bin',
+            '%dir%' => __DIR__ . '/../bin',
         ]);
 
         if (!$input->getOption('foreground')) {
@@ -141,7 +141,7 @@ class StartWorkerCommand extends Command
         // this is a workaround where we add the vars to the existing environment.
         if (\defined('PHP_WINDOWS_VERSION_BUILD')) {
             foreach ($env as $key => $value) {
-                putenv($key.'='.$value);
+                putenv($key . '=' . $value);
             }
             $env = null;
         }
@@ -154,7 +154,7 @@ class StartWorkerCommand extends Command
 
         // if foreground, we redirect output
         if ($input->getOption('foreground')) {
-            $process->run(function ($type, $buffer) use ($output) {
+            $process->run(function($type, $buffer) use ($output) {
                 $output->write($buffer);
             });
         } // else we recompose and display the worker id

@@ -76,7 +76,7 @@ class DefaultController extends AbstractController
         $count = $queue->clear();
         $queue->remove();
 
-        $this->addFlash('info', 'Remove '.$queue->getName().' queue and '.$count.' jobs.');
+        $this->addFlash('info', 'Remove ' . $queue->getName() . ' queue and ' . $count . ' jobs.');
 
         return $this->redirectToRoute('ResqueBundle_homepage');
     }
@@ -183,7 +183,7 @@ class DefaultController extends AbstractController
     {
         $count = $this->resque->retryFailedJobs();
 
-        $this->addFlash('info', 'Retry '.$count.' failed jobs.');
+        $this->addFlash('info', 'Retry ' . $count . ' failed jobs.');
 
         return $this->redirectToRoute('ResqueBundle_homepage');
     }
@@ -195,7 +195,7 @@ class DefaultController extends AbstractController
     {
         $count = $this->resque->retryFailedJobs(true);
 
-        $this->addFlash('info', 'Retry and clear '.$count.' failed jobs.');
+        $this->addFlash('info', 'Retry and clear ' . $count . ' failed jobs.');
 
         return $this->redirectToRoute('ResqueBundle_homepage');
     }
@@ -207,7 +207,7 @@ class DefaultController extends AbstractController
     {
         $count = $this->resque->clearFailedJobs();
 
-        $this->addFlash('info', 'Clear '.$count.' failed jobs.');
+        $this->addFlash('info', 'Clear ' . $count . ' failed jobs.');
 
         return $this->redirectToRoute('ResqueBundle_homepage');
     }

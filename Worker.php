@@ -43,7 +43,7 @@ class Worker
      */
     public function getId()
     {
-        return (string) $this->worker;
+        return (string)$this->worker;
     }
 
     /**
@@ -51,7 +51,7 @@ class Worker
      */
     public function getQueues()
     {
-        return array_map(function ($queue) {
+        return array_map(function($queue) {
             return new Queue($queue);
         }, $this->worker->queues());
     }
