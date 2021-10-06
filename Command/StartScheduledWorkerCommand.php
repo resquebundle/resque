@@ -46,7 +46,7 @@ class StartScheduledWorkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pidFile = $this->params->get('kernel.cache_dir').'/resque_scheduledworker.pid';
+        $pidFile = $this->params->get('kernel.cache_dir') . '/resque_scheduledworker.pid';
         if (file_exists($pidFile) && !$input->getOption('force')) {
             throw new \Exception('PID file exists - use --force to override');
         }
@@ -58,31 +58,31 @@ class StartScheduledWorkerCommand extends Command
         $env = [
             'APP_INCLUDE' => $this->params->get('resque.app_include'),
             'VVERBOSE'    => 1,
-            'RESQUE_PHP'  => $this->params->get('resque.vendor_dir').'/chrisboulton/php-resque/lib/Resque.php',
+            'RESQUE_PHP'  => $this->params->get('resque.vendor_dir') . '/chrisboulton/php-resque/lib/Resque.php',
             'INTERVAL'    => $input->getOption('interval'),
         ];
 
         if (!file_exists($env['RESQUE_PHP'])) {
-            $env['RESQUE_PHP'] =  $this->params->get('resque.vendor_dir').'/resque/php-resque/lib/Resque.php';
+            $env['RESQUE_PHP'] = $this->params->get('resque.vendor_dir') . '/resque/php-resque/lib/Resque.php';
         }
 
         if (false !== getenv('APP_INCLUDE')) {
             $env['APP_INCLUDE'] = getenv('APP_INCLUDE');
         }
 
-        $prefix =  $this->params->get('resque.prefix');
+        $prefix = $this->params->get('resque.prefix');
 
         if (!empty($prefix)) {
-            $env['PREFIX'] =  $this->params->get('resque.prefix');
+            $env['PREFIX'] = $this->params->get('resque.prefix');
         }
 
-        $redisHost     =  $this->params->get('resque.redis.host');
-        $redisPort     =  $this->params->get('resque.redis.port');
-        $redisDatabase =  $this->params->get('resque.redis.database');
-        $redisPassword =  $this->params->get('resque.redis.password');
+        $redisHost     = $this->params->get('resque.redis.host');
+        $redisPort     = $this->params->get('resque.redis.port');
+        $redisDatabase = $this->params->get('resque.redis.database');
+        $redisPassword = $this->params->get('resque.redis.password');
 
         if (null != $redisHost && null != $redisPort) {
-            $env['REDIS_BACKEND'] = $redisHost.':'.$redisPort;
+            $env['REDIS_BACKEND'] = $redisHost . ':' . $redisPort;
         }
 
         if (isset($redisDatabase)) {
@@ -96,20 +96,20 @@ class StartScheduledWorkerCommand extends Command
         if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
             $phpExecutable = PHP_BINARY;
         } else {
-            $phpExecutable = PHP_BINDIR.'/php';
+            $phpExecutable = PHP_BINDIR . '/php';
             if (\defined('PHP_WINDOWS_VERSION_BUILD')) {
                 $phpExecutable = 'php';
             }
         }
 
-        $workdirectory = __DIR__.'/../bin/';
-        $workerCommand = $phpExecutable.' '.$workdirectory.'resque-scheduler';
+        $workdirectory = __DIR__ . '/../bin/';
+        $workerCommand = $phpExecutable . ' ' . $workdirectory . 'resque-scheduler';
 
         if (!$input->getOption('foreground')) {
-            $logFile =  $this->params->get(
+            $logFile = $this->params->get(
                     'kernel.logs_dir'
-                ).'/resque-scheduler_'.$this->params->get('kernel.environment').'.log';
-            $workerCommand = 'nohup '.$workerCommand.' > '.$logFile.' 2>&1 & echo $!';
+                ) . '/resque-scheduler_' . $this->params->get('kernel.environment') . '.log';
+            $workerCommand = 'nohup ' . $workerCommand . ' > ' . $logFile . ' 2>&1 & echo $!';
         }
 
         // In windows: When you pass an environment to CMD it replaces the old environment
@@ -117,7 +117,7 @@ class StartScheduledWorkerCommand extends Command
         // this is a workaround where we add the vars to the existing environment.
         if (\defined('PHP_WINDOWS_VERSION_BUILD')) {
             foreach ($env as $key => $value) {
-                putenv($key.'='.$value);
+                putenv($key . '=' . $value);
             }
             $env = null;
         }
@@ -127,7 +127,7 @@ class StartScheduledWorkerCommand extends Command
         $output->writeln(sprintf('Starting worker <info>%s</info>', $process->getCommandLine()));
 
         if ($input->getOption('foreground')) {
-            $process->run(function ($type, $buffer) use ($output) {
+            $process->run(function($type, $buffer) use ($output) {
                 $output->write($buffer);
             });
         } // else we recompose and display the worker id

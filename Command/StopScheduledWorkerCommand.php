@@ -34,7 +34,7 @@ class StopScheduledWorkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pidFile = $this->params->get('kernel.cache_dir').'/resque_scheduledworker.pid';
+        $pidFile = $this->params->get('kernel.cache_dir') . '/resque_scheduledworker.pid';
 
         if (!file_exists($pidFile)) {
             $output->writeln('No PID file found');
@@ -44,7 +44,7 @@ class StopScheduledWorkerCommand extends Command
 
         $pid = file_get_contents($pidFile);
 
-        $output->writeln('Killing process '.$pid);
+        $output->writeln('Killing process ' . $pid);
 
         posix_kill($pid, SIGKILL);
 
