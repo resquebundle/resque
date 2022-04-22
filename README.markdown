@@ -1,6 +1,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/resquebundle/resque/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/resquebundle/resque/?branch=master)
 
-**This project IS under ACTIVE development (last major update June 2021)**
+**This project IS NO LONGER UNDER ACTIVE development (last major update September 2021) **
+
+If you would like to take over maintenance of this project please contact phil@phil-taylor.com - I no longer use the code here in any live project as I moved to Symfony Messenger for my queue needs. 
 
 # ResqueBundle
 
