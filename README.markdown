@@ -1,10 +1,12 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/resquebundle/resque/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/resquebundle/resque/?branch=master)
 
-**This project IS NO LONGER UNDER ACTIVE development (last major update September 2021)**
+**This project IS NO LONGER UNDER ANY development (last major update September 2021)**
 
-If you would like to take over maintenance of this project please contact phil@phil-taylor.com - I no longer use the code here in any live project as I moved to Symfony Messenger for my queue needs. 
+If you would like to take over maintenance of this project please contact phil@phil-taylor.com - I no longer use the code here in any live project as I moved to [Symfony Messenger](https://symfony.com/doc/current/messenger.html), with Redis. for my own queue needs. 
 
-If you are using PHP 8 plesae see the `php8` branch for the latest stable release
+# If you are using PHP 8 plesae see the `php8` branch for the latest stable release
+
+
 
 # ResqueBundle
 
