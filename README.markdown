@@ -1,34 +1,32 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/resquebundle/resque/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/resquebundle/resque/?branch=master)
 
-**This project IS NO LONGER UNDER ACTIVE development (last major update September 2021)**
+**This project IS NO LONGER UNDER ANY development (last major update September 2021)**
 
-If you would like to take over maintenance of this project please contact phil@phil-taylor.com - I no longer use the code here in any live project as I moved to Symfony Messenger for my queue needs. 
+If you would like to take over maintenance of this project please contact phil@phil-taylor.com - I no longer use the code here in any live project as I moved to [Symfony Messenger](https://symfony.com/doc/current/messenger.html), with Redis. for my own queue needs.
+
+# If you are using PHP 8 plesae see the `php8` branch for the latest stable release
+
+
 
 # ResqueBundle
 
 ## Compatibiltiy
 
- - For Symfony 5+ / PHP8 please use ResqueBundle v5+
- - For Symfony 4+ please use major series ResqueBundle v3+ and work towards Symfony 5 migration ;-)
- - For Symfony 3+ please peg to exact release ResqueBundle v2.0.9+ and think about your decision to even use Symfony 3 ;-)
+- For Symfony 5+ please use ResqueBundle v4.0.0+
+- For Symfony 4+ please use major series ResqueBundle v3+ and work towards Symfony 5 migration ;-)
+- For Symfony 3+ please peg to exact release ResqueBundle v2.0.9+ and think about your decision to even use Symfony 3 ;-)
 
 Note that we dont offer the same b/c promise as symfony itself, but try our hardest to make major versions for major symfony versions.
 
-## Update June 2021
-
- - New series 5.x to be Symfony 5.3 and PHP 8 compatible only. 
- - Return correct command exit statuses
- - Catch correct Exceptions and new TypeError Exception
-
 ## Update May 2020
 
- - Inject ParameterBagInterface instead of directly accessing container in commands and controller
- - User kernel.project_dir instead of kernel.root_dir (b/c break!, you need to update your config yml)
- - Update Routing controller to use long syntax
- - Use `@Bundle` syntax for loading twig templates
- - force a minimum of Symfony 4.1.2 for critical security
- - Use correct Process function for max compatibility
- - Drop Symfony 3.4 support totally, sorry. 
+- Inject ParameterBagInterface instead of directly accessing container in commands and controller
+- User kernel.project_dir instead of kernel.root_dir (b/c break!, you need to update your config yml)
+- Update Routing controller to use long syntax
+- Use `@Bundle` syntax for loading twig templates
+- force a minimum of Symfony 4.1.2 for critical security
+- Use correct Process function for max compatibility
+- Drop Symfony 3.4 support totally, sorry.
 
 ## Update November 2019
 
@@ -38,23 +36,23 @@ If you are still using Symfony 3 then you MUST peg your composer.json to release
 
 The first version of this bundle that is highly compatible with, and activly maintained, is 3.0.0
 
-If you have used this before, and want to get up to date, then you need to 
- - upgrade to 3.0.0+ version of this bundle
- - use Symfony 4 (im using 4.4.0RC1 at the moment)
- - change your Jobs to extend `ResqueBundle\Resque\Job` and not `ContainerAwareJob`
- - add `__construct` methods to inject your depenancies
- - remove ALL REFERENCES to the container or `getContainer` from your jobs
- - Enjoy!
+If you have used this before, and want to get up to date, then you need to
+- upgrade to 3.0.0+ version of this bundle
+- use Symfony 4 (im using 4.4.0RC1 at the moment)
+- change your Jobs to extend `ResqueBundle\Resque\Job` and not `ContainerAwareJob`
+- add `__construct` methods to inject your depenancies
+- remove ALL REFERENCES to the container or `getContainer` from your jobs
+- Enjoy!
 
 # ResqueBundle History
 
-This is a fork of the BCCResqueBundle as ***that** bundle is no longer being actively maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed in that project, with no activity, so we forked it, and will activly support and develop the code further in this repo. 
+This is a fork of the BCCResqueBundle as ***that** bundle is no longer being actively maintained. There are a lot of outstanding issues, pull requests and bugs that need to be fixed in that project, with no activity, so we forked it, and will activly support and develop the code further in this repo.
 
 This is also a rebrand of Mpclarkson\ResqueBundle to place the code under a GitHub Organisation for future proof distributed development
 
 **Contributions are welcome**
 
-The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony4. 
+The resque bundle provides integration of [php-resque](https://github.com/chrisboulton/php-resque/) to Symfony4.
 It is inspired from resque, a Redis-backed Ruby library for creating background jobs, placing them on multiple queues, and processing them later.
 
 ## Features:
